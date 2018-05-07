@@ -582,7 +582,7 @@ module.exports = function(autoIncrement, io){
                         Chat.findById(discussion.chat_id,function(err,chat){
                             if(err) throw err;
                             if(chat == null) chat = {messages: []};
-                            Argument.find({disc_id: discussionId}, function(err, discArguments){
+                            Argument.find({$or:[ {disc_id: discussionId}, {trimmed: true}]}, function(err, discArguments){
                                 if (err){
                                     throw err;
                                 }
@@ -779,14 +779,28 @@ module.exports = function(autoIncrement, io){
                     }
                     else{
                         argument.trimmed = !argument.trimmed;
-                        argument.save(function (err) {
-                            if (err){
-                                throw err;
+                        if(argument.disc_id != data.discusstionID){
+                            if(!argument.trimmed){
+                                argument.disc_id = data.discusstionID;
+                                argument.save(function (err) {
+                                    if (err){
+                                        throw err;
+                                    }
+                                    else {
+                                        argumentsNsp.to(data.discusstionID).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                    }
+                                });
                             }
-                            else{
-                                argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
-                            }
-                        })
+                        }else{
+                            argument.save(function (err) {
+                                if (err){
+                                    throw err;
+                                }
+                                else {
+                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                }
+                            });
+                        }
                     }
                 });
             });

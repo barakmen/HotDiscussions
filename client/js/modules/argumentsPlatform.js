@@ -240,6 +240,7 @@
                     socket.emit('get-all-arguments');
                 });
                 socket.on('init-discussion', function(result){
+                    $scope.discusstionID = result.discussion._id;
                     $scope.treeWithRef = result.discArguments;
                     $scope.treeNested = fromReftoNestedJson($scope.treeWithRef);
                     $scope.onlineUsers = result.onlineUsers;
@@ -502,7 +503,7 @@
             $scope.$on('flip-argument-trimmed-status', function (e,data) {
                 var argumentID = data._id;
                 //refJsonMap[argumentID].trimmed = !refJsonMap[argumentID].trimmed;
-                socket.emit('flip-argument-trimmed-status',{_id: argumentID});
+                socket.emit('flip-argument-trimmed-status',{_id: argumentID, discusstionID: $scope.discusstionID});
             });
 
             $scope.$on('parentBlinker', function (e,data) {
