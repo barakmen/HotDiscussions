@@ -1,0 +1,93 @@
+<div id="tblWrapper" dir="rtl" ng-repeat="node in nodeCtrl.nodes" ng-style="node.depth===0 && {'padding-bottom': '0', 'margin-bottom': '20px'}" >
+<!-- ng-if = "(!node.trimmed || nodeCtrl.role == 'admin')" -->
+    <div id="rowWrapper" node-style role="node.role" trimmed="node.trimmed" style="border-bottom-width: 1px; border-bottom-style:groove;" ng-style="node.depth===0 && {'border-radius': '5px 5px 0px 0px'}">
+
+        <div class="tblRow">
+
+            <div class="tblCell" style="width:51%; " ng-style="{'padding-right':((node.depth + ((((node.depth + 1) % 10) == 0) && nodeCtrl.focusing) + (node.isFocused || nodeCtrl.focusing)) % (10 + ((((node.depth + 1) % 10) == 0) && nodeCtrl.focusing))) * 20 + 'px'}">
+
+               <!--span style="width:70%" ng-style="node.depth===0 && {'font-weight':'bold'}"-->
+               <span style="width:70%">
+                     <overflow-content class=non-expanded node="node" role="node.color"></overflow-content>
+               </span>
+
+                <div ng-if="node.replyPressed" ng-style="{'padding-right':(((node.depth + ((((node.depth + 1) % 10) == 0) && nodeCtrl.focusing) + (node.isFocused || nodeCtrl.focusing)) % (10 + (node.isFocused && nodeCtrl.focusing))) + 1) * 4 + 'px'}">
+                    <div style="width:75%" >
+                        <div class="intoTextarea form-control form-group" ui-tinymce="tinymceOptions" style="height: 5.5em;line-height: 1.3;width:100%;" ng-model="nodeCtrl.replyText"></div>
+                        <!--textarea class="form-control text-right" rows="4" placeholder="תגובתך.." ng-model="nodeCtrl.replyText" style="resize: none;width:900px; margin: 5px; background-color: #DADAE5"></textarea-->
+                        <button type="submit" class="btn btn-primary btn-xs" ng-click="nodeCtrl.submitNewReply(node)">שליחה</button>
+                        <button type="submit" class="btn btn-default btn-xs" ng-click="nodeCtrl.cancelReply(node)">ביטול</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="tblCell" style="width:10%; text-align:right; padding-right:4px; min-height: 1px;">
+                <button class="btn btn-xs btn-warning" ng-if="(((node.depth + 1) % 10) == 0) && (!node.isFocused) && (node.subtreeSize > 0)" ng-click="nodeCtrl.focusOnNode(node)">
+                    <small>
+                    <span>המשך שרשור</span>
+                    <span>({{ node.subtreeSize }})</span>
+                    </small>
+                    <span style="color:firebrick" title="הודעה חדשה בהמשך השרשור" ng-class="{'glyphicon glyphicon-fire': node.subtreeNewestNode.lastPost}"></span>
+                    <span>»</span>
+                </button>
+            </div>
+
+            <div class="tblCell" style="width:2%; text-align:center; min-height: 1px;">
+                <div ng-if="nodeCtrl.role == 'admin' || nodeCtrl.role == 'moderator'" class="btn btn-xs">
+                    <span ng-class="{'glyphicon glyphicon-eye-open': node.hidden}" ng-click="nodeCtrl.flipArgumentHiddenStatus(node)"></span>
+                    <span ng-class="{'glyphicon glyphicon-eye-close': !node.hidden}" ng-click="nodeCtrl.flipArgumentHiddenStatus(node)"></span>
+                </div>
+            </div>
+
+            <div class="tblCell" style="width:2%; min-height: 1px; text-align:center">
+                <div ng-if="nodeCtrl.role == 'admin' || nodeCtrl.role == 'moderator'" class="btn btn-xs">
+                    <span title="trim" ng-class="{'glyphicon glyphicon-scissors': !node.trimmed}" ng-click="nodeCtrl.flipArgumentTrimmedStatus(node)"></span>
+                    <span title="un-trim" ng-class="{'glyphicon glyphicon-link': node.trimmed}" ng-click="nodeCtrl.flipArgumentTrimmedStatus(node)"></span>
+                </div>
+            </div>
+
+            <div class="tblCell" style="width:2%; min-height: 1px; text-align:center">
+                <span style="color:firebrick" title="הודעה חדשה" ng-class="{'glyphicon glyphicon-fire': node.lastPost}"></span>
+            </div>
+
+            <div class="tblCell col-non-expanded" style="width:13%; text-align:left; direction: ltr;">
+                <!--span style="cursor: pointer;" uib-popover-html="node.userInfo ? node.userInfo : 'טוען...'" popover-is-open="popoverIsOpen"-->
+                    <span ng-class="{'glyphicon glyphicon-education': node.role==='student'}" title="משתתף פעיל"></span>
+                    <span ng-class="{'glyphicon glyphicon-user': node.role==='instructor'}" title="משתתף רפלקטיבי"></span>
+                    <span ng-class="{'fa fa-star': (node.role==='admin' || node.role==='adminFromStudent')}" title="הודעת מנהל המערכת מדיון ביקורת"></span>
+                    <span ng-class="{'fa fa-star': node.role==='adminFromInstructor'}" title="הודעת מנהל המערכת מדיון פעיל"></span>
+                    <span ng-class="{'fa fa-star-half-empty': node.role==='moderator'}" title="מודרטור"></span>
+                <span style="cursor: pointer; cursor: hand;" uib-popover-html="node.userInfo" popover-is-open="isOpen" ng-mouseleave="isOpen=false"
+                      ng-click="isOpen = !isOpen;nodeCtrl.getPostUserInfo(node)" popover-popup-delay="200">
+                    <small>{{::node.fname}} {{::node.lname}}</small>
+                </span>
+            </div>
+
+            <div class="tblCell col-non-expanded" style="width:12%; text-align:left; direction: ltr;">
+                <i style="font-size: 10px">{{nodeCtrl.prettyDate(node.createdAt)}}</i>
+            </div>
+
+            <div class="tblCell" style="width:5%; text-align:left">
+                <i>
+                    <small>#{{ ::node._id }}</small>
+                </i>
+            </div>
+
+            <div class="tblCell rowButtomMgr" style="width:3%; text-align:left; padding-left:2px" ng-if="!nodeCtrl.locked">
+                <span title="תגובה" class="glyphicon glyphicon-comment btn btn-primary btn-xs" aria-hidden="true" ng-click="nodeCtrl.newReplyPressed(node)"></span>
+            </div>
+            <!--div class="tblCell" style="width:5%; text-align:center" align="left">
+                <span class="glyphicon glyphicon-pencil btn btn-primary btn-xs" aria-hidden="true" ng-click="nodeCtrl.newReplyPressed(node)">
+                    <small>תגובה</small>
+                </span>
+            </div-->
+
+        </div><div class="clear"></div>
+
+    </div>
+
+
+    <treenode ng-if="((node.isFocused || (((node.depth + 1) % 10) != 0)) && (node.sub_arguments))"
+              focusing="node.isFocused || nodeCtrl.focusing" locked="nodeCtrl.locked" role="nodeCtrl.role" nodes='node.sub_arguments' tree="tree" options="options" ng-show="node.expanded" id="{{node._id}}"></treenode>
+</div>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Discussions Platform</title>
+
+    <!-- /////////////////  JavaScript  ///////////////// -->
+    <!-- BOWER [JQuery, Bootstrap, Angular, Socketio, Angular-Socketio] -->
+    <script type="text/javascript" src="/libs/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/libs/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/libs/angular/angular.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/libs/angular-socket-io/socket.js"></script>
+    <script type="text/javascript" src="/libs/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- LOCALs -->
+    <script type="text/javascript" src="/js/configs/socketsFactory.js"></script>
+    <script type="text/javascript" src="/js/modules/discussionsDashboard.js"></script>
+    <script type="text/javascript" src="/js/modules/uiBootstrapModal.js"></script>
+    <!-- \\\\\\\\\\\\\\\\\\  JavaScript  \\\\\\\\\\\\\\\\\\ -->
+
+    <!-- //////////////////  CSS  ///////////////////// -->
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.css" crossorigin="anonymous">
+    <!-- LOCALs -->
+    <link href="/resources/stylesheets/main.css" rel="stylesheet">
+    <link href="/resources/stylesheets/discussions.css" rel="stylesheet">
+    <!-- \\\\\\\\\\\\\\\\\\  CSS  \\\\\\\\\\\\\\\\\\\\ -->
+
+</head>
+
+<body ng-app="discussionsDashboardApp" ng-controller="discussionsDashboardCtrl">
+  <div class="container">
+    <header class="text-center">
+        <div class="row">
+            <div class="col-md-2 text-right"><button class="btn btn-xs btn-primary" onclick="location.href='/auth/logout'">Log Out</button></div>
+
+            <div class="col-md-8 text-center">
+                <h1>
+                <% if (user.role === 'admin'){ %>
+                  <script>
+                      window.location.href = "/admin/dashboard";
+                  </script>
+                    <% } %>
+      שלום
+                    <%= user.fname %> <%= user.lname %>,
+                    התחברת למערכת כ-
+                    <%= user.role %>.
+                </h1>
+            </div>
+
+            <div class="col-md-2" ng-controller="ModalCtrl">
+                <button class="button" style="vertical-align:middle;" ng-click="open()"><span>ביוגרפיה</span></button>
+            </div>
+        </div>
+    </header>
+
+    <div>
+        <table class="table table-hover table-condensed">
+
+            <thead>
+              <tr id="headRow">
+                <th>כותרת</th>
+                <th>תיאור</th>
+                <th style="width:9%">מספר הודעות</th>
+              </tr>
+            </thead>
+
+            <tbody ng-repeat="discussion in discussions">
+              <tr ng-if="discussion.restriction === userRole" ng-click="goToDisc($index)" style="cursor: pointer; cursor: hand;">
+              <!-- TODO: 1-way binding for performance stuff..-->
+                <td>{{discussion.title}}</td>
+                <td>{{discussion.description}}</td>
+                <td style="width:9%">{{discussion.args_count}}</td>
+              </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+      <!-- bio button flashes on page load (chrome), but only when there is an input element on page - very weird... -->
+      <input hidden>
+      <!-- that's why that's here -->
+
+
+  </div>
+</body>
+</html>
+

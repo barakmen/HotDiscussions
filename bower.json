@@ -1,0 +1,33 @@
+{
+  "name": "hotdiscapp",
+  "description": "web platform for debating",
+  "main": "boot.js",
+  "authors": [
+    "Michael Sromin"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.5",
+    "bootstrap": "^3.3.6",
+    "angular-animate": "^1.5.5",
+    "angular-socket-io": "^0.7.0",
+    "moment": "^2.13.0",
+    "angular-sanitize": "^1.5.7",
+    "angular-bootstrap": "^2.0.1",
+    "tinymce": "^4.4.1"
+  },
+  "install": {
+    "path": "client/libs"
+  },
+  "devDependencies": {
+    "angular-ui-tinymce": "^0.0.16"
+  }
+}

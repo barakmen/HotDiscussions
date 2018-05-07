@@ -1,0 +1,151 @@
+#scroller{
+  background-color: #3D7AB6;
+  width: 100%;
+  top:0;
+  position:fixed;
+  z-index:999;
+  padding:5px 40px 5px 40px;
+}
+
+#tblWrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.intoTextarea {
+    -moz-appearance: textfield-multiline;
+    -webkit-appearance: textarea;
+    border: 1px solid gray;
+    font: medium -moz-fixed;
+    height: 28px;
+    overflow: auto;
+    padding: 2px;
+    resize: none;
+    width: 400px;
+    background-color: white;
+}
+
+#treeConversation{
+    margin-right:30px;
+    margin-left:30px;
+    padding:0px;
+    border-radius:5px;
+    background-color: white;
+}
+
+/* #E0E3F3 */
+
+.tblRow {
+    padding-right:10px;
+    padding-top: 1px;
+}
+
+.rowButtomMgr{
+    padding-bottom: 2px;
+}
+
+.tblCell {
+    width: 80%;
+    float: right;
+    text-align: right;
+}
+
+.clear {
+    clear: both;
+}
+
+/*
+hr.newArgSection {
+    background-color: #fff;
+    border-top: 2px dashed #8c8b8b;
+}
+*/
+
+.non-expanded {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.col-non-expanded {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.expanded {
+    word-wrap: break-word;
+    white-space: pre-line;
+    vertical-align: top;
+}
+
+#onlineUsers {
+    padding:0;
+    margin:0;
+}
+
+#onlineUser{
+    direction: ltr;
+    list-style-type:none;
+    /*noinspection CssUnknownTarget*/
+    /*background: url('/resources/imgs/user.gif');
+    background-repeat:no-repeat;
+    background-position:left center;
+    padding-left:25px;*/
+    margin: 2px;
+    vertical-align: middle;
+}
+
+.iconFlash {
+    animation: blink 1.0s ease-in infinite;
+}
+
+@keyframes blink {
+    from, to { opacity: 1 }
+    50% { opacity: 0 }
+}
+
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+
+.popover {
+    max-width: 450px;
+    direction: rtl;
+}
+
+.floatingChat {
+    width: 27vw;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    z-index:9999;
+}
+
+.floatingCollaborationPad{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index:998;
+}
+
+.floatingBackBtn {
+    width: 100px;
+    height: 40px;
+    text-align: center;
+}
+
+.content-editor:before {
+    display: none;
+}
+.content-editor.empty:before {
+    display: block;
+    position: absolute;
+    content: attr(data-placeholder);
+    color:lightgrey;
+}

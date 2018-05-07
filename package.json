@@ -1,0 +1,31 @@
+{
+  "name": "hotdiscapp",
+  "version": "1.0.0",
+  "description": "web platform for debating",
+  "main": "boot.js",
+  "scripts": {
+    "start": "node boot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Sromin",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.1",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^1.2.1",
+    "cookie-parser": "^1.4.1",
+    "debug": "^2.2.0",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "json2csv": "^4.1.2",
+    "jszip": "^3.1.5",
+    "mongoose": "^4.4.15",
+    "mongoose-auto-increment": "^5.0.1",
+    "morgan": "^1.7.0",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "socket.io": "^1.4.6"
+  }
+}

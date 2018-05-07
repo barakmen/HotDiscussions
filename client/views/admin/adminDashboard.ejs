@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Discussions Platform</title>
+    
+    <!-- /////////////////  JavaScript  ///////////////// -->
+
+    <!-- BOWER [JQuery, Angular, Socketio, Angular-Socketio] -->
+    <script type="text/javascript" src="/libs/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/libs/angular/angular.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/libs/angular-socket-io/socket.js"></script>
+    <script type="text/javascript" src="/libs/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="/libs/lodash/dist/lodash.min.js"></script>
+    <script type="text/javascript" src="/libs/angularjs-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js"></script>
+
+    <script type="text/javascript" src="/libs/vis/dist/vis.min.js"></script>
+    <script type="text/javascript" src="/libs/angular-visjs/angular-vis.js"></script>
+
+    <!-- LOCALs -->
+    <script type="text/javascript" src="/js/configs/socketsFactory.js"></script>
+    <script type="text/javascript" src="/js/configs/graphJsonFactory.js"></script>
+    <script type="text/javascript" src="/js/modules/adminDashboard.js"></script>
+    <script type="text/javascript" src="/js/modules/uiBootstrapModal.js"></script>
+    <!-- \\\\\\\\\\\\\\\\\\  JavaScript  \\\\\\\\\\\\\\\\\\ -->
+
+    <!-- //////////////////  CSS  ///////////////////// -->
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <!-- LOCALs -->
+    <link href="/resources/stylesheets/main.css" rel="stylesheet">
+    <link href="/resources/stylesheets/discussions.css" rel="stylesheet">
+    <!-- \\\\\\\\\\\\\\\\\\  CSS  \\\\\\\\\\\\\\\\\\\\ -->
+</head>
+
+<body ng-app="adminDashboardApp" ng-controller="adminDashboardCtrl">
+    <div class="container" ng-controller="ModalCtrl">
+      <header class="text-center">
+          <div class="row">
+
+              <div class="col-md-3 text-right">
+                  <button class="btn btn-xs btn-primary" ng-click="presentUserNetworkGraph(users)">גרף משתמש</button>
+                  <button class="btn btn-xs btn-primary" ng-click="showLoggedUsers()">מי מחובר?</button>
+                  <button class="btn btn-xs btn-primary" onclick="location.href='/admin/logout'">Log Out</button>
+                  <button class="btn btn-xs btn-primary" ng-click="downloadAllCsv()"> 
+                    <span ng-show="isDownloaded == 'false'"><i class="glyphicon glyphicon-refresh spinning"></i></span>
+                    יצא הכל לקובץ csv
+                    </button>
+              </div>
+
+              <div class="col-md-7 text-center">
+                  <h1>מנהל המערכת, שלום רב!</h1>
+              </div>
+
+              <div class="col-md-2">
+                  <button class="button" style="vertical-align:middle;" ng-click="open()"><span>ביוגרפיה</span></button>
+              </div>
+
+          </div>
+      </header>
+
+      <div>
+
+	    <div>
+                הצג 
+                    <select ng-model="numOfDiscussionsSelection.value" ng-change="loadMoreDiscusstions()" ng-options="x for x in numOfDiscussionsSelection.values"></select>
+                דיונים
+            </div>
+
+            <table class="table table-hover table-condensed" dir="ltr" style="font-size: small;">
+
+                <thead>
+                <tr id="headRow">
+                    <th style="width:2%">תוכן</th>
+                    <th style="width:4%">הודעות#</th>
+                    <th style="width:11%">Permitted Poster</th>
+                    <th style="width:11%">מודרטור</th>
+                    <th style="width:11%">קבוצת משתמשים</th>
+                    <th style="width:16%">תיאור</th>
+                    <th style="width:12%">כותרת</th>
+                    <th style="width:20%">סטטוס</th>
+                    <th style="width:3%">העתק</th>
+                </tr>
+                </thead>
+
+                <tbody ng-repeat="discussion in discussions">
+
+                <tr ng-show="!discussion.edit" ng-style="(discussion.restriction === 'student' && {'background-color' : '#B9F1E4'}) || (discussion.restriction === 'instructor' && {'background-color' : '#F8EBAE'}) || (discussion.restriction === 'none' && {'background-color' : '#F39696'})">
+                    <td dir="rtl" style="width:2%">
+                        <div>
+                            <span class="fa fa-newspaper-o btn btn-primary btn-xs" aria-hidden="true" ng-click="enterContent($index)"></span>
+                        </div>
+                    </td>
+                    <td dir="rtl" style="width:4%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.args_count}}</td>
+                    <td dir="rtl" style="width:11%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.permittedPoster_fname + " " + discussion.permittedPoster_lname}} </td>
+                    <td dir="rtl" style="width:11%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.moderator_fname + " " + discussion.moderator_lname}} </td>
+                    <td dir="rtl" style="width:11%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{lookupUsers_group[discussion.users_group_id].name}}</td>
+                    <td dir="rtl" style="width:16%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.description}}</td>
+                    <td dir="rtl" style="width:12%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.title}}</td>
+                    <td style="width:20%; white-space:nowrap;">
+                        <!-- <a href="" ng-click="showEdit(discussion)">ערוך</a> | <a href="" ng-click="delete($index)">מחק</a> -->
+                        <fieldset>
+                            <a href="" ng-click="showEdit(discussion)">ערוך</a> |
+                            <label>לא פעיל</label> <input type="radio" ng-model="discussion.restriction" name="{{'disc_status' + $index}}" value="none" ng-change="updateDiscStatus($index, discussion.status)"/>
+                            <label>ביקורת</label> <input type="radio" ng-model="discussion.restriction" name="{{'disc_status' + $index}}" value="instructor" ng-change="updateDiscStatus($index, discussion.status)"/>
+                            <label>פעיל</label> <input type="radio" ng-model="discussion.restriction" name="{{'disc_status' + $index}}" value="student" ng-change="updateDiscStatus($index, discussion.status)"/>
+                        </fieldset>
+                    </td>
+
+                    <td dir="rtl" style="width:3%">
+                        <div>
+                            <span class="fa fa-files-o btn btn-default" aria-hidden="true" ng-click="copyConfirmationModal($index)" title="העתקת דיון"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr ng-show="discussion.edit">
+                    <td style="width:2%" class="warning"></td>
+                    <td style="width:4%" class="warning"></td>
+                    <td style="width:11%">
+                        <select class="form-control" ng-init="tempForPermitted = lookupUser[discussion.permittedPoster_id]" ng-model="tempForPermitted" id="permittedPosterEdit" dir="ltr"
+                                ng-options="user as user.local.firstname + ' ' + user.local.lastname for user in users">
+                            <option value="">
+                                -- Everybody --
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:11%">
+                        <select class="form-control" ng-init="tempForMod = lookupUser[discussion.moderator_id]" ng-model="tempForMod" id="userEdit" dir="ltr"
+                                ng-options="user as user.local.firstname + ' ' + user.local.lastname for user in users">
+                            <option value="">
+                                -- No moderator --
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:11%">
+                        <select class="form-control" ng-init="tempForGroup = lookupUsers_group[discussion.users_group_id]" ng-model="tempForGroup" id="usersGroupEdit" dir="ltr"
+                                ng-options="group as group.name for group in users_groups">
+                            <option value="">
+                                -- Everybody --
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:16%"><input class="form-control" id="descEdit" type="text" ng-model="descEdit" ng-value="discussion.description" style="text-align: right;"></td>
+                    <td style="width:12%"><input class="form-control" id="titleEdit" type="text" ng-model="titleEdit" ng-value="discussion.title" style="text-align: right;"></td>
+                    <td style="width:20%" class="warning"><span class="text-warning text-center">עריכה</span></td>
+                    <td style="width:3%" class="warning"></td>
+                </tr>
+
+                <tr ng-show="discussion.edit">
+                    <td colspan="8">
+                        <div style="width:100%;">
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 30px" ng-click="finishEdit($index, descEdit, titleEdit, tempForMod, tempForPermitted,tempForGroup)">Finish</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancelEdit(discussion)">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+		
+	
+
+            <table class="table table-hover table-condensed">
+                <tbody ng-show="!pressAdd">
+                <tr>
+                    <td style="width:10px"><a href="" ng-click="addDisc()">הוסף</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+
+                <tbody ng-show="pressAdd">
+                <tr>
+                    <td style="width:23%;" class="warning"></td>
+                    <td style="width:12%;"><input class="form-control" id="newTitle" type="text" ng-model="newTitle" ng-value="" style="text-align: right;" placeholder="כותרת חדשה" required=""></td>
+                    <td style="width:16%;"><input class="form-control" id="newDesc" type="text" ng-model="newDesc" ng-value="" style="text-align: right;" placeholder="תיאור חדש" required=""></td>
+                    <td style="width:11%;">
+                        <select class="form-control" ng-model="newUserGroup" id="newUserGroup" dir="ltr"
+                                ng-options="group as group.name for group in users_groups">
+                            <option value=''>
+                                - Everybody -
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:11%;">
+                        <select class="form-control" ng-model="newUser" id="newUser" dir="ltr"
+                                ng-options="user as user.local.firstname + ' ' + user.local.lastname for user in users">
+                            <option value=''>
+                                - No mod -
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:11%;">
+                        <select class="form-control" ng-model="newPermittedPoster" id="newPermittedPoster" dir="ltr"
+                                ng-options="user as user.local.firstname + ' ' + user.local.lastname for user in users">
+                            <option value=''>
+                                - Everybody -
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:6%;" class="warning"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="6">
+                        <div style="width:100%;">
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 30px" ng-click="finishAdding(newDesc, newTitle, newUser, newPermittedPoster, newUserGroup)">Finish</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancelAdding()">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div>
+            <table class="table table-hover table-condensed table-striped" dir="rtl">
+
+                <thead>
+                <tr id="headRow">
+                    <th></th>
+                    <th>שם קבוצה</th>
+                    <th>חברי קבוצה</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody ng-repeat="group in users_groups">
+
+                <tr ng-show="!group.edit">
+                    <td> <a href="" ng-click="flipGroupEdit($index)">ערוך</a> </td>
+                    <td>{{group.name}}</td>
+                    <td>
+                        <select style="width: 50%" dir="ltr" ng-model="group.users" ng-options="user as lookupUser[user].fullname disable when true for user in group.users"></select>
+                    </td>
+                    <td>
+                        <div>
+                            <span class="glyphicon glyphicon-envelope btn btn-primary btn-xs" aria-hidden="true" ng-click="openPM($index)"></span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr ng-show="group.edit">
+                    <td></td>
+                    <td><input class="form-control" ng-model="group.name"></td>
+                    <td>
+                        <div ng-init="initEditGroup($index)" dir="ltr" ng-dropdown-multiselect="" options="users" selected-model="group.curUsers" extra-settings="dropdownMultiselectSettings">
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+
+                <tr ng-show="group.edit">
+                    <td colspan="4">
+                        <div style="width:100%;">
+                            <button type="submit" class="btn btn-primary btn-sm" ng-click="doneEditGroup($index, group.name, group.curUsers)">Finish</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="flipGroupEdit($index)">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <table class="table table-hover table-condensed">
+                <tbody ng-show="!pressAddGroups">
+                <tr>
+                    <td style="width:10px"><a href="" ng-click="addGroup()">הוסף</a></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+
+                <tbody ng-show="pressAddGroups">
+                <tr>
+                    <td><input class="form-control" type="text" ng-model="newGroupName" ng-value="" placeholder="שם קבוצה" required=""></td>
+                    <td><div dir="ltr" ng-dropdown-multiselect="" options="users" selected-model="newGroupUsers" extra-settings="dropdownMultiselectSettings"></div></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div style="width:100%;">
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 30px" ng-click="doneAddingGroup(newGroupName, newGroupUsers)">Finish</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="flipAddingGroup()">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+
+
+    </div>
+</body>
+</html>
+
