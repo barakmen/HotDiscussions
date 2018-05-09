@@ -18,7 +18,7 @@ module.exports = function(autoIncrement, io){
 
 	/**
      * Export csv of all the db
-     */
+     */ 
     router.get('/exporttocsv', function(req, res, next) {
         var filename   = "Database.csv";
         var dataArray;
@@ -28,25 +28,24 @@ module.exports = function(autoIncrement, io){
         try {
             Discussion.find().lean().exec({}, function(err, discRes) {
                 if (err) res.send(err);          
-                allDb.discussions = new Json2csvParser().parse(discRes);
+                allDb.discussions = new Json2csvParser({withBOM:'EF BB BF'}).parse(discRes);
                 User.find().lean().exec({}, function(err, users) {
                     if (err) res.send(err);   
                     var userArr = [];
                     for(u in users){
                         userArr.push(users[u].local);
                     }
-                    allDb.users = new Json2csvParser().parse(userArr);
+                    allDb.users = new Json2csvParser({withBOM:'EF BB BF'}).parse(userArr);
                     usersGroup.find().lean().exec({}, function(err, usersGroups) {
                         if (err) res.send(err);   
-                        allDb.usersGroups = new Json2csvParser().parse(usersGroups);
+                        allDb.usersGroups = new Json2csvParser({withBOM:'EF BB BF'}).parse(usersGroups);
                         
                         Pm.find().lean().exec({}, function(err, pms) {
                             if (err) res.send(err);   
                             allDb.pms = pms;
                             Argument.find().lean().exec({}, function(err, arguments) {
                                 if (err) res.send(err);   
-                                allDb.arguments = new Json2csvParser().parse(arguments);
-                                
+                                allDb.arguments = new Json2csvParser({withBOM:'EF BB BF'}).parse(arguments);
                                 Chat.find().lean().exec({}, function(err, chats) {
                                     if (err) res.send(err);   
                                     allChatMessages = [];
@@ -58,9 +57,11 @@ module.exports = function(autoIncrement, io){
                                             allChatMessages.push(message);
                                         }
                                     }
-                                    allDb.chats = new Json2csvParser().parse(chats);
-                                    allDb.allChatMessages = new Json2csvParser().parse(allChatMessages);
-				
+
+                                    allDb.chats = new Json2csvParser({withBOM:'EF BB BF'}).parse(chats);
+                                    allDb.allChatMessages = new Json2csvParser({withBOM:'EF BB BF'}).parse(allChatMessages);
+
+                                    
                                     var zip = new require('node-zip')();
                                     zip.file("Users.csv", allDb.users);
                                     zip.file("UsersGroups.csv",  allDb.usersGroups);
