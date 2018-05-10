@@ -807,10 +807,27 @@ module.exports = function(autoIncrement, io){
                     if (err){
                         throw err;
                     }
-                    else{
+                    else if(argument){
                         argument.trimmed = !argument.trimmed;
                         
                         if(argument.trimmed){ //copy
+                            Argument.findOne({$and:[{trimmed: true}, {disc_id:{$ne: argument.disc_id}}]},function(err, argumentTmp) {
+                                if (err){
+                                    throw err;
+                                }
+                                if(argumentTmp){
+                                    Argument.find({trimmed: true}, function(err, arg) {
+                                        arg.trimmed = !arg.trimmed;
+                                        arg.save(function (err) {
+                                            if (err){
+                                                throw err;
+                                            }
+                                            else {
+                                            }
+                                        });
+                                    });
+                                }
+                            }); 
                             argument.save(function (err) {
                                 if (err){
                                     throw err;
@@ -833,10 +850,21 @@ module.exports = function(autoIncrement, io){
                                         argumentsNsp.to(data.discusstionID).emit('submitted-new-argument', {data: newArgument});
                                     }
                                 });
+                            }else{
+                                argument.save(function (err) {
+                                    if (err){
+                                        throw err;
+                                    }
+                                    else {
+                                        argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                    }
+                                });
                             }
                         }
         
-                    }                
+                    } else{
+                        console.log("argument not found!");
+                    }               
                 });
 
             
