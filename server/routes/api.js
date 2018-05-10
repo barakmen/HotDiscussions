@@ -688,7 +688,7 @@ module.exports = function(autoIncrement, io){
 
                 });
             };
-             socket.on('submitted-new-argument', submitNewArgument(newArgument));
+            socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
             
 
             /**
@@ -774,8 +774,73 @@ module.exports = function(autoIncrement, io){
                 });
             });
 
+            /**
+             * copy and paste
+             */
+            function cloneArg(argSource,argTarget){
+                argTarget.treeStructureUpdatedAt = argSource.treeStructureUpdatedAt;
+                argTarget.disc_id = argSource.disc_id;
+                argTarget.parent_id = argSource.parent_id;
+                argTarget.main_thread_id = argSource.main_thread_id;
+                argTarget.user_id = argSource.user_id;
+                argTarget.username = argSource.username;
+                argTarget.role = argSource.role;
+                argTarget.fname = argSource.fname;
+                argTarget.lname = argSource.lname;
+                argTarget.color = argSource.color;
+                argTarget.content = argSource.content;
+                argTarget.depth = argSource.depth;
+                argTarget.hidden = argSource.hidden;
+                argTarget.trimmed = argSource.trimmed;
+            
+                argTarget.updatedAt = argSource.updatedAt;
+                argTarget.createdAt = argSource.createdAt;
+            
+                argTarget.cloned = true;
+            }
+
             socket.on('flip-argument-trimmed-status', function (data) {
+                var discID = data.discusstionID;
                 var argumentID = data._id;
+
+                Argument.findOne({_id: argumentID}, function(err, argument) {
+                    if (err){
+                        throw err;
+                    }
+                    else{
+                        argument.trimmed = !argument.trimmed;
+                        
+                        if(argument.trimmed){ //copy
+                            argument.save(function (err) {
+                                if (err){
+                                    throw err;
+                                }
+                                else {
+                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                }
+                            });
+                        }
+                        else{ //paste
+                            if(argument.disc_id != data.discusstionID){
+                                var newArgument = new Argument();
+                                cloneArg(argument, newArgument);
+                                newArgument.disc_id = data.discusstionID;
+                                newArgument.save(function (err) {
+                                    if (err){
+                                        throw err;
+                                    }
+                                    else {
+                                        argumentsNsp.to(data.discusstionID).emit('submitted-new-argument', {data: newArgument});
+                                    }
+                                });
+                            }
+                        }
+        
+                    }                
+                });
+
+            
+                /*
                 Argument.findOne({_id: argumentID}, function(err, argument) {
                     if (err){
                         throw err;
@@ -785,8 +850,6 @@ module.exports = function(autoIncrement, io){
                         if(argument.disc_id != data.discusstionID){
                             if(!argument.trimmed){
                                 argument.disc_id = data.discusstionID;
-
-                                //submitNewArgument(argument);
                                 argument.save(function (err) {
                                     if (err){
                                         throw err;
@@ -807,7 +870,7 @@ module.exports = function(autoIncrement, io){
                             });
                         }
                     }
-                });
+                });*/
             });
 
             socket.on('requesting-user-info', function (data) {
