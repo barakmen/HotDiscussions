@@ -799,6 +799,25 @@ module.exports = function(autoIncrement, io){
                 argTarget.cloned = true;
             }
 
+            /*socket.on('flip-argument-trimmed-status', function (data) {
+                var discID = data.discusstionID;
+                var argumentID = data._id;
+                Argument.find(function(err, arguments) {
+                    arguments.forEach(element => {
+                        element.trimmed = false;
+                        element.save(function (err) {
+                            if (err){
+                                throw err;
+                            }
+                            else {
+                            }
+                        });
+                    });
+                    console.log("done");
+                });
+            });*/
+
+
             socket.on('flip-argument-trimmed-status', function (data) {
                 var discID = data.discusstionID;
                 var argumentID = data._id;
@@ -811,22 +830,21 @@ module.exports = function(autoIncrement, io){
                         argument.trimmed = !argument.trimmed;
                         
                         if(argument.trimmed){ //copy
-                            Argument.findOne({$and:[{trimmed: true}, {disc_id:{$ne: argument.disc_id}}]},function(err, argumentTmp) {
+                            Argument.find({$and:[{trimmed: true}, {disc_id:{$ne: argument.disc_id}}]},function(err, args) {
                                 if (err){
                                     throw err;
                                 }
-                                if(argumentTmp){
-                                    Argument.find({trimmed: true}, function(err, arg) {
-                                        arg.trimmed = !arg.trimmed;
-                                        arg.save(function (err) {
-                                            if (err){
-                                                throw err;
-                                            }
-                                            else {
-                                            }
-                                        });
+                                args.forEach(arg => {
+                                    arg.trimmed = !arg.trimmed;
+                                    if (err){ throw err;}
+                                    arg.save(function (err) {
+                                        if (err){
+                                            throw err;
+                                        }
+                                        else {
+                                        }
                                     });
-                                }
+                                });
                             }); 
                             argument.save(function (err) {
                                 if (err){
@@ -862,9 +880,7 @@ module.exports = function(autoIncrement, io){
                             }
                         }
         
-                    } else{
-                        console.log("argument not found!");
-                    }               
+                    }
                 });
 
             
