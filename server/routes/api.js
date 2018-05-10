@@ -613,7 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            socket.on('submitted-new-argument', function (newArgument) {
+            var submitNewArgument = function (newArgument) {
                 // console.log('got new argument from client..: ', newArgument);
                 var argument = new Argument();
                 argument.treeStructureUpdatedAt = Date.now();
@@ -687,7 +687,9 @@ module.exports = function(autoIncrement, io){
 
 
                 });
-            });
+            };
+             socket.on('submitted-new-argument', submitNewArgument(newArgument));
+            
 
             /**
              * EVENT3
@@ -783,6 +785,8 @@ module.exports = function(autoIncrement, io){
                         if(argument.disc_id != data.discusstionID){
                             if(!argument.trimmed){
                                 argument.disc_id = data.discusstionID;
+
+                                //submitNewArgument(argument);
                                 argument.save(function (err) {
                                     if (err){
                                         throw err;
