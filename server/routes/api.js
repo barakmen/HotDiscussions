@@ -18,7 +18,7 @@ module.exports = function(autoIncrement, io){
 
 	/**
      * Export csv of all the db
-     */
+     */ 
     router.get('/exporttocsv', function(req, res, next) {
         var filename   = "Database.csv";
         var dataArray;
@@ -28,25 +28,24 @@ module.exports = function(autoIncrement, io){
         try {
             Discussion.find().lean().exec({}, function(err, discRes) {
                 if (err) res.send(err);          
-                allDb.discussions = new Json2csvParser().parse(discRes);
+                allDb.discussions = new Json2csvParser({withBOM:'EF BB BF'}).parse(discRes);
                 User.find().lean().exec({}, function(err, users) {
                     if (err) res.send(err);   
                     var userArr = [];
                     for(u in users){
                         userArr.push(users[u].local);
                     }
-                    allDb.users = new Json2csvParser().parse(userArr);
+                    allDb.users = new Json2csvParser({withBOM:'EF BB BF'}).parse(userArr);
                     usersGroup.find().lean().exec({}, function(err, usersGroups) {
                         if (err) res.send(err);   
-                        allDb.usersGroups = new Json2csvParser().parse(usersGroups);
+                        allDb.usersGroups = new Json2csvParser({withBOM:'EF BB BF'}).parse(usersGroups);
                         
                         Pm.find().lean().exec({}, function(err, pms) {
                             if (err) res.send(err);   
                             allDb.pms = pms;
                             Argument.find().lean().exec({}, function(err, arguments) {
                                 if (err) res.send(err);   
-                                allDb.arguments = new Json2csvParser().parse(arguments);
-                                
+                                allDb.arguments = new Json2csvParser({withBOM:'EF BB BF'}).parse(arguments);
                                 Chat.find().lean().exec({}, function(err, chats) {
                                     if (err) res.send(err);   
                                     allChatMessages = [];
@@ -58,9 +57,11 @@ module.exports = function(autoIncrement, io){
                                             allChatMessages.push(message);
                                         }
                                     }
-                                    allDb.chats = new Json2csvParser().parse(chats);
-                                    allDb.allChatMessages = new Json2csvParser().parse(allChatMessages);
-				
+
+                                    allDb.chats = new Json2csvParser({withBOM:'EF BB BF'}).parse(chats);
+                                    allDb.allChatMessages = new Json2csvParser({withBOM:'EF BB BF'}).parse(allChatMessages);
+
+                                    
                                     var zip = new require('node-zip')();
                                     zip.file("Users.csv", allDb.users);
                                     zip.file("UsersGroups.csv",  allDb.usersGroups);
@@ -612,7 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            socket.on('submitted-new-argument', function (newArgument) {
+            var submitNewArgument = function (newArgument) {
                 // console.log('got new argument from client..: ', newArgument);
                 var argument = new Argument();
                 argument.treeStructureUpdatedAt = Date.now();
@@ -686,7 +687,9 @@ module.exports = function(autoIncrement, io){
 
 
                 });
-            });
+            };
+            socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
+            
 
             /**
              * EVENT3
@@ -771,8 +774,117 @@ module.exports = function(autoIncrement, io){
                 });
             });
 
-            socket.on('flip-argument-trimmed-status', function (data) {
+            /**
+             * copy and paste
+             */
+            function cloneArg(argSource,argTarget){
+                argTarget.treeStructureUpdatedAt = argSource.treeStructureUpdatedAt;
+                argTarget.disc_id = argSource.disc_id;
+                argTarget.parent_id = argSource.parent_id;
+                argTarget.main_thread_id = argSource.main_thread_id;
+                argTarget.user_id = argSource.user_id;
+                argTarget.username = argSource.username;
+                argTarget.role = argSource.role;
+                argTarget.fname = argSource.fname;
+                argTarget.lname = argSource.lname;
+                argTarget.color = argSource.color;
+                argTarget.content = argSource.content;
+                argTarget.depth = argSource.depth;
+                argTarget.hidden = argSource.hidden;
+                argTarget.trimmed = argSource.trimmed;
+            
+                argTarget.updatedAt = argSource.updatedAt;
+                argTarget.createdAt = argSource.createdAt;
+            
+                argTarget.cloned = true;
+            }
+
+            /*socket.on('flip-argument-trimmed-status', function (data) {
+                var discID = data.discusstionID;
                 var argumentID = data._id;
+                Argument.find(function(err, arguments) {
+                    arguments.forEach(element => {
+                        element.trimmed = false;
+                        element.save(function (err) {
+                            if (err){
+                                throw err;
+                            }
+                            else {
+                            }
+                        });
+                    });
+                    console.log("done");
+                });
+            });*/
+
+
+            socket.on('flip-argument-trimmed-status', function (data) {
+                var discID = data.discusstionID;
+                var argumentID = data._id;
+
+                Argument.findOne({_id: argumentID}, function(err, argument) {
+                    if (err){
+                        throw err;
+                    }
+                    else if(argument){
+                        argument.trimmed = !argument.trimmed;
+                        
+                        if(argument.trimmed){ //copy
+                            Argument.find({$and:[{trimmed: true}, {disc_id:{$ne: argument.disc_id}}]},function(err, args) {
+                                if (err){
+                                    throw err;
+                                }
+                                args.forEach(arg => {
+                                    arg.trimmed = !arg.trimmed;
+                                    if (err){ throw err;}
+                                    arg.save(function (err) {
+                                        if (err){
+                                            throw err;
+                                        }
+                                        else {
+                                        }
+                                    });
+                                });
+                            }); 
+                            argument.save(function (err) {
+                                if (err){
+                                    throw err;
+                                }
+                                else {
+                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                }
+                            });
+                        }
+                        else{ //paste
+                            if(argument.disc_id != data.discusstionID){
+                                var newArgument = new Argument();
+                                cloneArg(argument, newArgument);
+                                newArgument.disc_id = data.discusstionID;
+                                newArgument.save(function (err) {
+                                    if (err){
+                                        throw err;
+                                    }
+                                    else {
+                                        argumentsNsp.to(data.discusstionID).emit('submitted-new-argument', {data: newArgument});
+                                    }
+                                });
+                            }else{
+                                argument.save(function (err) {
+                                    if (err){
+                                        throw err;
+                                    }
+                                    else {
+                                        argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                    }
+                                });
+                            }
+                        }
+        
+                    }
+                });
+
+            
+                /*
                 Argument.findOne({_id: argumentID}, function(err, argument) {
                     if (err){
                         throw err;
@@ -802,7 +914,7 @@ module.exports = function(autoIncrement, io){
                             });
                         }
                     }
-                });
+                });*/
             });
 
             socket.on('requesting-user-info', function (data) {
