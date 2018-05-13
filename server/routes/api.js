@@ -613,25 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            var submitNewArgument = function (newArgument) {
-                // console.log('got new argument from client..: ', newArgument);
-                var argument = new Argument();
-                argument.treeStructureUpdatedAt = Date.now();
-                argument.disc_id = discussionId;
-                argument.parent_id = (newArgument.parent_id ? newArgument.parent_id : 0);
-                argument.main_thread_id = (newArgument.main_thread_id ? newArgument.main_thread_id : 0);
-                argument.user_id = user.id;
-                argument.username = user.username;
-                argument.role = newArgument.role;
-                argument.fname = user.fname;
-                argument.lname = user.lname;
-                argument.color = user.color;
-                argument.hidden = false;
-                argument.content = newArgument.content;
-                argument.depth = (newArgument.depth ? newArgument.depth : 0);
-                argument.sub_arguments = [];
-
-                // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
+            var saveArgument = function(argument){
                 var discRest = "";
                 Discussion.findOne({_id: argument.disc_id}, function(err, disc) {
                     if (err){
@@ -658,6 +640,7 @@ module.exports = function(autoIncrement, io){
                     //-- 27/07/16
                     if(discRest == "none")
                         return; // Inactive discussion doesn't accept new arguments.
+
                     argument.save(function(err, data){
                         if (err)
                             throw err;
@@ -684,9 +667,30 @@ module.exports = function(autoIncrement, io){
                         })
 
                     });
-
-
                 });
+            }
+            var submitNewArgument = function (newArgument) {
+                // console.log('got new argument from client..: ', newArgument);
+                var argument = new Argument();
+                argument.treeStructureUpdatedAt = Date.now();
+                argument.disc_id = discussionId;
+                argument.parent_id = (newArgument.parent_id ? newArgument.parent_id : 0);
+                argument.main_thread_id = (newArgument.main_thread_id ? newArgument.main_thread_id : 0);
+                argument.user_id = user.id;
+                argument.username = user.username;
+                argument.role = newArgument.role;
+                argument.fname = user.fname;
+                argument.lname = user.lname;
+                argument.color = user.color;
+                argument.hidden = false;
+                argument.content = newArgument.content;
+                argument.depth = (newArgument.depth ? newArgument.depth : 0);
+                argument.sub_arguments = [];
+
+                // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
+                saveArgument(argument);
+
+                
             };
             socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
             
@@ -799,55 +803,78 @@ module.exports = function(autoIncrement, io){
                 argTarget.cloned = true;
             }
 
-            /*socket.on('flip-argument-trimmed-status', function (data) {
-                var discID = data.discusstionID;
-                var argumentID = data._id;
-                Argument.find(function(err, arguments) {
-                    arguments.forEach(element => {
-                        element.trimmed = false;
-                        element.save(function (err) {
-                            if (err){
-                                throw err;
-                            }
-                            else {
-                            }
-                        });
-                    });
-                    console.log("done");
-                });
-            });*/
-            
             socket.on('paste-all', function (data){
                 var discusstionID = data.discusstionID;
-                var arguments = data.data.map(arg => {
-                    var newArgument = new Argument();
-                    cloneArg(arg, newArgument);
-                    newArgument.disc_id = discusstionID;
-                    return newArgument;});                
-                
-                var hasNoParents = arguments.filter(arg => arguments.filter(oArg => oArg._id == arg.parent_id).length == 0);
-                var hasParents = arguments.filter(arg => arguments.filter(oArg => oArg._id == arg.parent_id).length > 0);
-                var normelizeDepth = function (argument){
-                    var oldestParent = hasNoParents.filter(arg => argument.parent_id == arg._id);//if the oldest parent is the father of this argument
-                    if(oldestParent.length > 0){
-                        argument.depth = argument.depth -  oldestParent.depth;
-                        return oldestParent.depth;
-                    }else{
-                        var minDepth = f(hasParents.filter(arg => arg._id == argument.parent_id));
-                        argument.depth = argument.depth- minDepth;
-                    }
-                }
-                
-                hasParents = hasParents.forEach(arg => normelizeDepth(arg));
-                hasNoParents = hasNoParents.map(arg => {
-                    arg.depth = 0;
-                    arg.parent_id = 0;
-                    arg.main_thread_id = 0;
-                });
+                var i = 0;
+                var datalen = data.data.length;
+                var newArguments = [];
+                var oldVsNewArguments = {};
 
-                console.log(hasParents);
-                console.log("%%%%%%%%%%%%%%%%");
-                console.log(hasNoParents);
+                var callback = function (newArguments, oldVsNewArguments){
+                    newArguments.forEach(arg => {
+                        if(arg.parent_id != 0)
+                            arg.parent_id = oldVsNewArguments[arg.parent_id];
+                    });
+
+                    var hasNoParents = newArguments.filter(arg => 
+                        newArguments.filter(oArg => 
+                            oArg._id == arg.parent_id).length == 0);
+                    var hasParents = newArguments.filter(arg => newArguments.filter(oArg => oArg._id == arg.parent_id).length > 0);
+                    var getOldestParent = function (argument){
+                        var oldestParent = hasNoParents.filter(arg => argument.parent_id == arg._id)[0];//if the oldest parent is the father of this argument
+                        if(oldestParent){
+                            return oldestParent
+                        }else{
+                            return getOldestParent(hasParents.filter(arg => arg._id == argument.parent_id)[0]);
+                        }
+                    }
+                    
+                    hasParents.forEach(arg => {
+                        var oldestParent = getOldestParent(arg);
+                        arg.depth = arg.depth - oldestParent.depth;
+                        arg.main_thread_id = oldestParent._id;
+                    });
+
+                    hasNoParents = hasNoParents.map(arg => {
+                        arg.depth = 0;
+                        arg.parent_id = 0;
+                        arg.main_thread_id = 0;
+                        return arg;
+                    });
+
+
+                    hasNoParents.forEach(arg => {
+                       saveArgument(arg);
+                    });
+                    
+                    hasParents.forEach(arg => {
+                        saveArgument(arg);
+                    });
+                }
+
+                //save the argument first in order to get new id;
+                data.data.forEach(arg => {
+                    arg.disc_id = discusstionID;                    
+                    var newArg = new Argument();
+                    cloneArg(arg, newArg);
+                    newArg.disc_id = discusstionID;                    
+                    newArg.trimmed = !newArg.trimmed;
+                    newArg.save(function(err, data){
+                        if (err)
+                            throw err;
+                        else{
+                            oldVsNewArguments[arg._id] = newArg._id;
+                            i++;
+                            newArguments.push(newArg);
+                            if(i == datalen){
+                                callback(newArguments, oldVsNewArguments);
+                            }
+                            
+                        }
+                        
+                    });
+                });                
+                
             });
 
             socket.on('flip-argument-trimmed-status', function (data) {
@@ -887,31 +914,16 @@ module.exports = function(autoIncrement, io){
                                 }
                             });
                         }
-                        else{ //paste
-                            if(argument.disc_id != data.discusstionID){
-                                var newArgument = new Argument();
-                                cloneArg(argument, newArgument);
-                                newArgument.disc_id = data.discusstionID;
-                                newArgument.save(function (err) {
-                                    if (err){
-                                        throw err;
-                                    }
-                                    else {
-                                        argumentsNsp.to(data.discusstionID).emit('submitted-new-argument', {data: newArgument});
-                                    }
-                                });
-                            }else{
-                                argument.save(function (err) {
-                                    if (err){
-                                        throw err;
-                                    }
-                                    else {
-                                        argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
-                                    }
-                                });
-                            }
+                        else{ //paste   
+                            argument.save(function (err) {
+                                if (err){
+                                    throw err;
+                                }
+                                else {
+                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                }
+                            });
                         }
-        
                     }
                 });
 
