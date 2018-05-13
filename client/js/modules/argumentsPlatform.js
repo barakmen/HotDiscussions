@@ -241,7 +241,8 @@
                 });
                 socket.on('init-discussion', function(result){
                     $scope.discusstionID = result.discussion._id;
-                    $scope.treeWithRef = result.discArguments;
+                    $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
+                    $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID);
                     $scope.treeNested = fromReftoNestedJson($scope.treeWithRef);
                     $scope.onlineUsers = result.onlineUsers;
                     // console.log($scope.treeNested);
@@ -278,6 +279,7 @@
                     $scope.showContent = result.discussion.content;
 
                     $scope.locked = result.discussion.locked;
+                    
                 });
             }
 
@@ -495,6 +497,14 @@
                 socket.emit('flip-discussion-locked-status');
             };
 
+            $scope.pasteAllTrimmedArguments = function(){
+                socket.emit('paste-all', { data:$scope.trimmedArguments, discusstionID: $scope.discusstionID });
+                /*$scope.trimmedArguments.forEach(argument => {
+                    var argumentID = argument._id;
+                    socket.emit('flip-argument-trimmed-status',{_id: argumentID, discusstionID: $scope.discusstionID});
+                });*/
+            };
+
             $scope.$on('flip-argument-hidden-status', function (e,data) {
                 var argumentID = data._id;
                 socket.emit('flip-argument-hidden-status',{_id: argumentID});
@@ -506,6 +516,7 @@
                 socket.emit('flip-argument-trimmed-status',{_id: argumentID, discusstionID: $scope.discusstionID});
             });
 
+          
             $scope.$on('parentBlinker', function (e,data) {
                 var parentNode = refJsonMap[data.parentID];
                 parentNode.isBlinking = !parentNode.isBlinking;
