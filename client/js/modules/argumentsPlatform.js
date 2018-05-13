@@ -498,10 +498,11 @@
             };
 
             $scope.pasteAllTrimmedArguments = function(){
-                $scope.trimmedArguments.forEach(argument => {
+                socket.emit('paste-all', { data:$scope.trimmedArguments, discusstionID: $scope.discusstionID });
+                /*$scope.trimmedArguments.forEach(argument => {
                     var argumentID = argument._id;
                     socket.emit('flip-argument-trimmed-status',{_id: argumentID, discusstionID: $scope.discusstionID});
-                });
+                });*/
             };
 
             $scope.$on('flip-argument-hidden-status', function (e,data) {

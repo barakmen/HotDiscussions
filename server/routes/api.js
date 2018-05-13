@@ -816,7 +816,39 @@ module.exports = function(autoIncrement, io){
                     console.log("done");
                 });
             });*/
+            
+            socket.on('paste-all', function (data){
+                var discusstionID = data.discusstionID;
+                var arguments = data.data.map(arg => {
+                    var newArgument = new Argument();
+                    cloneArg(arg, newArgument);
+                    newArgument.disc_id = discusstionID;
+                    return newArgument;});                
+                
+                var hasNoParents = arguments.filter(arg => arguments.filter(oArg => oArg._id == arg.parent_id).length == 0);
+                var hasParents = arguments.filter(arg => arguments.filter(oArg => oArg._id == arg.parent_id).length > 0);
+                var normelizeDepth = function (argument){
+                    var oldestParent = hasNoParents.filter(arg => argument.parent_id == arg._id);//if the oldest parent is the father of this argument
+                    if(oldestParent.length > 0){
+                        argument.depth = argument.depth -  oldestParent.depth;
+                        return oldestParent.depth;
+                    }else{
+                        var minDepth = f(hasParents.filter(arg => arg._id == argument.parent_id));
+                        argument.depth = argument.depth- minDepth;
+                    }
+                }
+                
+                hasParents = hasParents.forEach(arg => normelizeDepth(arg));
+                hasNoParents = hasNoParents.map(arg => {
+                    arg.depth = 0;
+                    arg.parent_id = 0;
+                    arg.main_thread_id = 0;
+                });
 
+                console.log(hasParents);
+                console.log("%%%%%%%%%%%%%%%%");
+                console.log(hasNoParents);
+            });
 
             socket.on('flip-argument-trimmed-status', function (data) {
                 var discID = data.discusstionID;
