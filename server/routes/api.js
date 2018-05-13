@@ -613,25 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            socket.on('submitted-new-argument', function (newArgument) {
-                // console.log('got new argument from client..: ', newArgument);
-                var argument = new Argument();
-                argument.treeStructureUpdatedAt = Date.now();
-                argument.disc_id = discussionId;
-                argument.parent_id = (newArgument.parent_id ? newArgument.parent_id : 0);
-                argument.main_thread_id = (newArgument.main_thread_id ? newArgument.main_thread_id : 0);
-                argument.user_id = user.id;
-                argument.username = user.username;
-                argument.role = newArgument.role;
-                argument.fname = user.fname;
-                argument.lname = user.lname;
-                argument.color = user.color;
-                argument.hidden = false;
-                argument.content = newArgument.content;
-                argument.depth = (newArgument.depth ? newArgument.depth : 0);
-                argument.sub_arguments = [];
-
-                // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
+            var saveArgument = function(argument){
                 var discRest = "";
                 Discussion.findOne({_id: argument.disc_id}, function(err, disc) {
                     if (err){
@@ -658,6 +640,7 @@ module.exports = function(autoIncrement, io){
                     //-- 27/07/16
                     if(discRest == "none")
                         return; // Inactive discussion doesn't accept new arguments.
+
                     argument.save(function(err, data){
                         if (err)
                             throw err;
@@ -684,10 +667,33 @@ module.exports = function(autoIncrement, io){
                         })
 
                     });
-
-
                 });
-            });
+            }
+            var submitNewArgument = function (newArgument) {
+                // console.log('got new argument from client..: ', newArgument);
+                var argument = new Argument();
+                argument.treeStructureUpdatedAt = Date.now();
+                argument.disc_id = discussionId;
+                argument.parent_id = (newArgument.parent_id ? newArgument.parent_id : 0);
+                argument.main_thread_id = (newArgument.main_thread_id ? newArgument.main_thread_id : 0);
+                argument.user_id = user.id;
+                argument.username = user.username;
+                argument.role = newArgument.role;
+                argument.fname = user.fname;
+                argument.lname = user.lname;
+                argument.color = user.color;
+                argument.hidden = false;
+                argument.content = newArgument.content;
+                argument.depth = (newArgument.depth ? newArgument.depth : 0);
+                argument.sub_arguments = [];
+
+                // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
+                saveArgument(argument);
+
+                
+            };
+            socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
+            
 
             /**
              * EVENT3
@@ -772,8 +778,157 @@ module.exports = function(autoIncrement, io){
                 });
             });
 
+            /**
+             * copy and paste
+             */
+            function cloneArg(argSource,argTarget){
+                argTarget.treeStructureUpdatedAt = argSource.treeStructureUpdatedAt;
+                argTarget.disc_id = argSource.disc_id;
+                argTarget.parent_id = argSource.parent_id;
+                argTarget.main_thread_id = argSource.main_thread_id;
+                argTarget.user_id = argSource.user_id;
+                argTarget.username = argSource.username;
+                argTarget.role = argSource.role;
+                argTarget.fname = argSource.fname;
+                argTarget.lname = argSource.lname;
+                argTarget.color = argSource.color;
+                argTarget.content = argSource.content;
+                argTarget.depth = argSource.depth;
+                argTarget.hidden = argSource.hidden;
+                argTarget.trimmed = argSource.trimmed;
+            
+                argTarget.updatedAt = argSource.updatedAt;
+                argTarget.createdAt = argSource.createdAt;
+            
+                argTarget.cloned = true;
+            }
+
+            socket.on('paste-all', function (data){
+                var discusstionID = data.discusstionID;
+                var i = 0;
+                var datalen = data.data.length;
+                var newArguments = [];
+                var oldVsNewArguments = {};
+
+                var callback = function (newArguments, oldVsNewArguments){
+                    newArguments.forEach(arg => {
+                        if(arg.parent_id != 0)
+                            arg.parent_id = oldVsNewArguments[arg.parent_id];
+                    });
+
+                    var hasNoParents = newArguments.filter(arg => 
+                        newArguments.filter(oArg => 
+                            oArg._id == arg.parent_id).length == 0);
+                    var hasParents = newArguments.filter(arg => newArguments.filter(oArg => oArg._id == arg.parent_id).length > 0);
+                    var getOldestParent = function (argument){
+                        var oldestParent = hasNoParents.filter(arg => argument.parent_id == arg._id)[0];//if the oldest parent is the father of this argument
+                        if(oldestParent){
+                            return oldestParent
+                        }else{
+                            return getOldestParent(hasParents.filter(arg => arg._id == argument.parent_id)[0]);
+                        }
+                    }
+                    
+                    hasParents.forEach(arg => {
+                        var oldestParent = getOldestParent(arg);
+                        arg.depth = arg.depth - oldestParent.depth;
+                        arg.main_thread_id = oldestParent._id;
+                    });
+
+                    hasNoParents = hasNoParents.map(arg => {
+                        arg.depth = 0;
+                        arg.parent_id = 0;
+                        arg.main_thread_id = 0;
+                        return arg;
+                    });
+
+
+                    hasNoParents.forEach(arg => {
+                       saveArgument(arg);
+                    });
+                    
+                    hasParents.forEach(arg => {
+                        saveArgument(arg);
+                    });
+                }
+
+                //save the argument first in order to get new id;
+                data.data.forEach(arg => {
+                    arg.disc_id = discusstionID;                    
+                    var newArg = new Argument();
+                    cloneArg(arg, newArg);
+                    newArg.disc_id = discusstionID;                    
+                    newArg.trimmed = !newArg.trimmed;
+                    newArg.save(function(err, data){
+                        if (err)
+                            throw err;
+                        else{
+                            oldVsNewArguments[arg._id] = newArg._id;
+                            i++;
+                            newArguments.push(newArg);
+                            if(i == datalen){
+                                callback(newArguments, oldVsNewArguments);
+                            }
+                            
+                        }
+                        
+                    });
+                });                
+                
+            });
+
             socket.on('flip-argument-trimmed-status', function (data) {
+                var discID = data.discusstionID;
                 var argumentID = data._id;
+
+                Argument.findOne({_id: argumentID}, function(err, argument) {
+                    if (err){
+                        throw err;
+                    }
+                    else if(argument){
+                        argument.trimmed = !argument.trimmed;
+                        
+                        if(argument.trimmed){ //copy
+                            Argument.find({$and:[{trimmed: true}, {disc_id:{$ne: argument.disc_id}}]},function(err, args) {
+                                if (err){
+                                    throw err;
+                                }
+                                args.forEach(arg => {
+                                    arg.trimmed = !arg.trimmed;
+                                    if (err){ throw err;}
+                                    arg.save(function (err) {
+                                        if (err){
+                                            throw err;
+                                        }
+                                        else {
+                                        }
+                                    });
+                                });
+                            }); 
+                            argument.save(function (err) {
+                                if (err){
+                                    throw err;
+                                }
+                                else {
+                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                }
+                            });
+                        }
+                        else{ //paste   
+                            argument.save(function (err) {
+                                if (err){
+                                    throw err;
+                                }
+                                else {
+                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
+                                }
+                            });
+                        }
+                    }
+                });
+
+            
+                /*
                 Argument.findOne({_id: argumentID}, function(err, argument) {
                     if (err){
                         throw err;
@@ -803,7 +958,7 @@ module.exports = function(autoIncrement, io){
                             });
                         }
                     }
-                });
+                });*/
             });
 
             socket.on('requesting-user-info', function (data) {
