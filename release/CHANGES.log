@@ -1,3 +1,22 @@
+commit 2eb5d0164e1807dac98123e408cfc031c012e502
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 19:32:18 2018 +0300
+
+    dengarus bug fixed
+
+commit 60499ac7b7dfdeb512b873bc540accbbd785ae44
+Merge: 66552da 79bf682
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 16:49:17 2018 +0300
+
+    Merge branch 'release-1.1'
+
+commit 79bf682168b311c8b071abba798eb976b4d6924e
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 16:48:04 2018 +0300
+
+    bump version to 1.1
+
 commit aa74ebc6473b3ff2cd20626ca3798eb210102149
 Merge: e601755 ab04b33
 Author: barak menachem <barakmen@post.bgu.ac.il>
@@ -66,6 +85,13 @@ Author: barak menachem <barakmen@post.bgu.ac.il>
 Date:   Mon May 14 11:42:30 2018 +0300
 
     Merge branch 'release-1.0' into develop
+
+commit 66552dac85b76c69c2d49ad61e05abbc6f8b65b2
+Merge: 99f20f1 fbeb533
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 11:39:34 2018 +0300
+
+    Merge branch 'release-1.0'
 
 commit fbeb5339084407e69e38a3b72df2b5032dfa6d20
 Author: barak menachem <barakmen@post.bgu.ac.il>

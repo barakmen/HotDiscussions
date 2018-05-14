@@ -5,8 +5,15 @@
 
 0. install nodejs -> install angularjs
 1. install mongo db from [MongoDB](https://www.mongodb.com/)
-3. in the cloned folder run the cmd commend: `"startup_files/HDPstartup.bat"`
-4. brows to `localhost:3000` and its will redirect you to the login page.
+2. clone the current repository.
+3. on the cloned reposytort run the commned: `cd startup_files`
+4. in the cloned folder run the cmd commend: `./HDPstartup.bat`
+    3.1: Posible errors: (Template: error => solution)
+        3.1.1: "the system cannot find the file mongod" => You can modify the file "HDPstartup.bat" and set the path to the "bin/mongod" in the variable "mongodAppPath".
+        3.1.2: "Pm2 is starting all the instancess but the brows is not load the page" => You can try the following steps:
+            3.1.2.2: run the commend `npm install`
+            3.1.2.3: run the commend `"node_modules/.bin/pm2" kill`
+5. brows to `localhost:3000` and its will redirect you to the login page.
 
 #### Stop the server:
 
