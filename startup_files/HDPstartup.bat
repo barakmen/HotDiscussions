@@ -1,3 +1,8 @@
+date /t
+@echo on
+echo echo turned on
+date /t
+
 REM booting our HDP database
 call npm install
 REM REM  start mongod --config C:\Users\srominm\Documents\Projects\HotDiscussions\DB\mongodb.conf
@@ -5,7 +10,9 @@ REM REM  start mongod --config C:\Users\srominm\Documents\Projects\HotDiscussion
 timeout 5
 
 REM pm2 is an npm package that restarts after crashing - restarts node in case of crashing to keep the server live
-REM REM set pm2App=node_modules\pm2
+
+set pm2App=../node_modules/.bin/pm2
+
 REM boot starts our HDP server
 REM set serverBootApp=C:\Users\srominm\Documents\GitHub\HotDiscussionsV2/boot.js
 
