@@ -499,10 +499,6 @@
 
             $scope.pasteAllTrimmedArguments = function(){
                 socket.emit('paste-all', { data:$scope.trimmedArguments, discusstionID: $scope.discusstionID });
-                /*$scope.trimmedArguments.forEach(argument => {
-                    var argumentID = argument._id;
-                    socket.emit('flip-argument-trimmed-status',{_id: argumentID, discusstionID: $scope.discusstionID});
-                });*/
             };
 
             $scope.$on('flip-argument-hidden-status', function (e,data) {
@@ -513,6 +509,7 @@
             $scope.$on('flip-argument-trimmed-status', function (e,data) {
                 var argumentID = data._id;
                 //refJsonMap[argumentID].trimmed = !refJsonMap[argumentID].trimmed;
+                $scope.trimmedArguments = [];
                 socket.emit('flip-argument-trimmed-status',{_id: argumentID, discusstionID: $scope.discusstionID});
             });
 
