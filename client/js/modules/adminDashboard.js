@@ -71,6 +71,12 @@
         var title = $scope.discussions[idx].title;
         var description = $scope.discussions[idx].description;
 
+        if(description != undefined){
+            if(description.length == 0){
+                description = undefined;
+            }
+        }
+
         $window.location.href = '/discussions/' + id + '/' + title + '/' +description;
       };
 
