@@ -1,18 +1,16 @@
-date /t
 set currentFolder="startup_files"
-
-set nodeModules="node_modules"
-if not exist %nodeModules% REM installing npm...
-if not exist %nodeModules% CMD /C npm install
+::if not exist %nodeModules% REM installing npm...
+CMD /C npm install
 
 
 REM booting our HDP database...
-set mongodApp=C:/bin/mongod
-start %mongodApp% --config mongodb.conf
+set mongodAppPath=mongod
+start %mongodAppPath% --config mongodb.conf
 
 timeout 5
 
-REM pm2 is an npm package that restarts after crashing - restarts node in case of crashing to keep the server live
+:: REM pm2 is an npm package that restarts after crashing - restarts node in case of crashing to keep the server live
+cd ..
 set pm2App=node_modules/.bin/pm2
 
 :: as of end of October we are going to use a cluster of apps running, each for clients and a single app for testing environment
@@ -22,4 +20,8 @@ set pm2App=node_modules/.bin/pm2
 REM starting node app on 4 different instances 
 %pm2App% start %currentFolder%/process.json
 ::%pm2App% delete all
+
+cd %currentFolder%
+
+
 

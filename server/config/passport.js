@@ -46,7 +46,7 @@ module.exports = function(passport){
 						newUser.local.lastname = req.body.lname;
 						newUser.local.email = req.body.email;
 						newUser.local.color = getRandomColor();
-						// newUser.local.role = "student";
+						//newUser.local.role = "admin";
 
 						newUser.save(function(err){
 							if (err){
