@@ -1,3 +1,78 @@
+commit aa74ebc6473b3ff2cd20626ca3798eb210102149
+Merge: e601755 ab04b33
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 16:42:35 2018 +0300
+
+    Merge branch 'fix-order-of-discusstion' into develop
+
+commit ab04b3360b112281e1a6be7e3f9786fb04385790
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 16:41:54 2018 +0300
+
+    finish - the bug what that if discussiton.len == 0 so the url is /discusstion/id - and not /discussstion/id/description, so its redirect to discusstion
+
+commit e601755f52bd351aa19b29605a3430a119de1366
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 16:13:59 2018 +0300
+
+    fix readme
+
+commit cd45da705dd43e587a7965488eba88420a72a432
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 15:20:00 2018 +0300
+
+    fix readme
+
+commit 31659bf1ea281428362a47fd0e9b10c3b3d999ef
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 15:17:17 2018 +0300
+
+    fix readme
+
+commit b764d47ef2d6070a491df6b7436f2309bb11e04e
+Merge: 5a26ef3 601b2bc
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 15:09:23 2018 +0300
+
+    Merge branch 'set-startup-files-to-run-on-server' into develop
+
+commit 601b2bc43c173f11dabb67168639fb69cfd6a1eb
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 14:54:13 2018 +0300
+
+    .gitignore Fixed
+
+commit 97955de04052573863b9e1ddd4c0b52d185a46a8
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 14:51:59 2018 +0300
+
+    startup files
+
+commit e9895c5157c478a4b5851dba4d36cdd846bf203e
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 13:22:41 2018 +0300
+
+    fix pm2 installing and calling
+
+commit 6d31c57d57921faee270056cfe8bd63a43318ad0
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 13:09:44 2018 +0300
+
+    bat file
+
+commit 5a26ef390c33f50cfe5cfa552def47dcfbfbc838
+Merge: 5714634 fbeb533
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 11:42:30 2018 +0300
+
+    Merge branch 'release-1.0' into develop
+
+commit fbeb5339084407e69e38a3b72df2b5032dfa6d20
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 11:38:28 2018 +0300
+
+    finish the release-1.0
+
 commit fd946390169c517077e143f6ce662de2c9fbc9d2
 Author: barak menachem <barakmen@post.bgu.ac.il>
 Date:   Mon May 14 11:15:16 2018 +0300
