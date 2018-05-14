@@ -1,7 +1,7 @@
 {
     apps : [{
       name        : "testing",
-      script      : "../boot.js",
+      script      : "boot.js",
       force 		: true,
       env: {
         "PORT": "3003",
@@ -9,7 +9,7 @@
       }
     },{
       name        : "benzi",
-      script      : "../boot.js",
+      script      : "boot.js",
       force 		: true,
       env: {
         "PORT": "3001",
@@ -17,7 +17,7 @@
       }
     },{
       name        : "baruch",
-      script      : "../boot.js",
+      script      : "boot.js",
       force 		: true,
       env: {
         "PORT": "3002",
@@ -25,7 +25,7 @@
       }
     },{
       name        : "tsafrir",
-      script      : "../boot.js",
+      script      : "boot.js",
       force 		: true,
       env: {
         "PORT": "3000",
