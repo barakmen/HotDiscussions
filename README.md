@@ -1,5 +1,6 @@
 # Hot Discusstions App
 
+### Install & Uninstall:
 #### Installation:
 
 0. install nodejs -> install angularjs
@@ -9,7 +10,7 @@
 
 #### Stop the server:
 
-0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" delete all`
+0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
 
 
 
