@@ -1,0 +1,122 @@
+commit fd946390169c517077e143f6ce662de2c9fbc9d2
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 11:15:16 2018 +0300
+
+    change the release file
+
+commit 9cd0d30c6bd12ee43adaceec8c2a573fc0639ae7
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 11:14:46 2018 +0300
+
+    start the release
+
+commit 5714634ae5a184e01ec918366ea1d2694ca9a3f7
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 14 11:02:00 2018 +0300
+
+    fix the paste buttom appear&disappear
+
+commit 88588202d6e756825499f0349205bf8073d4962a
+Merge: 5914908 28268e8
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Sun May 13 19:44:40 2018 +0300
+
+    Merge branch 'copy-paste-comments' into develop
+
+commit 28268e877db3dcde699a70c0d35c12be0a7fe55b
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Sun May 13 19:44:22 2018 +0300
+
+    the feature is working perfect!!!!
+
+commit 54c5cb821d5f322f42d332fe905a7d32f2a00054
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Sun May 13 14:44:28 2018 +0300
+
+    add a recursive normelize depth function and new socket past-all event
+
+commit b31163903df59ee4610af65e315a31e60994a1b8
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Thu May 10 16:47:00 2018 +0300
+
+    copy paste is working! need to check when do it on more than one
+
+commit 0718c07028b88397bb50e7b51fb52cca36656ada
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Thu May 10 16:13:42 2018 +0300
+
+    fix the second thig - now you can copy and uncopy the same argument
+
+commit 61625f0b847ff42b003ca3215812ff7c9cb1a219
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Thu May 10 15:15:15 2018 +0300
+
+    paste is work, now I need to do 2 things, the first is to cancle the copy when user copy argument from new group and the second is to untrimmed the copy argument
+
+commit 77a8f8d562408d7d4580a4d07f94ce441ab48ef6
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Thu May 10 11:00:34 2018 +0300
+
+    start working on the copy paste feature
+
+commit 59149080f51a3e86287f5ceeb12d564f7a3232e5
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Wed May 9 20:26:02 2018 +0300
+
+    check pus
+
+commit b2bdc4564813393e6228595a20aa430dcf0e0307
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Wed May 9 20:25:21 2018 +0300
+
+    check push
+
+commit ecb8924a39e64997964a7f0c7fbc9e030be70245
+Merge: 99f20f1 8500868
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Wed May 9 20:21:26 2018 +0300
+
+    Merge branch 'csv-hebrew-support' into develop
+
+commit 85008682ec8ca43013357542cac72acc4823c32d
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Wed May 9 20:20:25 2018 +0300
+
+    succsess to export csv in hebrew using json2csv package, its gives me the option to put BOM code if utf-8 - EF BB BF
+
+commit 99f20f1bcea549fdf9e938b09dd1d445664ab3e5
+Merge: 44c5259 72f2239
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Wed May 9 12:35:02 2018 +0300
+
+    Merge branch 'hotfixes-1.0'
+
+commit 72f2239884a3b3579990bb3efd2f1db9445f8d2c
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Wed May 9 12:34:29 2018 +0300
+
+    Fix the readme
+
+commit 44c52598930ed5fa751e85b0a93f6b85eb41ef10
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 7 20:48:04 2018 +0300
+
+    set gzira function
+
+commit 71ace16359952fd2be97b61688ff9899a4a6ae79
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 7 20:34:05 2018 +0300
+
+    set readme
+
+commit fc8cd5737074746a3285285b297e5217e8469a54
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 7 20:15:27 2018 +0300
+
+    first commit
+
+commit 8aa682013f1ed3f8dc5d69fe651d80e04e29ea16
+Author: barak menachem <barakmen@post.bgu.ac.il>
+Date:   Mon May 7 20:13:57 2018 +0300
+
+    first commit
