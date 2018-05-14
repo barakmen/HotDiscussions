@@ -1,16 +1,18 @@
 # Hot Discusstions App
 
-Installation:
+#### Installation:
 
 0. install nodejs -> angularjs
 1. install mongo db from ...
 2. run the mongo db server on port 28017, using `mongo --port 28017`
 3. in the cloned folder run the cmd commend: `"startup_files/HDPstartup.bat"`
+4. brows to `localhost:3000` and its will redirect you to the login page.
 
-Stop the server:
+#### Stop the server:
+
 0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" delete all`
 
-then you can go into your browser to `localhost:3000` and its will redirect you to the login page.
+
 
 
 ### Git workflow:
