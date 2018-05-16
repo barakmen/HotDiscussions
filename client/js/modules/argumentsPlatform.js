@@ -550,6 +550,10 @@
             //       alert("Please select one node!");
             //   }
             // };
-
+            
+            $scope.backToDiscusstions = function() { 
+                $window.location.replace('discussions'); 
+            };
+            
         }]);
 })();
