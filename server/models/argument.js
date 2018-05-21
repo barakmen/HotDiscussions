@@ -18,7 +18,9 @@ var argumentScheme = mongoose.Schema({
 	trimmed: Boolean,
 	sub_arguments: [{type:Number, ref: 'Argument'}],
 
-	cloned: Boolean
+	cloned: Boolean,
+	sourceTrimmedId: {type:Number, ref: 'Argument'},
+	numOfTrimmed: Number
 
 },{
 	timestamps:true
