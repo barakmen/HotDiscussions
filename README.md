@@ -7,7 +7,7 @@
 1. install mongo db from [MongoDB](https://www.mongodb.com/)
 2. clone the current repository.
 3. on the cloned reposytort run the commned: `cd startup_files`
-4. in the cloned folder run the cmd commend: `./HDPstartup.bat`
+4. in the cloned folder run the cmd commend: `HDPstartup.bat`
     3.1: Posible errors: (Template: error => solution)
         3.1.1: "the system cannot find the file mongod" => You can modify the file "HDPstartup.bat" and set the path to the "bin/mongod" in the variable "mongodAppPath".
         3.1.2: "Pm2 is starting all the instancess but the brows is not load the page" => You can try the following steps:
@@ -19,9 +19,14 @@
 
 0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
 
+###Update The Server(after installation):
+In the cloned folder:
+0. run `"node_modules/.bin/pm2" kill`
+1. run `git pull`.
+2. run `cd startup_files`
+3. run `HDPstartup.bat`
 
-
-### Update Release:
+### Create New Release:
 In order to set new release you can run the following commend from the cloned dir: `sh release/bump_version.sh <version like 1.4>`
 
 
