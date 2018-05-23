@@ -22,6 +22,9 @@
 
 
 
+### Database:
+The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
+
 ### Git workflow:
 The git workflow in this project is as described in Vincent Driessen`s article [here](http://nvie.com/posts/a-successful-git-branching-model/).
 You can see an example repository for that in [TestDriessenGitModle](https://github.com/barakmen/TestDriessenGitModle) github project.
@@ -29,3 +32,5 @@ To see a grafical GUI for the branches, follow the next commends in the cmd:
 1. `git clone https://github.com/barakmen/TestDriessenGitModle.git`
 2. `cd TestDriessenGitModle`
 3. `gitk`
+
+

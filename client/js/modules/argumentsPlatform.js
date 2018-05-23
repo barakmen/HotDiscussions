@@ -241,6 +241,7 @@
                 });
                 socket.on('init-discussion', function(result){
                     $scope.discusstionID = result.discussion._id;
+                    console.log(result.discussion.quotesFromThePAD);
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
                     $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID);
                     $scope.treeNested = fromReftoNestedJson($scope.treeWithRef);

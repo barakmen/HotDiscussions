@@ -16,12 +16,26 @@
                     new_main_thread_id = main_thread_id;
                 }
                 // console.log(new_main_thread_id);
+
+                //extract the quotes from the text of the argument
+                var quotesFromThePAD = [];
+                if(argumentText){
+                    var contentArr = $.parseHTML(argumentText);
+                    contentArr.filter(el => el.tagName === 'BUTTON').forEach(el => {
+                        var cordinates = el.outerHTML.substring(el.outerHTML.indexOf('(') + 1,el.outerHTML.indexOf(')')).split(',');
+                        cordinates[0] = parseInt(cordinates[0]);
+                        cordinates[1] = parseInt(cordinates[1]);
+                        quotesFromThePAD.push({start:cordinates[0], end:cordinates[1]});
+                    });
+                }
+
                 var postData = {
                     content: argumentText,
                     parent_id: parentId,
                     depth: depth,
                     main_thread_id: new_main_thread_id,
-                    role:role
+                    role:role,
+                    quotesFromThePAD: quotesFromThePAD
                 };
                 
                 socket.emit('submitted-new-argument', postData);
