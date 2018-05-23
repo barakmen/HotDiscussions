@@ -7,7 +7,7 @@
 1. install mongo db from [MongoDB](https://www.mongodb.com/)
 2. clone the current repository.
 3. on the cloned reposytort run the commned: `cd startup_files`
-4. in the cloned folder run the cmd commend: `HDPstartup.bat`
+4. in the cloned folder run the cmd commend: `HDPstartup.bat` [if you are used bash terminal run: `./HDPstartup.bat`]
     3.1: Posible errors: (Template: error => solution)
         3.1.1: "the system cannot find the file mongod" => You can modify the file "HDPstartup.bat" and set the path to the "bin/mongod" in the variable "mongodAppPath".
         3.1.2: "Pm2 is starting all the instancess but the brows is not load the page" => You can try the following steps:
@@ -15,11 +15,38 @@
             3.1.2.3: run the commend `"node_modules/.bin/pm2" kill`
 5. brows to `localhost:3000` and its will redirect you to the login page.
 
+* In order to create new instance of db and url, please do the following steps:
+    1. edit the startup_files/process.json, and add new object instance with the following stracture:
+        ```json
+        {
+            apps: [{..<old instances>..},{
+                    name        : "name of the new instance",
+                    script      : "boot.js",
+                    force 		: true,
+                    env: {
+                        "PORT": "new-port-that-NOT-used in one of the <old instances>",
+                        "INSTANCE": "name of the new instance"
+                    }
+                }]
+        }
+        ```
+    2. Edit the server/config/database.js file, add new row in the module.export object:
+            `'<name of the new instance>_url' : 'mongodb://localhost:28017/HotDiscDB_<name of the new instance>'`
+    3. Edit the server/serve.js file and add new case:
+        ```javascript
+        switch(process.env.INSTANCE){
+            case '<name of the new instance>':
+            curDB = configDB.<<name of the new instance>_url>;
+            break;
+        }
+        ```
+
 #### Stop the server:
 
 0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
 
-###Update The Server(after installation):
+### Update The Server(after installation):
+//
 In the cloned folder:
 0. run `"node_modules/.bin/pm2" kill`
 1. run `git pull`.
@@ -31,7 +58,8 @@ In order to set new release you can run the following commend from the cloned di
 
 
 ### Database:
-The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
+* The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
+
 
 ### Git workflow:
 The git workflow in this project is as described in Vincent Driessen`s article [here](http://nvie.com/posts/a-successful-git-branching-model/).

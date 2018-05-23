@@ -14,17 +14,27 @@ module.exports = function(io){
 
   // Run appropriate instance - test / benzi / baruch / tsafrir
   var curDB;
-  if(process.env.INSTANCE == 'benzi')
-    curDB = configDB.benzi_url;
-  else
-    if(process.env.INSTANCE == 'baruch')
-      curDB = configDB.baruch_url;
-      else
-        if(process.env.INSTANCE == 'tsafrir')
-          curDB = configDB.tsafrir_url;
-          else //test
-            curDB = configDB.test_url;
+  switch(process.env.INSTANCE){
+    case 'benzi':
+      curDB = configDB.benzi_url;
+      break;
 
+    case 'baruch':
+      curDB = configDB.baruch_url;
+      break;
+
+    case 'tsafrir':
+      curDB = configDB.tsafrir_url;
+      break;
+    
+    case 'loadtests':
+      curDB = configDB.loadtest_url;
+      break;
+
+    default:
+      curDB = configDB.test_url;
+      break;
+  }
 
   console.log("Running on HDP instance of: " + process.env.INSTANCE + " on DB: " + curDB);
   mongoose.connect(curDB);
