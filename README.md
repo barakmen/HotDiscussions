@@ -46,7 +46,7 @@
 0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
 
 ### Update The Server(after installation):
-//
+
 In the cloned folder:
 0. run `"node_modules/.bin/pm2" kill`
 1. run `git pull`.
