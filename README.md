@@ -21,6 +21,9 @@
 
 
 
+### Update Release:
+In order to set new release you can run the following commend from the cloned dir: `sh release/bump_version.sh <version like 1.4>`
+
 
 ### Database:
 The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
