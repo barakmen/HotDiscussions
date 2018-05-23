@@ -3,23 +3,23 @@
 ### Install & Uninstall:
 #### Installation:
 
-0. install nodejs -> install angularjs
-1. install mongo db from [MongoDB](https://www.mongodb.com/)
-2. clone the current repository.
-3. on the cloned reposytort run the commned: `cd startup_files`
-4. in the cloned folder run the cmd commend: `HDPstartup.bat` [if you are used bash terminal run: `./HDPstartup.bat`]
-    3.1: Posible errors: (Template: error => solution)
-        3.1.1: "the system cannot find the file mongod" => You can modify the file "HDPstartup.bat" and set the path to the "bin/mongod" in the variable "mongodAppPath".
-        3.1.2: "Pm2 is starting all the instancess but the brows is not load the page" => You can try the following steps:
-            3.1.2.2: run the commend `npm install`
-            3.1.2.3: run the commend `"node_modules/.bin/pm2" kill`
-5. brows to `localhost:3000` and its will redirect you to the login page.
+1. install nodejs -> install angularjs
+2. install mongo db from [MongoDB](https://www.mongodb.com/)
+3. clone the current repository.
+4. on the cloned reposytort run the commned: `cd startup_files`
+5. in the cloned folder run the cmd commend: `HDPstartup.bat` [if you are used bash terminal run: `./HDPstartup.bat`]
+    5.1: Posible errors: (Template: error => solution)
+        5.1.1: "the system cannot find the file mongod" => You can modify the file "HDPstartup.bat" and set the path to the "bin/mongod" in the variable "mongodAppPath".
+        5.1.2: "Pm2 is starting all the instancess but the brows is not load the page" => You can try the following steps:
+            5.1.2.2: run the commend `npm install`
+            5.1.2.3: run the commend `"node_modules/.bin/pm2" kill`
+6. brows to `localhost:3000` and its will redirect you to the login page.
 
 * In order to create new instance of db and url, please do the following steps:
     1. edit the startup_files/process.json, and add new object instance with the following stracture:
         ```json
         {
-            apps: [{..<old instances>..},{
+            apps: [{..<old-instances>..},{
                     name        : "name of the new instance",
                     script      : "boot.js",
                     force 		: true,
@@ -43,15 +43,18 @@
 
 #### Stop the server:
 
-0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
+1. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
 
-### Update The Server(after installation):
+
+#### Update The Server(after installation):
 
 In the cloned folder:
-0. run `"node_modules/.bin/pm2" kill`
-1. run `git pull`.
-2. run `cd startup_files`
-3. run `HDPstartup.bat`
+
+1. run `"node_modules/.bin/pm2" kill`
+2. run `git pull`.
+3. run `cd startup_files`
+4. run `HDPstartup.bat`
+
 
 ### Create New Release:
 In order to set new release you can run the following commend from the cloned dir: `sh release/bump_version.sh <version like 1.4>`
