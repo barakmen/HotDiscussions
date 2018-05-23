@@ -17,6 +17,7 @@
                 }
                 // console.log(new_main_thread_id);
 
+                //extract the quotes from the text of the argument
                 var quotesFromThePAD = [];
                 if(argumentText){
                     var contentArr = $.parseHTML(argumentText);
@@ -27,8 +28,6 @@
                         quotesFromThePAD.push({start:cordinates[0], end:cordinates[1]});
                     });
                 }
-
-                console.log(quotesFromThePAD);
 
                 var postData = {
                     content: argumentText,

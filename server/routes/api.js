@@ -637,15 +637,21 @@ module.exports = function(autoIncrement, io){
                         }
 
                         // saving the number of qotes from pad in the discuission
-                        console.log("serverr!: " + Object.values(quotesFromThePAD));
-                        if(disc.quotesFromThePAD){
-                            disc.quotesFromThePAD.concat(quotesFromThePAD);
-                        }else{
-                            disc.quotesFromThePAD = quotesFromThePAD;
-                        }
+                        if(!disc.quotesFromThePAD) disc.quotesFromThePAD = [];
+                        if(!quotesFromThePAD) quotesFromThePAD = [];
+                        quotesFromThePAD.forEach(newQuote =>{
+                            var foundQuote = disc.quotesFromThePAD.find(quote => {
+                                return quote.start == newQuote.start && quote.end == newQuote.end;
+                            });
+                            if(foundQuote){
+                                foundQuote.numOfOccurence++;
+                            }else{
+                                disc.quotesFromThePAD = disc.quotesFromThePAD.concat([{start: newQuote.start, end: newQuote.end, numOfOccurence:1}]);
+                            }
+                        });                      
                         disc.save(function (err, data){
-                            if(err) throw err;
-                        })
+                            if(err){throw err;} 
+                        });
                         
                     }
 

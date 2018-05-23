@@ -18,7 +18,7 @@ var discussionScheme = mongoose.Schema({
 	locked: Boolean,
 	cloned: Boolean,
 
-	quotesFromThePAD: [{type:Number, type:Number}]
+	quotesFromThePAD: [{start:Number, end:Number, numOfOccurence:Number}]
 });
 
 module.exports = mongoose.model('Discussion', discussionScheme);
