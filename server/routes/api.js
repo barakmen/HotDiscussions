@@ -613,7 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            var saveArgument = function(argument){
+            var saveArgument = function(argument, quotesFromThePAD){
                 var discRest = "";
                 Discussion.findOne({_id: argument.disc_id}, function(err, disc) {
                     if (err){
@@ -635,6 +635,24 @@ module.exports = function(autoIncrement, io){
                                 argument.role = "moderator";
                             }
                         }
+
+                        // saving the number of qotes from pad in the discuission
+                        if(!disc.quotesFromThePAD) disc.quotesFromThePAD = [];
+                        if(!quotesFromThePAD) quotesFromThePAD = [];
+                        quotesFromThePAD.forEach(newQuote =>{
+                            var foundQuote = disc.quotesFromThePAD.find(quote => {
+                                return quote.start == newQuote.start && quote.end == newQuote.end;
+                            });
+                            if(foundQuote){
+                                foundQuote.numOfOccurence++;
+                            }else{
+                                disc.quotesFromThePAD = disc.quotesFromThePAD.concat([{start: newQuote.start, end: newQuote.end, numOfOccurence:1}]);
+                            }
+                        });                      
+                        disc.save(function (err, data){
+                            if(err){throw err;} 
+                        });
+                        
                     }
 
                     //-- 27/07/16
@@ -688,7 +706,7 @@ module.exports = function(autoIncrement, io){
                 argument.sub_arguments = [];
 
                 // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
-                saveArgument(argument);
+                saveArgument(argument, newArgument.quotesFromThePAD);
 
                 
             };
@@ -859,6 +877,7 @@ module.exports = function(autoIncrement, io){
                     cloneArg(arg, newArg);
                     newArg.disc_id = discusstionID;                    
                     newArg.trimmed = !newArg.trimmed;
+                    newArg.sourceTrimmedId = arg._id;
                     newArg.save(function(err, data){
                         if (err)
                             throw err;
@@ -928,37 +947,6 @@ module.exports = function(autoIncrement, io){
                 });
 
             
-                /*
-                Argument.findOne({_id: argumentID}, function(err, argument) {
-                    if (err){
-                        throw err;
-                    }
-                    else{
-                        argument.trimmed = !argument.trimmed;
-                        if(argument.disc_id != data.discusstionID){
-                            if(!argument.trimmed){
-                                argument.disc_id = data.discusstionID;
-                                argument.save(function (err) {
-                                    if (err){
-                                        throw err;
-                                    }
-                                    else {
-                                        argumentsNsp.to(data.discusstionID).emit('flip-argument-trimmed-status', {_id: argumentID});
-                                    }
-                                });
-                            }
-                        }else{
-                            argument.save(function (err) {
-                                if (err){
-                                    throw err;
-                                }
-                                else {
-                                    argumentsNsp.to(argument.disc_id).emit('flip-argument-trimmed-status', {_id: argumentID});
-                                }
-                            });
-                        }
-                    }
-                });*/
             });
 
             socket.on('requesting-user-info', function (data) {

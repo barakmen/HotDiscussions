@@ -21,6 +21,12 @@
 
 
 
+### Update Release:
+In order to set new release you can run the following commend from the cloned dir: `sh release/bump_version.sh <version like 1.4>`
+
+
+### Database:
+The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
 
 ### Git workflow:
 The git workflow in this project is as described in Vincent Driessen`s article [here](http://nvie.com/posts/a-successful-git-branching-model/).
@@ -29,3 +35,5 @@ To see a grafical GUI for the branches, follow the next commends in the cmd:
 1. `git clone https://github.com/barakmen/TestDriessenGitModle.git`
 2. `cd TestDriessenGitModle`
 3. `gitk`
+
+
