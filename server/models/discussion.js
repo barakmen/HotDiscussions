@@ -16,7 +16,9 @@ var discussionScheme = mongoose.Schema({
 	users_group_id: {type:Schema.Types.ObjectId, ref: 'Users_Group'},
 
 	locked: Boolean,
-	cloned: Boolean
+	cloned: Boolean,
+
+	quotesFromThePAD: [{type:Number, type:Number}]
 });
 
 module.exports = mongoose.model('Discussion', discussionScheme);
