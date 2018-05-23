@@ -20,7 +20,6 @@
 0. in the cloned folder run the cmd commend: `"node_modules/.bin/pm2" kill`
 
 
-
 ### Update Release:
 In order to set new release you can run the following commend from the cloned dir: `sh release/bump_version.sh <version like 1.4>`
 
