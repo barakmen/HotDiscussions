@@ -53,7 +53,11 @@ In the cloned folder:
 1. run `"node_modules/.bin/pm2" kill`
 2. run `git pull`.
 3. run `cd startup_files`
-4. run `HDPstartup.bat`
+4. run `HDPstartup.bat`  [if you are used bash terminal run: `./HDPstartup.bat`]
+
+
+### Run Load Tests:
+You can read about that in the readme that inside the `server/load_tests` folder.
 
 
 ### Create New Release:
