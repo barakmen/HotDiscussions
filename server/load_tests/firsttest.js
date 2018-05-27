@@ -4,6 +4,7 @@ import { check, sleep } from "k6";
 const portForLoadtests = 3004;
 const real = "http://hdm-12.ise.bgu.ac.il:" + portForLoadtests;
 const localhost = "http://localhost:" + portForLoadtests;
+
 var serverUrl = localhost;
 
 export let options = {

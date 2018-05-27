@@ -8,11 +8,33 @@
 3. clone the current repository.
 4. on the cloned reposytort run the commned: `cd startup_files`
 5. in the cloned folder run the cmd commend: `HDPstartup.bat` [if you are used bash terminal run: `./HDPstartup.bat`]
-    5.1: Posible errors: (Template: error => solution)
+
+    5.1: Possible errors: (Template: error => solution)
+    
         5.1.1: "the system cannot find the file mongod" => You can modify the file "HDPstartup.bat" and set the path to the "bin/mongod" in the variable "mongodAppPath".
+
         5.1.2: "Pm2 is starting all the instancess but the brows is not load the page" => You can try the following steps:
+
             5.1.2.2: run the commend `npm install`
+
             5.1.2.3: run the commend `"node_modules/.bin/pm2" kill`
+
+        5.1.3: " Unable to create/open the lock file: C:\Program Files\MongoDB\data\db\mongod.lock (The process cannot access the file because it is being used by another process."
+
+            5.1.3.1: Delete the mongod.lock file in the /data/db folder
+
+            5.1.3.2: Restart mongodb
+
+        5.1.4 Cannot recognize mongod \ cannot find --config command: 
+
+            5.1.4.1 Set your computer envaroment variable PATH, and add the path to Mongo/server/bin/
+            5.1.4.2 Restart your program(i.e, if you work with VScode, so close it and open again)
+            5.1.4.3 Run `"<absulute_path_to>\mongod.exe" --config "<absulute_path_to>\mongodb.conf" --install`
+            5.1.4.4 Run `net start MongoDB`
+
+        ** If none work -> remove the folder of C:\Program Files\MongoDB, and install MongoDb again[IMPORTANT: if Mongo Compass is already installed, Make sure you unchecked the installaion of it when you install mongo again]. 
+        Then do 5.1.4.3 && 5.1.4.4**
+            
 6. brows to `localhost:3000` and its will redirect you to the login page.
 
 * In order to create new instance of db and url, please do the following steps:
@@ -66,6 +88,9 @@ In order to set new release you can run the following commend from the cloned di
 
 ### Database:
 * The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
+
+* The database in the server located at[dbpath]: `C:\Users\srominm\Documents\Projects\HotDiscussions\DB\data`
+* The database log in the server located at[logpath]:`C:\Users\srominm\Documents\Projects\HotDiscussions\DB\logs\mongo.log`
 
 
 ### Git workflow:
