@@ -93,6 +93,10 @@ In order to set new release you can run the following commend from the cloned di
 * The database log in the server located at[logpath]:`C:\Users\srominm\Documents\Projects\HotDiscussions\DB\logs\mongo.log`
 
 
+### Load Tests:
+Load test located at `server/load_tests`, in that folder there is [README](https://github.com/barakmen/HotDiscussions/tree/load-testing/server/load_tests), that explain how to run them.
+
+
 ### Git workflow:
 The git workflow in this project is as described in Vincent Driessen`s article [here](http://nvie.com/posts/a-successful-git-branching-model/).
 You can see an example repository for that in [TestDriessenGitModle](https://github.com/barakmen/TestDriessenGitModle) github project.
