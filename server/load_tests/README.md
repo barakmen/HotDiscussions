@@ -1,12 +1,25 @@
-# Loadtests Using K6:
+# Loadtests Using Jmeter:
 
-In order to run the loadtests you can following the turorial on medium [here](https://medium.com/codeinsights/how-to-load-test-your-node-js-app-using-k6-74d7339bc787).
+First things first:
+    Install [java](https://java.com/en/download/) and then [Jmeter](https://jmeter.apache.org/download_jmeter.cgi) first.
 
-Or simply do the following steps:
-1. Download k6 from [here](https://github.com/loadimpact/k6/releases).
-2. Extract the downloaded zip and use the terminal to `cd` into the extracted folder.
-3. copy the file: `<cloned-repository-folder>/server/load_tests/firsttest.js`
-3. from the extracted folder run `./k6 run <cloned-repository-folder>/server/load_tests/firsttest.js`
+## How to start the tests?
+1. Open Jmeter.
+2. In Jmeter:
+    2.1 Click File->Open->and choose the file from `<this cloned folder>/server/load_tests/HDP Load Tests.jmx`
+    2.2 Run the tests by clicking on the green arrow button. 
 
+## What it test?
+The load tests are simulates the behavior of users and admin, as bellow:
+    *Admin*:
+        1. Register to the system
+        2. Login into the system.
+        3. Get all the current discusstions.
+        4. Post new discusstions.
 
-Install influxdb and go on Windows: [here](https://stackoverflow.com/questions/26116711/how-to-install-influxdb-in-windows)
+    *User*:
+        1. Register to the system
+        2. Login into the system.
+        3. Get all the current discusstions.
+        4. Getting into exist discusstion.
+Using Jmeter you can see graph of time by adding "aggregate graph" to the thread group.
