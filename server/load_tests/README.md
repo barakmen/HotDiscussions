@@ -6,9 +6,10 @@ First things first:
 ## How to start the tests?
 1. Open Jmeter.
 2. In Jmeter:
-
-2.1 Click File->Open->and choose the file from `<this cloned folder>/server/load_tests/HDP Load Tests.jmx`
-2.2 Run the tests by clicking on the green arrow button. 
+    
+    2.1 Click File->Open->and choose the file from `<this cloned folder>/server/load_tests/HDP Load Tests.jmx`.
+    
+    2.2 Run the tests by clicking on the green arrow button. 
 
 ## What it test?
 The load tests are simulates the behavior of users and admin, as bellow:
