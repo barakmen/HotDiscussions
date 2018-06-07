@@ -4,12 +4,15 @@ First things first:
     Install [java](https://java.com/en/download/) and then [Jmeter](https://jmeter.apache.org/download_jmeter.cgi) first.
 
 ## How to start the tests?
-1. Open Jmeter.
-2. In Jmeter:
+1. Fro 
+2. Open Jmeter.
+3. In Jmeter:
     
     2.1 Click File->Open->and choose the file from `<this cloned folder>/server/load_tests/HDP Load Tests.jmx`.
     
-    2.2 Run the tests by clicking on the green arrow button. 
+    2.2 Whenever CSV file is loading change the path to the csv file to the files: "random discusstions.csv" or "random users.csv" accurdingly.
+
+    2.3 Run the tests by clicking on the green arrow button. 
 
 ## What it test?
 The load tests are simulates the behavior of users and admin, as bellow:
