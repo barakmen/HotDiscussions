@@ -1,12 +1,12 @@
-# Loadtests Using Jmeter:
+# Load Tests Using Jmeter:
 
-First things first:
-    Install [java](https://java.com/en/download/) and then [Jmeter](https://jmeter.apache.org/download_jmeter.cgi) first.
+First thing first:
+1. Install [java](https://java.com/en/download/) and then [Jmeter](https://jmeter.apache.org/download_jmeter.cgi).
+2. You need to add extention to Jmeter called [Jmeter - WebSocket Sampler](https://oseublog.wordpress.com/2017/06/25/setting-up-jmeter-for-socket-io-test/) please follow on the instraction their. After the installation you can use is as described [here](https://medium.com/@tomokazukozuma/load-test-of-socket-io-using-jmeter-websocketsampler-f8c6fb1009c2).
 
 ## How to start the tests?
-1. Fro 
-2. Open Jmeter.
-3. In Jmeter:
+1. Open Jmeter.
+2. In Jmeter:
     
     2.1 Click File->Open->and choose the file from `<this cloned folder>/server/load_tests/HDP Load Tests.jmx`.
     
