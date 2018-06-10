@@ -22,6 +22,3 @@ REM starting node app on 4 different instances
 ::%pm2App% delete all
 
 cd %currentFolder%
-
-
-

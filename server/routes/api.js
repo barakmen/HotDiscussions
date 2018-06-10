@@ -132,7 +132,7 @@ module.exports = function(autoIncrement, io){
                             }
                             else{
                                 discs = discs.reverse();
-				if(req.query.numOfDiscussions != 'All' ){
+				                if(req.query.numOfDiscussions != 'All' ){
                                     discs = discs.slice(0, req.query.numOfDiscussions);
                                 }
                                 discs.forEach(function(disc){
