@@ -73,24 +73,43 @@
 
     <!-- existing arguments rendering -->
     <div class="row"  id="treeConversation">
-        <div class="split split-horizontal" id="one" style="width: calc(50% - 5px);">
+        <div class="split split-horizontal" id="reflection" style="width: calc(70% - 5px);">
+            <div style="margin-right: 30px">
+                <h2> דיון רפלקציה </h2>
+                <p> אנא סמן טקסט מהדיון על מנת להגיב עליו</p>
+            </div>
+            
             <div id="treeConversation">
-                <tree nodes='treeNested' role='role' locked="locked"></tree>
+                <tree nodes='treeNestedReflection' role='role' locked="locked"></tree>
             </div>
         </div>
+        
+        <div class="gutter " style="width: 10px;background: black; "></div>
 
-        <div class="gutter" style="width: 10px;background: black;"></div>
-
-        <div class="split split-horizontal" id="two" style="width: calc(50% - 5px);">
+        <div class="split split-horizontal" id="discussion" style="width: calc(30% - 5px);">
+            <h2 style="margin-right: 30px"> דיון מקור </h2>
             <div id="treeConversation">
-                <tree nodes='treeNested' role='role' locked="locked"></tree>
+                <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>
             </div>
         </div>
+    
+   
+
+        <!--
+        <div id="reflection" *ngIf="treeNestedReflection.length === 0;then emptynode else nodesexists"></div>
+        <div #emptynode > אנא סמן את התגובה בדיון על מנת ליצור רפלקציה חדשה</div>
+        <div #nodesexists class="split split-horizontal"  style="padding-left: 30px">
+            <div id="treeConversation reflection" class="reflection" style="width: 100%;">
+                <tree nodes='treeNestedReflection' role='role' style="width: 100%;" locked="locked"></tree>
+            </div>
+        </div>
+        -->
+
     </div>
     
     <script>
-        Split(['#one', '#two'], {
-            sizes: [50, 50]
+        Split(['#reflection','#discussion'], {
+            sizes: [70, 30]
         })
     </script>
 

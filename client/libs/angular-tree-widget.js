@@ -205,6 +205,19 @@
             var nodeController = function($scope){
                 var vm = this;
 
+
+                $scope.onArgumentTextSelected = function (){
+                    var selection = window.getSelection();
+                    var start = selection.focusOffset;
+                    var end = selection.baseOffset;
+                    var argument_el = window.getSelection().anchorNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    var id = $(argument_el).attr('id','nodeid').find('i')[1].textContent.replace('#','');
+                    $rootScope.textMarked = true;
+                    $rootScope.cloneToReflection(id);
+
+
+                }
+
                 $scope.tinymceOptions = {
 
                     //just for placeholder

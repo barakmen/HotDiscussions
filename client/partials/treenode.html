@@ -1,4 +1,4 @@
-<div id="tblWrapper" dir="rtl" ng-repeat="node in nodeCtrl.nodes" ng-style="node.depth===0 && {'padding-bottom': '0', 'margin-bottom': '20px'}" >
+<div  id="tblWrapper" dir="rtl" ng-repeat="node in nodeCtrl.nodes" ng-style="node.depth===0 && {'padding-bottom': '0', 'margin-bottom': '20px'}" >
 <!-- ng-if = "(!node.trimmed || nodeCtrl.role == 'admin')" -->
     <div id="rowWrapper" node-style role="node.role" trimmed="node.trimmed" style="border-bottom-width: 1px; border-bottom-style:groove;" ng-style="node.depth===0 && {'border-radius': '5px 5px 0px 0px'}">
 
@@ -8,7 +8,7 @@
 
                <!--span style="width:70%" ng-style="node.depth===0 && {'font-weight':'bold'}"-->
                <span style="width:70%">
-                     <overflow-content class=non-expanded node="node" role="node.color"></overflow-content>
+                     <overflow-content id="nodeContent" ng-mouseup="onArgumentTextSelected()" class=non-expanded node="node" role="node.color"></overflow-content>
                </span>
 
                 <div ng-if="node.replyPressed" ng-style="{'padding-right':(((node.depth + ((((node.depth + 1) % 10) == 0) && nodeCtrl.focusing) + (node.isFocused || nodeCtrl.focusing)) % (10 + (node.isFocused && nodeCtrl.focusing))) + 1) * 4 + 'px'}">
@@ -68,7 +68,7 @@
                 <i style="font-size: 10px">{{nodeCtrl.prettyDate(node.createdAt)}}</i>
             </div>
 
-            <div class="tblCell" style="width:5%; text-align:left">
+            <div id="nodeid" class="tblCell" style="width:5%; text-align:left">
                 <i>
                     <small>#{{ ::node._id }}</small>
                 </i>

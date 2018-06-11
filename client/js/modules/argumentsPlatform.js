@@ -18,6 +18,9 @@
 
             var focusedNodes = [];
 
+
+            $rootScope.textMarked = false;
+
             $scope.tinymceOptions = {
 
                 //just for placeholder
@@ -241,15 +244,21 @@
                 });
                 socket.on('init-discussion', function(result){
                     $scope.discusstionID = result.discussion._id;
-                    console.log(result.discussion.quotesFromThePAD);
+                    
+                    //init discussion tree
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
                     $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID);
-                    $scope.treeNested = fromReftoNestedJson($scope.treeWithRef);
+                    $scope.treeNestedDiscussion = fromReftoNestedJson($scope.treeWithRef);
+                    sortArgumnets($scope.treeNestedDiscussion);
+
+                    //init reflection tree
+                    $scope.treeNestedReflection = {};
+
                     $scope.onlineUsers = result.onlineUsers;
-                    // console.log($scope.treeNested);
+
+                    // console.log($scope.treeNestedDiscussion);
                     // console.log('*******************************');
-                    sortArgumnets($scope.treeNested);
-                    // console.log($scope.treeNested);
+                    // console.log($scope.treeNestedDiscussion);
                     // console.log('*******************************');
                     $scope.discussionTitle = result.discussion.title;
                     $scope.discussionDescription = result.discussion.description;
@@ -272,7 +281,7 @@
 
                     $scope.fullname = result.user.fname + " " + result.user.lname;
 
-                    $scope.originalFocus = $scope.treeNested;
+                    $scope.originalFocus = $scope.treeNestedDiscussion;
 
                     $scope.chatMessages = result.chatMessages;
 
@@ -282,6 +291,33 @@
                     $scope.locked = result.discussion.locked;
                     
                 });
+            }
+
+            $rootScope.cloneToReflection = function(id){
+                var findArg = function(nestedArgs, id){
+                    var res;
+                    nestedArgs.forEach(arg => {
+                        if(arg._id == id){
+                            res = arg;
+                        }
+                        else if(arg.sub_arguments.length > 0 ){
+                            tmp = findArg(arg.sub_arguments, id);
+                            if(tmp){
+                                res = tmp;
+                            }
+                        }
+                    });
+
+                    return res;
+                }
+
+                arg = findArg($scope.treeNestedDiscussion, id);
+                if(arg){
+                    $scope.treeNestedReflection = [arg];
+                    console.log(arg)
+                }else{
+                    console.log("Cannot Find selected arg");
+                }
             }
 
             /*
@@ -465,10 +501,10 @@
                 //saving previous focus, position and new node (nextNode)
                 var node = args.node;
 
-                focusedNodes.push({focus: $scope.treeNested, scrollerPos:$window.scrollY, nextNode:node});
+                focusedNodes.push({focus: $scope.treeNestedDiscussion, scrollerPos:$window.scrollY, nextNode:node});
 
                 node.isFocused = true;
-                $scope.treeNested = [node];
+                $scope.treeNestedDiscussion = [node];
 
                 $window.scrollTo(0, 0);
 
@@ -482,7 +518,7 @@
 
                 previous.nextNode.isFocused = false;
 
-                $scope.treeNested = previous.focus;
+                $scope.treeNestedDiscussion = previous.focus;
 
                 setTimeout(function(){$window.scrollBy(0,previous.scrollerPos - $window.scrollY)},50);
 

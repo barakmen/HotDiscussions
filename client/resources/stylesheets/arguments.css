@@ -147,5 +147,5 @@ hr.newArgSection {
     display: block;
     position: absolute;
     content: attr(data-placeholder);
-    color:lightgrey;
+    color:rgb(240, 240, 240);
 }

@@ -54,15 +54,22 @@ h1, h3 {
             box-sizing: border-box;
   }
 
-  .split, .gutter.gutter-horizontal {
-    float: left;
+.split, .gutter.gutter-horizontal {
+float: left;
 }
 
 .split, .gutter.gutter-horizontal {
-    height: 1000px;
+    height: 1200px;
 }
 
 .split {
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+.reflection{
+    background: rgb(255, 234, 215);
+}
+
+
+  
