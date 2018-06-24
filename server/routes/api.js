@@ -613,7 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            var saveArgument = function(argument, quotesFromThePAD){
+            var saveArgument = function(argument, quotesFromThePAD, callback = undefined){
                 var discRest = "";
                 Discussion.findOne({_id: argument.disc_id}, function(err, disc) {
                     if (err){
@@ -684,34 +684,54 @@ module.exports = function(autoIncrement, io){
                             }
                         })
 
+                        if(callback) callback(data);
                     });
                 });
+
+
             }
-            var submitNewArgument = function (newArgument) {
-                // console.log('got new argument from client..: ', newArgument);
-                var argument = new Argument();
-                argument.treeStructureUpdatedAt = Date.now();
-                argument.disc_id = discussionId;
-                argument.parent_id = (newArgument.parent_id ? newArgument.parent_id : 0);
-                argument.main_thread_id = (newArgument.main_thread_id ? newArgument.main_thread_id : 0);
-                argument.user_id = user.id;
-                argument.username = user.username;
-                argument.role = newArgument.role;
-                argument.fname = user.fname;
-                argument.lname = user.lname;
-                argument.color = user.color;
-                argument.hidden = false;
-                argument.content = newArgument.content;
-                argument.depth = (newArgument.depth ? newArgument.depth : 0);
-                argument.sub_arguments = [];
 
-                // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
-                saveArgument(argument, newArgument.quotesFromThePAD);
-
-                
+            var submitNewArgument = function (newArgument, callback = undefined) {
+                    // console.log('got new argument from client..: ', newArgument);
+                    var argument = new Argument();
+                    argument.treeStructureUpdatedAt = Date.now();
+                    argument.disc_id = discussionId;
+                    argument.parent_id = (newArgument.parent_id ? newArgument.parent_id : 0);
+                    argument.main_thread_id = (newArgument.main_thread_id ? newArgument.main_thread_id : 0);
+                    argument.user_id = user.id;
+                    argument.username = user.username;
+                    argument.role = newArgument.role;
+                    argument.fname = user.fname;
+                    argument.lname = user.lname;
+                    argument.color = user.color;
+                    argument.hidden = false;
+                    argument.content = newArgument.content;
+                    argument.depth = (newArgument.depth ? newArgument.depth : 0);
+                    argument.sub_arguments = [];
+                    argument.isReflaction = newArgument.isReflaction;
+                    // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
+                    saveArgument(argument, newArgument.quotesFromThePAD, callback);
             };
+
             socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
-            
+            socket.on('submitted-new-argument-and-replay', function(newArgAndReplay){
+                var replay = newArgAndReplay.replayText;
+                submitNewArgument(newArgAndReplay, function(savedArg){
+                    var id = savedArg._id;
+                        
+                    var postData = {
+                        content: replay,
+                        parent_id: id,
+                        depth: 1,
+                        main_thread_id: id,
+                        role: savedArg.role,
+                        quotesFromThePAD: [],
+                        isReflaction: savedArg.isReflaction
+                    };
+                    
+                    submitNewArgument(postData);
+                });
+            });
 
             /**
              * EVENT3

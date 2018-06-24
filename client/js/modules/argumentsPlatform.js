@@ -247,11 +247,12 @@
                     
                     //init discussion tree
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
-                    $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID);
+                    $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflaction);
                     $scope.treeNestedDiscussion = fromReftoNestedJson($scope.treeWithRef);
                     sortArgumnets($scope.treeNestedDiscussion);
 
                     //init reflection tree
+                    //$scope.reflactions = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflaction)
                     $scope.treeNestedReflection = {};
 
                     $scope.onlineUsers = result.onlineUsers;
@@ -293,7 +294,8 @@
                 });
             }
 
-            $rootScope.cloneToReflection = function(id){
+            $rootScope.cloneToReflection = function(id, start, end){
+                //if(selectionEnd <= selectionStart) return;
                 var findArg = function(nestedArgs, id){
                     var res;
                     nestedArgs.forEach(arg => {
@@ -313,8 +315,35 @@
 
                 arg = findArg($scope.treeNestedDiscussion, id);
                 if(arg){
-                    $scope.treeNestedReflection = [arg];
-                    console.log(arg)
+                    var tmpArg = jQuery.extend(true, {}, arg);
+                    var htmlElements = jQuery.parseHTML(tmpArg.content);
+                    var c = 0;
+                    var newHtmlContent = "";
+
+                    htmlElements.forEach(el => {
+                        var elLen = $(el).text().length;
+                        //console.log('c:'+c+'  start:'+start+'   end:'+end+'   ellen:'+elLen);
+                        
+                        if(c >= start && c <= end){
+                            if(c + elLen > end){
+                                newHtmlContent += $(el).text().substring(0, end - c);
+                            }else{
+                                newHtmlContent += el.textContent;   
+                            }
+                        }
+                        else if(c + elLen > start){                                
+                                newHtmlContent += $(el).text().substring(start - c, start - c + (end-start));
+                        }
+                        c += elLen;
+                        
+                    });
+                    tmpArg.content = newHtmlContent;
+                    tmpArg.isReflaction = true;
+                    tmpArg.parent_id = 0;
+                    tmpArg.depth = 0;
+                    tmpArg.main_thread_id = 0;
+                    tmpArg.sub_arguments = [];
+                    $scope.treeNestedReflection = [tmpArg];
                 }else{
                     console.log("Cannot Find selected arg");
                 }
@@ -386,10 +415,21 @@
 
             socket.on('submitted-new-argument', function(data){
                 var newArgument = data.data;
+            
+                if(!newArgument.isReflaction){
+                    $scope.originalFocus = $scope.treeNestedDiscussion;
+                } else {
+                    $scope.treeNestedReflection = [];
+                    $scope.originalFocus = $scope.treeNestedReflection;
+                } 
+              
                 refJsonMap[newArgument._id] = newArgument;
                 $scope.originalFocus.unshift(newArgument);
                 updateLastPostsArray(newArgument);
                 //newNodeUpdateSubtreeSizesAndNewest(newArgument);
+                
+
+                
             });
 
             $scope.getArgsMap = function(){
@@ -397,8 +437,15 @@
             };
 
             socket.on('submitted-new-reply', function(data){
-
+             
                 var newReply = data.data;
+
+                if(!newReply.isReflaction){
+                    $scope.originalFocus = $scope.treeNestedDiscussion;
+                } else {
+                    $scope.originalFocus = $scope.treeNestedReflection;
+                } 
+                    
                 refJsonMap[newReply._id] = newReply;
 
                 //var parentNode = getNodeById($scope.originalFocus, newReply.parent_id);
@@ -418,14 +465,16 @@
                 //    $scope.newMessages = true;
                 /*
                 else TODO notifications for instructor discussion
-                 */
+                */
 
-                console.log()
                 parentNode.sub_arguments.push(newReply);
                 parentNode.expanded = true;
 
                 updateLastPostsArray(newReply);
-                newNodeUpdateSubtreeSizesAndNewest(newReply);
+                newNodeUpdateSubtreeSizesAndNewest(newReply);                    
+            
+
+
             });
 
             socket.on('edit-discussion', function(edittedDiscussion){
@@ -478,6 +527,14 @@
 
             /************************
              ************************************************/
+
+            $scope.$on('submitted-new-reflaction', function (e, args) {
+                var node = args.node;
+                var replyText = args.replyText;
+                if(node.isReflaction){
+                    TreeService.postNewArgumentAndReplay(socket, node.content, 0, 0, 0, $scope.role, replyText);
+                }
+            });
 
             $scope.$on('submitted-new-reply', function (e, args) {
                 var node = args.node;

@@ -210,10 +210,22 @@
                     var selection = window.getSelection();
                     var start = selection.focusOffset;
                     var end = selection.baseOffset;
+                    console.log(selection);
+
+                    //little bit derty
                     var argument_el = window.getSelection().anchorNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
                     var id = $(argument_el).attr('id','nodeid').find('i')[1].textContent.replace('#','');
                     $rootScope.textMarked = true;
-                    $rootScope.cloneToReflection(id);
+                    
+                    //var text = selection.baseNode.data;
+                    //console.log(selection)
+                    //console.log(String(text).substring(start, end));
+                    if(start > end){
+                        var c = start;
+                        start = end;
+                        end = c;
+                    }
+                    $rootScope.cloneToReflection(id, start, end);
 
 
                 }
@@ -271,6 +283,13 @@
                     }
                 };
 
+                vm.submitNewReflection = function(node){
+                    if (vm.replyText){
+                        $scope.$emit('submitted-new-reflaction', {node: node, replyText: vm.replyText});
+                        node.replyPressed = false;
+                        node.expanded = true;
+                    }
+                }
                 vm.newReplyPressed = function(node){
                     vm.replyText = "";
                     node.replyPressed = !node.replyPressed;

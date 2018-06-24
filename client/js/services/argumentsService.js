@@ -1,8 +1,8 @@
 (function () {
     angular.module('tree.service', ['tree.factory'])
         .service("TreeService", function () {
-
-            this.postNewArgument = function(socket, argumentText, parentId, depth, main_thread_id, role){
+          
+            var getPostDataFromArg = function(argumentText, parentId, depth, main_thread_id, role, isReflaction = false){
                 // console.log('sending the new arg AJAX..');
                 // console.log("by role--> " + role);
                 var new_main_thread_id;
@@ -35,11 +35,21 @@
                     depth: depth,
                     main_thread_id: new_main_thread_id,
                     role:role,
-                    quotesFromThePAD: quotesFromThePAD
+                    quotesFromThePAD: quotesFromThePAD,
+                    isReflaction:isReflaction
                 };
-                
+                return postData;
+            };
+
+            this.postNewArgument = function(socket, argumentText, parentId, depth, main_thread_id, role, isReflaction = false){
+                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflaction);
                 socket.emit('submitted-new-argument', postData);
             };
 
+            this.postNewArgumentAndReplay = function(socket, argumentText, parentId, depth, main_thread_id, role, replayText, isReflaction = true){
+                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflaction);
+                postData['replayText'] = replayText;
+                socket.emit('submitted-new-argument-and-replay', postData);
+            };
         });
 })();
