@@ -112,6 +112,10 @@
                 replace: true,
                 link: function (scope, element, attrs) {
                     scope.$watch(attrs.dynamic, function(html) {
+                        console.log('^^^^^^^^^^^^^^^^');
+                        console.log(element);
+                        console.log(html);
+                        console.log('^^^^^^^^^^^^^^^^');
                         element.html(html);
                         $compile(element.contents())(scope);
                     });

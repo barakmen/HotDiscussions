@@ -18,6 +18,7 @@ var argumentScheme = mongoose.Schema({
 	trimmed: Boolean,
 	sub_arguments: [{type:Number, ref: 'Argument'}],
 	isReflaction: Boolean,
+	reflectionParts: [{ start:Number, end:Number, refArgId:{type:Number, ref: 'Argument'}}],
 	cloned: Boolean,
 	sourceTrimmedId: {type:Number, ref: 'Argument', default: 0},
 

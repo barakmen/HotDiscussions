@@ -709,14 +709,48 @@ module.exports = function(autoIncrement, io){
                     argument.depth = (newArgument.depth ? newArgument.depth : 0);
                     argument.sub_arguments = [];
                     argument.isReflaction = newArgument.isReflaction;
+                    argument.reflectionParts = [];
                     // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
                     saveArgument(argument, newArgument.quotesFromThePAD, callback);
             };
 
+         
+
             socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
-            socket.on('submitted-new-argument-and-replay', function(newArgAndReplay){
+            socket.on('submitted-new-reflaction-argument-and-replay', function(newArgAndReplay){
                 var replay = newArgAndReplay.replayText;
+
+                var sourceId = Number(newArgAndReplay.sourceId);
+                var sourceStart = newArgAndReplay.sourceStart;
+                var sourceEnd = newArgAndReplay.sourceEnd;
                 submitNewArgument(newArgAndReplay, function(savedArg){
+                    
+                    var addRangeFlags = function(content, start, end){
+                        var newContent = '' + content.substring(0, start);
+                        newContent += ' <a style="color:inherit;" onClick="showReflaction('+ savedArg._id +')">&#128681;' +  content.substring(start, end) + '&#128681;</a> ';
+                        newContent += content.substring(end, content.length);
+                        return newContent;
+                    }
+
+                    Argument.findOne({_id: sourceId}, function(err, argument){
+                        if (err) throw err;
+                        else{
+                            argument.reflectionParts.unshift({
+                                start: sourceStart,
+                                end: sourceEnd,
+                                refArgId: savedArg._id
+                            });              
+                            
+                            argument.save(function (err) {
+                                if (err) throw err;
+                                else{
+                                    argumentsNsp.to(argument.disc_id).emit('argument-reflection-updated', {_id: argument._id, reflectionParts: argument.reflectionParts});
+                                }
+                            });
+                            
+                        }
+                    });
+                   
                     var id = savedArg._id;
                         
                     var postData = {
@@ -728,8 +762,9 @@ module.exports = function(autoIncrement, io){
                         quotesFromThePAD: [],
                         isReflaction: savedArg.isReflaction
                     };
-                    
+
                     submitNewArgument(postData);
+
                 });
             });
 

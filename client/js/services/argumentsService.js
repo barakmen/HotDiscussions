@@ -46,10 +46,13 @@
                 socket.emit('submitted-new-argument', postData);
             };
 
-            this.postNewArgumentAndReplay = function(socket, argumentText, parentId, depth, main_thread_id, role, replayText, isReflaction = true){
+            this.postNewReflactionArgumentAndReplay = function(socket, argumentText, parentId, depth, main_thread_id, role, replayText, sourceId, sourceStart, sourceEnd, isReflaction = true){
                 var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflaction);
                 postData['replayText'] = replayText;
-                socket.emit('submitted-new-argument-and-replay', postData);
+                postData['sourceId'] = sourceId;
+                postData['sourceStart'] = sourceStart;
+                postData['sourceEnd'] = sourceEnd;
+                socket.emit('submitted-new-reflaction-argument-and-replay', postData);
             };
         });
 })();

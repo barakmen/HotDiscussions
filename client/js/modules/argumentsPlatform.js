@@ -18,7 +18,6 @@
 
             var focusedNodes = [];
 
-
             $rootScope.textMarked = false;
 
             $scope.tinymceOptions = {
@@ -294,6 +293,13 @@
                 });
             }
 
+            
+            
+            $scope.showReflaction = function(reflactionArgId){
+                $scope.treeNestedReflection = refJsonMap[reflactionArgId];
+            }
+            
+            
             $rootScope.cloneToReflection = function(id, start, end){
                 //if(selectionEnd <= selectionStart) return;
                 var findArg = function(nestedArgs, id){
@@ -343,6 +349,10 @@
                     tmpArg.depth = 0;
                     tmpArg.main_thread_id = 0;
                     tmpArg.sub_arguments = [];
+                    tmpArg['sourceId'] = id;
+                    tmpArg['sourceStart'] = start;
+                    tmpArg['sourceEnd'] = end;
+
                     $scope.treeNestedReflection = [tmpArg];
                 }else{
                     console.log("Cannot Find selected arg");
@@ -525,6 +535,22 @@
                 $scope.locked = !$scope.locked;
             });
 
+            socket.on('argument-reflection-updated', function(data){
+                var argId = data._id;
+                var reflectionParts = data.reflectionParts;
+                //TODO: argument[argId].reflectionParts.push(reflectionParts)
+                setReflectionLink(argId, reflectionParts);
+                
+            });
+
+            var setReflectionLink = function(argId, reflectionParts){
+                refJsonMap[argId].reflectionParts.push(reflectionParts);
+                var oldContent = refJsonMap[argId].content;
+                var newContent = oldContent.substring(0, reflectionParts.start);
+                newContent += '<a>👉🏼' + oldContent.substring(reflectionParts.start, reflectionParts.end) + '👈🏼</a>'
+                newContent += oldContent.substring(reflectionParts.end, oldContent.length);
+                refJsonMap[argId].content = newContent;
+            }
             /************************
              ************************************************/
 
@@ -532,7 +558,7 @@
                 var node = args.node;
                 var replyText = args.replyText;
                 if(node.isReflaction){
-                    TreeService.postNewArgumentAndReplay(socket, node.content, 0, 0, 0, $scope.role, replyText);
+                    TreeService.postNewReflactionArgumentAndReplay(socket, node.content, 0, 0, 0, $scope.role, replyText, node.sourceId, node.sourceStart, node.sourceEnd);
                 }
             });
 
@@ -632,6 +658,7 @@
 
                 socket.emit('requesting-user-info', {_id:node.user_id})
             });
+
 
 
             // ****** THIS FUNCTIONALITY IS NOT YET REQUESTED, BUR IT PROBABLY WILL SOMETIME
