@@ -725,26 +725,20 @@ module.exports = function(autoIncrement, io){
                 var sourceEnd = newArgAndReplay.sourceEnd;
                 submitNewArgument(newArgAndReplay, function(savedArg){
                     
-                    var addRangeFlags = function(content, start, end){
-                        var newContent = '' + content.substring(0, start);
-                        newContent += ' <a style="color:inherit;" onClick="showReflaction('+ savedArg._id +')">&#128681;' +  content.substring(start, end) + '&#128681;</a> ';
-                        newContent += content.substring(end, content.length);
-                        return newContent;
-                    }
-
                     Argument.findOne({_id: sourceId}, function(err, argument){
                         if (err) throw err;
                         else{
-                            argument.reflectionParts.unshift({
+                            var newRefPart = {
                                 start: sourceStart,
                                 end: sourceEnd,
                                 refArgId: savedArg._id
-                            });              
+                            };
+                            argument.reflectionParts.unshift(newRefPart);              
                             
                             argument.save(function (err) {
                                 if (err) throw err;
                                 else{
-                                    argumentsNsp.to(argument.disc_id).emit('argument-reflection-updated', {_id: argument._id, reflectionParts: argument.reflectionParts});
+                                    argumentsNsp.to(argument.disc_id).emit('argument-reflection-updated', {_id: argument._id, reflectionPart: newRefPart});
                                 }
                             });
                             

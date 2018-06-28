@@ -293,13 +293,7 @@
                 });
             }
 
-            
-            
-            $scope.showReflaction = function(reflactionArgId){
-                $scope.treeNestedReflection = refJsonMap[reflactionArgId];
-            }
-            
-            
+        
             $rootScope.cloneToReflection = function(id, start, end){
                 //if(selectionEnd <= selectionStart) return;
                 var findArg = function(nestedArgs, id){
@@ -537,22 +531,29 @@
 
             socket.on('argument-reflection-updated', function(data){
                 var argId = data._id;
-                var reflectionParts = data.reflectionParts;
-                //TODO: argument[argId].reflectionParts.push(reflectionParts)
-                setReflectionLink(argId, reflectionParts);
+                var reflectionPart = data.reflectionPart;
+                setReflectionLink(argId, reflectionPart);
                 
             });
 
-            var setReflectionLink = function(argId, reflectionParts){
-                refJsonMap[argId].reflectionParts.push(reflectionParts);
+            var setReflectionLink = function(argId, reflectionPart){
+                if(!refJsonMap[argId].reflectionParts) { refJsonMap[argId].reflectionParts = []; }
+                refJsonMap[argId].reflectionParts.push(reflectionPart);
                 var oldContent = refJsonMap[argId].content;
-                var newContent = oldContent.substring(0, reflectionParts.start);
-                newContent += '<a>👉🏼' + oldContent.substring(reflectionParts.start, reflectionParts.end) + '👈🏼</a>'
-                newContent += oldContent.substring(reflectionParts.end, oldContent.length);
+                console.log(reflectionPart);
+                var newContent = oldContent.substring(0, reflectionPart.start);
+                newContent += '<a ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">🏁' + oldContent.substring(reflectionPart.start, reflectionPart.end) + '&#128681;</a>'; //"color:inherit;"
+                newContent += oldContent.substring(reflectionPart.end, oldContent.length);
                 refJsonMap[argId].content = newContent;
             }
             /************************
              ************************************************/
+            $scope.$on('load-arg-to-refection', function (e, args) {            
+                $scope.treeNestedReflection = [];
+                $scope.originalFocus = $scope.treeNestedReflection;
+                var argId = args.data.argId;
+                $scope.treeNestedReflection.unshift(refJsonMap[argId]);
+            });
 
             $scope.$on('submitted-new-reflaction', function (e, args) {
                 var node = args.node;

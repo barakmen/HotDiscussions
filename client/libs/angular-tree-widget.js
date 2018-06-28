@@ -84,7 +84,7 @@
                 strict:'A',
                 scope:{node:'=',role:'='},
                 template:
-                    '<span>' +
+                    '<span>' + 
                         '<span ng-mouseover="ofCtrl.emitParentBlinker(ofCtrl.node.parent_id)" ng-mouseleave="ofCtrl.emitParentBlinker(ofCtrl.node.parent_id)" title = " הודעה מאת: {{::ofCtrl.node.fname}} {{::ofCtrl.node.lname}}"' +
                         'ng-style="{color: ofCtrl.node.color}" class="glyphicon glyphicon-user" ng-class="{\'iconFlash\' : ofCtrl.node.isBlinking}"></span> ' +
                         '&nbsp;' +
@@ -112,10 +112,13 @@
                 replace: true,
                 link: function (scope, element, attrs) {
                     scope.$watch(attrs.dynamic, function(html) {
-                        console.log('^^^^^^^^^^^^^^^^');
-                        console.log(element);
-                        console.log(html);
-                        console.log('^^^^^^^^^^^^^^^^');
+                        scope.loadArgToReflection = function(argId){
+                            scope.$emit('load-arg-to-refection', {
+                                data:{   
+                                    argId:argId
+                                }
+                            });
+                        }
                         element.html(html);
                         $compile(element.contents())(scope);
                     });
@@ -214,7 +217,6 @@
                     var selection = window.getSelection();
                     var start = selection.focusOffset;
                     var end = selection.baseOffset;
-                    console.log(selection);
 
                     //little bit derty
                     var argument_el = window.getSelection().anchorNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
