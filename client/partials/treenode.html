@@ -8,7 +8,7 @@
 
                <!--span style="width:70%" ng-style="node.depth===0 && {'font-weight':'bold'}"-->
                <span style="width:70%">
-                     <overflow-content id="nodeContent" ng-mouseup="onArgumentTextSelected()" class=non-expanded node="node" role="node.color"></overflow-content>
+                     <overflow-content id="nodeContent" ng-mouseup="onArgumentTextSelected(this)" class=non-expanded node="node" role="node.color"></overflow-content>
                </span>
 
                 <div ng-if="node.replyPressed" ng-style="{'padding-right':(((node.depth + ((((node.depth + 1) % 10) == 0) && nodeCtrl.focusing) + (node.isFocused || nodeCtrl.focusing)) % (10 + (node.isFocused && nodeCtrl.focusing))) + 1) * 4 + 'px'}">

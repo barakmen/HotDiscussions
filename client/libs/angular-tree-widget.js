@@ -33,22 +33,22 @@
 
             function overflowController($scope, $element, $filter, $sce){
                 var vm = this;
-
                 vm.node.content = vm.node.content.replace(/<br[^>]*>/gi, "\n");
-
                 var res = "** תוכן הוסתר על ידי המנהל :( **";
                 res = "<span style='color:red;'>" + res + "</span>";
                 res = $sce.trustAsHtml(res);
-
+                
                 $scope.hiddenMessage = res;
 
                 vm.expand = function(event){
 
+                    //if user select text to replay reflection so not collapse it
+                    if(window.getSelection().toString() != '')
+                        return;
                     //When called by a link press - should NOT expand or collapse
                     if((event.target.tagName == "A")||(event.target.tagName == "BUTTON"))
                         return;
                     //--
-
                     if (!$scope.expanded){
                         $element.removeClass('non-expanded');
                         $element.addClass('expanded');
@@ -212,15 +212,38 @@
             var nodeController = function($scope){
                 var vm = this;
 
-
-                $scope.onArgumentTextSelected = function (){
+               
+                $scope.onArgumentTextSelected = function (element){
+                    var content = $.parseHTML(element.node.content);
+                    
                     var selection = window.getSelection();
-                    var start = selection.focusOffset;
-                    var end = selection.baseOffset;
+                    var selRange = selection.getRangeAt(0);
+                    //==============================================
 
-                    //little bit derty
-                    var argument_el = window.getSelection().anchorNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
-                    var id = $(argument_el).attr('id','nodeid').find('i')[1].textContent.replace('#','');
+
+                    //console.log(selection);
+                    //console.log(selection.focusNode);
+                  
+                    var allNodes = selection.anchorNode.parentNode.parentNode.childNodes;
+                    var findTextOffsetUntilFirstSelectedAnchor = function(allNodes, node){
+                        var offset = 0;
+                        for(var i = 0; i < allNodes.length; i++){
+                            if(!selection.containsNode(allNodes[i], true)){
+                                offset += allNodes[i].innerText.length;
+                            }else{
+                                return offset;
+                            }
+                        }           
+                    }
+                    var offset = findTextOffsetUntilFirstSelectedAnchor(allNodes, selRange.anchorNode);
+                    console.log(offset);
+                    //==============================================
+                    var start = selRange.startOffset;
+                    var end = selRange.endOffset;
+                    //console.log('>:' + start + '|' + end);
+
+                    var id = element.node._id;
+                    
                     $rootScope.textMarked = true;
                     
                     //var text = selection.baseNode.data;
@@ -231,9 +254,7 @@
                         start = end;
                         end = c;
                     }
-                    $rootScope.cloneToReflection(id, start, end);
-
-
+                    $rootScope.cloneToReflection(id, start, end, selRange.toString());
                 }
 
                 $scope.tinymceOptions = {

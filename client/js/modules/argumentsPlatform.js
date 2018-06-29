@@ -312,14 +312,13 @@
                 if(!refJsonMap[argId].reflectionParts) { refJsonMap[argId].reflectionParts = []; }
                 refJsonMap[argId].reflectionParts.push(reflectionPart);
                 var oldContent = refJsonMap[argId].content;
-                console.log(reflectionPart);
                 var newContent = oldContent.substring(0, reflectionPart.start);
-                newContent += '🏁<a ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">' + oldContent.substring(reflectionPart.start, reflectionPart.end) + '</a>&#128681;'; //"color:inherit;"
+                newContent += '<span style="text-decoration: underline;" ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">🏁' + oldContent.substring(reflectionPart.start, reflectionPart.end) + '</span>'; //"color:inherit;"
                 newContent += oldContent.substring(reflectionPart.end, oldContent.length);
                 refJsonMap[argId].content = newContent;
             }
         
-            $rootScope.cloneToReflection = function(id, start, end){
+            $rootScope.cloneToReflection = function(id, start, end, selectedText){
                 //if(selectionEnd <= selectionStart) return;
                 var findArg = function(nestedArgs, id){
                     var res;
@@ -338,7 +337,25 @@
                     return res;
                 }
 
-                arg = findArg($scope.treeNestedDiscussion, id);
+                var arg = findArg($scope.treeNestedDiscussion, id);
+                if(arg){
+                    var tmpArg = jQuery.extend(true, {}, arg);
+                    tmpArg.content = selectedText;
+                    tmpArg.isReflaction = true;
+                    tmpArg.parent_id = 0;
+                    tmpArg.depth = 0;
+                    tmpArg.main_thread_id = 0;
+                    tmpArg.sub_arguments = [];
+                    tmpArg['sourceId'] = id;
+                    tmpArg['sourceStart'] = start;
+                    tmpArg['sourceEnd'] = end;
+    
+                    $scope.treeNestedReflection = [tmpArg];
+                }else{
+                    console.log("Cannot Find selected arg");
+                }
+               
+                /*
                 if(arg){
                     var tmpArg = jQuery.extend(true, {}, arg);
                     var htmlElements = jQuery.parseHTML(tmpArg.content);
@@ -375,7 +392,7 @@
                     $scope.treeNestedReflection = [tmpArg];
                 }else{
                     console.log("Cannot Find selected arg");
-                }
+                }*/
             }
 
             /*
