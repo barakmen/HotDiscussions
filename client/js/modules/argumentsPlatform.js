@@ -80,11 +80,11 @@
 
             var refJsonMap = {};
 
-            function fromReftoNestedJson(refJson){
-                refJsonMap = refJson.reduce(function(map, node) {
+            function addToReftoNestedJson(refJson){
+                refJsonMap = Object.assign({}, refJsonMap, refJson.reduce(function(map, node) {
                     map[node._id] = node;
                     return map;
-                }, {});
+                }, {}));
                 var nestedJson = [];
 
                 var maxDate = ' ';
@@ -246,12 +246,15 @@
                     
                     //init discussion tree
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
-                    $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflaction);
-                    $scope.treeNestedDiscussion = fromReftoNestedJson($scope.treeWithRef);
+                    $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflaction);
+                    $scope.treeNestedDiscussion = addToReftoNestedJson($scope.discussionArgs);
+                    var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflaction); 
+                    addToReftoNestedJson(reflectionArgs);
                     sortArgumnets($scope.treeNestedDiscussion);
 
                     //init reflection tree
-                    //$scope.reflactions = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflaction)
+                    setReflectionsOnDiscusstion($scope.discussionArgs);                    
+                    
                     $scope.treeNestedReflection = {};
 
                     $scope.onlineUsers = result.onlineUsers;
@@ -293,6 +296,28 @@
                 });
             }
 
+            var setReflectionsOnDiscusstion = function(discArguments){
+                for(i in discArguments){
+                    var argument = discArguments[i];
+                    var id = argument._id;                    
+                    var reflactions = argument.reflectionParts;
+                    for(j in reflactions){
+                        var ref = reflactions[j];
+                        setReflectionLink(id, ref);
+                    }
+                }
+                
+            }                   
+            var setReflectionLink = function(argId, reflectionPart){
+                if(!refJsonMap[argId].reflectionParts) { refJsonMap[argId].reflectionParts = []; }
+                refJsonMap[argId].reflectionParts.push(reflectionPart);
+                var oldContent = refJsonMap[argId].content;
+                console.log(reflectionPart);
+                var newContent = oldContent.substring(0, reflectionPart.start);
+                newContent += '🏁<a ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">' + oldContent.substring(reflectionPart.start, reflectionPart.end) + '</a>&#128681;'; //"color:inherit;"
+                newContent += oldContent.substring(reflectionPart.end, oldContent.length);
+                refJsonMap[argId].content = newContent;
+            }
         
             $rootScope.cloneToReflection = function(id, start, end){
                 //if(selectionEnd <= selectionStart) return;
@@ -536,16 +561,6 @@
                 
             });
 
-            var setReflectionLink = function(argId, reflectionPart){
-                if(!refJsonMap[argId].reflectionParts) { refJsonMap[argId].reflectionParts = []; }
-                refJsonMap[argId].reflectionParts.push(reflectionPart);
-                var oldContent = refJsonMap[argId].content;
-                console.log(reflectionPart);
-                var newContent = oldContent.substring(0, reflectionPart.start);
-                newContent += '<a ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">🏁' + oldContent.substring(reflectionPart.start, reflectionPart.end) + '&#128681;</a>'; //"color:inherit;"
-                newContent += oldContent.substring(reflectionPart.end, oldContent.length);
-                refJsonMap[argId].content = newContent;
-            }
             /************************
              ************************************************/
             $scope.$on('load-arg-to-refection', function (e, args) {            
