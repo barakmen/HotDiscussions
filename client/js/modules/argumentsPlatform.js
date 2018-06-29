@@ -312,9 +312,30 @@
                 if(!refJsonMap[argId].reflectionParts) { refJsonMap[argId].reflectionParts = []; }
                 refJsonMap[argId].reflectionParts.push(reflectionPart);
                 var oldContent = refJsonMap[argId].content;
-                var newContent = oldContent.substring(0, reflectionPart.start);
-                newContent += '<span style="text-decoration: underline;" ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">🏁' + oldContent.substring(reflectionPart.start, reflectionPart.end) + '</span>'; //"color:inherit;"
-                newContent += oldContent.substring(reflectionPart.end, oldContent.length);
+                var htmlOldContent =  $.parseHTML(refJsonMap[argId].content);
+                var newContent = '';
+                var c = 0;
+                for(var i in htmlOldContent){
+                    var el = htmlOldContent[i];
+                    if(el.nodeName == 'SPAN'){
+                        newContent += el.outerHTML;
+                        c += el.textContent.length;
+                    }else if(el.nodeName == '#text'){
+                        if(c + el.textContent.length >= reflectionPart.start){
+                            var textPre = el.textContent.substring(0,reflectionPart.start - c);
+                            var textSpan = '<span style="text-decoration: underline;" ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">' + el.textContent.substring(reflectionPart.start - c, reflectionPart.end - c) + '</span>'; //"color:inherit;"
+                            var textPost =  el.textContent.substring(reflectionPart.end - c,  el.textContent.length);
+                            c += textPre.length + reflectionPart.end - reflectionPart.start + textPost.length;
+                            var newText = textPre + textSpan + textPost;
+
+                            newContent += newText;
+                        }else{
+                            c += el.textContent.length;
+                            newContent +=  el.textContent;
+                        }
+                    }
+                }
+                
                 refJsonMap[argId].content = newContent;
             }
         

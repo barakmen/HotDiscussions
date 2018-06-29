@@ -236,11 +236,10 @@
                         }           
                     }
                     var offset = findTextOffsetUntilFirstSelectedAnchor(allNodes, selRange.anchorNode);
-                    console.log(offset);
                     //==============================================
-                    var start = selRange.startOffset;
-                    var end = selRange.endOffset;
-                    //console.log('>:' + start + '|' + end);
+                    var start = offset + selRange.startOffset;
+                    var end = offset + selRange.endOffset;
+                    console.log('>:' + start + '|' + end);
 
                     var id = element.node._id;
                     
