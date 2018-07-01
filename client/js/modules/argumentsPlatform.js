@@ -246,9 +246,9 @@
                     
                     //init discussion tree
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
-                    $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflaction);
+                    $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflection);
                     $scope.treeNestedDiscussion = addToReftoNestedJson($scope.discussionArgs);
-                    var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflaction); 
+                    var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflection); 
                     addToReftoNestedJson(reflectionArgs);
                     sortArgumnets($scope.treeNestedDiscussion);
 
@@ -377,7 +377,7 @@
                 if(arg){
                     var tmpArg = jQuery.extend(true, {}, arg);
                     tmpArg.content = selectedText;
-                    tmpArg.isReflaction = true;
+                    tmpArg.isReflection = true;
                     tmpArg.parent_id = 0;
                     tmpArg.depth = 0;
                     tmpArg.main_thread_id = 0;
@@ -416,7 +416,7 @@
                         
                     });
                     tmpArg.content = newHtmlContent;
-                    tmpArg.isReflaction = true;
+                    tmpArg.isReflection = true;
                     tmpArg.parent_id = 0;
                     tmpArg.depth = 0;
                     tmpArg.main_thread_id = 0;
@@ -497,8 +497,7 @@
 
             socket.on('submitted-new-argument', function(data){
                 var newArgument = data.data;
-            
-                if(!newArgument.isReflaction){
+                if(!newArgument.isReflection){
                     $scope.originalFocus = $scope.treeNestedDiscussion;
                 } else {
                     $scope.treeNestedReflection = [];
@@ -522,7 +521,7 @@
              
                 var newReply = data.data;
 
-                if(!newReply.isReflaction){
+                if(!newReply.isReflection){
                     $scope.originalFocus = $scope.treeNestedDiscussion;
                 } else {
                     $scope.originalFocus = $scope.treeNestedReflection;
@@ -626,17 +625,28 @@
             $scope.$on('submitted-new-reflaction', function (e, args) {
                 var node = args.node;
                 var replyText = args.replyText;
-                if(node.isReflaction){
+                if(node.isReflection){
                     TreeService.postNewReflactionArgumentAndReplay(socket, node.content, 0, 0, 0, $scope.role, replyText, node.sourceId, node.sourceStart, node.sourceEnd);
                 }
             });
 
+            $scope.$on('submitted-new-reflection-reply', function (e, args) {
+                var node = args.node;
+                var replyText = args.replyText;
+                // console.log('submiting new reply!');
+                // console.log('by : ' + $scope.role);
+                if(node.isReflection){
+                    TreeService.postNewArgument(socket, replyText, node._id, node.depth+1, node.main_thread_id, $scope.role, isReflection = true);
+                }
+            });
+
+            
             $scope.$on('submitted-new-reply', function (e, args) {
                 var node = args.node;
                 var replyText = args.replyText;
                 // console.log('submiting new reply!');
                 // console.log('by : ' + $scope.role);
-                TreeService.postNewArgument(socket, replyText, node._id, node.depth+1, node.main_thread_id, $scope.role);
+                TreeService.postNewArgument(socket, replyText, node._id, node.depth+1, node.main_thread_id, $scope.role, node.isReflection);
             });
 
             $scope.submitNewArgument = function(newArgumentText){

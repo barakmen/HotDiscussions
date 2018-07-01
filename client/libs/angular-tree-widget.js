@@ -314,6 +314,16 @@
                         node.expanded = true;
                     }
                 }
+                vm.submitReflectionReplay = function(node){
+                    if (vm.replyText){
+                        node.isReflection = true;
+                        $scope.$emit('submitted-new-reply', {node: node, replyText: vm.replyText});
+                        node.replyPressed = false;
+                        node.expanded = true;
+                    }
+                }
+
+
                 vm.newReplyPressed = function(node){
                     vm.replyText = "";
                     node.replyPressed = !node.replyPressed;

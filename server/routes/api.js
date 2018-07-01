@@ -708,7 +708,7 @@ module.exports = function(autoIncrement, io){
                     argument.content = newArgument.content;
                     argument.depth = (newArgument.depth ? newArgument.depth : 0);
                     argument.sub_arguments = [];
-                    argument.isReflaction = newArgument.isReflaction;
+                    argument.isReflection = newArgument.isReflection;
                     argument.reflectionParts = [];
                     // 27/07/16 - Looking up discussion restriction and (13/08/16) mod ID
                     saveArgument(argument, newArgument.quotesFromThePAD, callback);
@@ -755,7 +755,7 @@ module.exports = function(autoIncrement, io){
                         main_thread_id: id,
                         role: role,
                         quotesFromThePAD: [],
-                        isReflaction: savedArg.isReflaction
+                        isReflection: savedArg.isReflection
                     };
 
                     submitNewArgument(postData);
