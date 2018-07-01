@@ -155,6 +155,10 @@
                             bgcolor = "rgba(255, 128, 128, 1)";
                             hoverbgcolor = "rgba(255, 128, 128, 0.6)";
                             break;
+                        case 'reflection':
+                            bgcolor = "rgba(230, 204, 255, 1)";
+                            hoverbgcolor = "rgba(204, 204, 255, 0.6)";
+                            break;
                     }
 
                     var defaultBackground;
@@ -218,12 +222,7 @@
                     
                     var selection = window.getSelection();
                     var selRange = selection.getRangeAt(0);
-                    //==============================================
-
-
-                    //console.log(selection);
-                    //console.log(selection.focusNode);
-                  
+                    
                     var allNodes = selection.anchorNode.parentNode.parentNode.childNodes;
                     var findTextOffsetUntilFirstSelectedAnchor = function(allNodes, node){
                         var offset = 0;
@@ -236,10 +235,9 @@
                         }           
                     }
                     var offset = findTextOffsetUntilFirstSelectedAnchor(allNodes, selRange.anchorNode);
-                    //==============================================
+                    
                     var start = offset + selRange.startOffset;
                     var end = offset + selRange.endOffset;
-                    console.log('>:' + start + '|' + end);
 
                     var id = element.node._id;
                     

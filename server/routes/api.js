@@ -723,6 +723,8 @@ module.exports = function(autoIncrement, io){
                 var sourceId = Number(newArgAndReplay.sourceId);
                 var sourceStart = newArgAndReplay.sourceStart;
                 var sourceEnd = newArgAndReplay.sourceEnd;
+                var role = newArgAndReplay.role;
+                newArgAndReplay.role = 'reflection';
                 submitNewArgument(newArgAndReplay, function(savedArg){
                     
                     Argument.findOne({_id: sourceId}, function(err, argument){
@@ -734,7 +736,6 @@ module.exports = function(autoIncrement, io){
                                 refArgId: savedArg._id
                             };
                             argument.reflectionParts.unshift(newRefPart);              
-                            
                             argument.save(function (err) {
                                 if (err) throw err;
                                 else{
@@ -752,7 +753,7 @@ module.exports = function(autoIncrement, io){
                         parent_id: id,
                         depth: 1,
                         main_thread_id: id,
-                        role: savedArg.role,
+                        role: role,
                         quotesFromThePAD: [],
                         isReflaction: savedArg.isReflaction
                     };

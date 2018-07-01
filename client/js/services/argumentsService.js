@@ -48,6 +48,7 @@
 
             this.postNewReflactionArgumentAndReplay = function(socket, argumentText, parentId, depth, main_thread_id, role, replayText, sourceId, sourceStart, sourceEnd, isReflaction = true){
                 var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflaction);
+                postData.role = role;
                 postData['replayText'] = replayText;
                 postData['sourceId'] = sourceId;
                 postData['sourceStart'] = sourceStart;
