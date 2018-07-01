@@ -300,42 +300,64 @@
                 for(i in discArguments){
                     var argument = discArguments[i];
                     var id = argument._id;                    
-                    var reflactions = argument.reflectionParts;
-                    for(j in reflactions){
-                        var ref = reflactions[j];
+                    if(!refJsonMap[id].reflectionParts) { refJsonMap[id].reflectionParts = []; }
+                    var reflactions = refJsonMap[id].reflectionParts;
+                    var sortedReflectionParts = reflactions.sort((p1,p2) => {
+                        if(p1.start < p2.start){
+                            return -1;
+                        }   
+                        if(p1.start > p2.start){
+                            return 1;
+                        }  
+                        return 0;
+                    });
+
+                    for(j in sortedReflectionParts){
+                        var ref = sortedReflectionParts[j];
                         setReflectionLink(id, ref);
                     }
                 }
                 
             }                   
+       
             var setReflectionLink = function(argId, reflectionPart){
                 if(!refJsonMap[argId].reflectionParts) { refJsonMap[argId].reflectionParts = []; }
                 refJsonMap[argId].reflectionParts.push(reflectionPart);
-                var oldContent = refJsonMap[argId].content;
                 var htmlOldContent =  $.parseHTML(refJsonMap[argId].content);
                 var newContent = '';
+                var numOfSpan = 0;
                 var c = 0;
+                console.log(htmlOldContent);
                 for(var i in htmlOldContent){
                     var el = htmlOldContent[i];
                     if(el.nodeName == 'SPAN'){
                         newContent += el.outerHTML;
                         c += el.textContent.length;
+                        console.log('SPAN');
                     }else if(el.nodeName == '#text'){
-                        if(c + el.textContent.length >= reflectionPart.start){
+                        if(c + el.textContent.length >= reflectionPart.start && c <= reflectionPart.end){
+                            console.log('TEXT1');
                             var textPre = el.textContent.substring(0,reflectionPart.start - c);
-                            var textSpan = '<span style="text-decoration: underline;" ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">' + el.textContent.substring(reflectionPart.start - c, reflectionPart.end - c) + '</span>'; //"color:inherit;"
+                            var spanContent = '🚩' + el.textContent.substring(reflectionPart.start - c, reflectionPart.end - c);
+                            var textSpan = '<span style="text-decoration: underline;" ng-click="loadArgToReflection(' + reflectionPart.refArgId + ')">' + spanContent + '</span>'; //"color:inherit;"
                             var textPost =  el.textContent.substring(reflectionPart.end - c,  el.textContent.length);
-                            c += textPre.length + reflectionPart.end - reflectionPart.start + textPost.length;
+                            c += textPre.length + spanContent.length + textPost.length;//flag is lenght of 2
                             var newText = textPre + textSpan + textPost;
+                            //console.log(newText);
 
                             newContent += newText;
                         }else{
+                            console.log('TEXT2');
                             c += el.textContent.length;
                             newContent +=  el.textContent;
                         }
+                    }else if(el.nodeName == 'BR'){
+                        console.log(el.nodeName);
+                        c += 1;
+                        newContent +=  '\n';
                     }
                 }
-                
+                console.log($.parseHTML(newContent));
                 refJsonMap[argId].content = newContent;
             }
         
