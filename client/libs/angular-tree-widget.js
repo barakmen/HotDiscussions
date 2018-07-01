@@ -222,7 +222,6 @@
                     
                     var selection = window.getSelection();
                     var selRange = selection.getRangeAt(0);
-                    
                     var allNodes = selection.anchorNode.parentNode.parentNode.childNodes;
                     var findTextOffsetUntilFirstSelectedAnchor = function(allNodes, node){
                         var offset = 0;

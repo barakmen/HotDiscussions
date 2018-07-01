@@ -42,8 +42,7 @@
             };
 
             this.postNewArgument = function(socket, argumentText, parentId, depth, main_thread_id, role, isReflection = false){
-                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflection);
-                
+                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflection);                
                 socket.emit('submitted-new-argument', postData);
             };
 
