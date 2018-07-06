@@ -32,7 +32,7 @@ module.exports = function(io){
       break;
 
     default:
-      curDB = configDB.test_url;
+      curDB = configDB.tsafrir_url;//configDB.test_url;
       break;
   }
 
