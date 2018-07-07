@@ -87,10 +87,14 @@ In order to set new release you can run the following commend from the cloned di
 
 
 ### Database:
-* The data that saved in he server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
+* The data that saved in the server has a description [here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)
 
 * The database in the server located at[dbpath]: `C:\Users\srominm\Documents\Projects\HotDiscussions\DB\data`
 * The database log in the server located at[logpath]:`C:\Users\srominm\Documents\Projects\HotDiscussions\DB\logs\mongo.log`
+
+* Backup occure every 11:30PM, Using 'Task Scheduler' of Windows that run the .bat script here:
+    `C:\Backup\dailyHDPbackup_allDBs.bat`.
+    The script saving the backup files in the folder `C:\Backup\backupHistory`
 
 
 ### Load Tests:
