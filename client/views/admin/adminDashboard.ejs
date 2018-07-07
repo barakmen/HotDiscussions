@@ -249,7 +249,7 @@
                     </td>
                 </tr>
 
-                <tr ng-show="group.edit">
+                <tr ng-if="group.edit">
                     <td></td>
                     <td><input class="form-control" ng-model="group.name"></td>
                     <td>
@@ -259,7 +259,7 @@
                     <td></td>
                 </tr>
 
-                <tr ng-show="group.edit">
+                <tr ng-if="group.edit">
                     <td colspan="4">
                         <div style="width:100%;">
                             <button type="submit" class="btn btn-primary btn-sm" ng-click="doneEditGroup($index, group.name, group.curUsers)">Finish</button>
