@@ -104,9 +104,11 @@ Load test located at `server/load_tests`, in that folder there is [README](https
 ### Git workflow:
 The git workflow in this project is as described in Vincent Driessen`s article [here](http://nvie.com/posts/a-successful-git-branching-model/).
 You can see an example repository for that in [TestDriessenGitModle](https://github.com/barakmen/TestDriessenGitModle) github project.
-To see a grafical GUI for the branches, follow the next commends in the cmd:
+To see a graphical GUI for the branches, follow the next commends in the cmd:
 1. `git clone https://github.com/barakmen/TestDriessenGitModle.git`
 2. `cd TestDriessenGitModle`
 3. `gitk`
 
 
+### Todo Managment:
+Is done by maintaining doc file [here](https://docs.google.com/document/d/1v75dppU9elon6LC8_U9RTSF0LnFOqJoOaRyO9OVPlhk/edit?usp=sharing)

@@ -816,7 +816,6 @@ module.exports = function(autoIncrement, io){
                 argTarget.trimmed = argSource.trimmed;
             
                 argTarget.updatedAt = argSource.updatedAt;
-                argTarget.createdAt = argSource.createdAt;
             
                 argTarget.cloned = true;
             }
