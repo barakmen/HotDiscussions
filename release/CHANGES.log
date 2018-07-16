@@ -1,3 +1,36 @@
+commit c14e0b2f372a20f9cbdc2f10ea4d600453a538f6
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 17 00:23:59 2018 +0300
+
+    remove created at from clone when paste trimmed argment,
+     in order to keep on cronoliogical order.
+
+commit 76a2025d077d9f53b0adb0397a07c588fd35f77e
+Merge: 5566acc 7183bf3
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 16 23:50:22 2018 +0300
+
+    Merge branch 'fix-order-of-arguments-and-num-of-load-arguments' into develop
+
+commit 7183bf3c8ed07ad1618b3d8cd383ff45572e188f
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 16 23:49:32 2018 +0300
+
+    change the order of sort when init the discussion
+    And add new argument and replay
+
+commit 22f0f3b4eed4dc7e117b1bcf23176dfce4626458
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 16 12:20:58 2018 +0300
+
+    change order of args
+
+commit 5566accb869ad2897f91d46750c68a5049f6a1e5
+Author: barakmen <barakmen@outlook.com>
+Date:   Sat Jul 7 21:28:11 2018 +0300
+
+    version 1.6
+
 commit 077846f004e7cff46350687da282e304b72f9264
 Merge: ac4f09b 1c02d95
 Author: barakmen <barakmen@outlook.com>
