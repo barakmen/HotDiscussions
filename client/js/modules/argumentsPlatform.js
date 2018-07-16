@@ -219,10 +219,10 @@
             function sortArgumnets(argArray){
                 argArray.sort(function(argA,argB){
                     if(argA.treeStructureUpdatedAt < argB.treeStructureUpdatedAt){
-                        return 1;
+                        return -1;
                     }
                     if (argA.treeStructureUpdatedAt > argB.treeStructureUpdatedAt){
-                        return -1;
+                        return 1;
                     }
                     else{
                         return 0;
@@ -241,7 +241,6 @@
                 });
                 socket.on('init-discussion', function(result){
                     $scope.discusstionID = result.discussion._id;
-                    console.log(result.discussion.quotesFromThePAD);
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
                     $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID);
                     $scope.treeNested = fromReftoNestedJson($scope.treeWithRef);
