@@ -218,11 +218,11 @@
 
             function sortArgumnets(argArray){
                 argArray.sort(function(argA,argB){
-                    if(argA.treeStructureUpdatedAt < argB.treeStructureUpdatedAt){
-                        return 1;
-                    }
-                    if (argA.treeStructureUpdatedAt > argB.treeStructureUpdatedAt){
+                    if(argA.createdAt < argB.createdAt){
                         return -1;
+                    }
+                    if (argA.createdAt > argB.createdAt){
+                        return 1;
                     }
                     else{
                         return 0;
@@ -241,7 +241,6 @@
                 });
                 socket.on('init-discussion', function(result){
                     $scope.discusstionID = result.discussion._id;
-                    console.log(result.discussion.quotesFromThePAD);
                     $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
                     $scope.treeWithRef = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID);
                     $scope.treeNested = fromReftoNestedJson($scope.treeWithRef);
@@ -351,7 +350,7 @@
             socket.on('submitted-new-argument', function(data){
                 var newArgument = data.data;
                 refJsonMap[newArgument._id] = newArgument;
-                $scope.originalFocus.unshift(newArgument);
+                $scope.originalFocus.push(newArgument);
                 updateLastPostsArray(newArgument);
                 //newNodeUpdateSubtreeSizesAndNewest(newArgument);
             });
@@ -376,7 +375,7 @@
                 // UPDATE #1 - condition added on 18/07 - only student discussions should see live updates from other users on top
                 if($scope.discussionRestriction == "student") {
                     $scope.originalFocus.splice(mainThreadInd, 1);
-                    $scope.originalFocus.unshift(mainThread);
+                    $scope.originalFocus.push(mainThread);
                 }
                 //else
                 //    $scope.newMessages = true;
