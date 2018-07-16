@@ -33,22 +33,22 @@
 
             function overflowController($scope, $element, $filter, $sce){
                 var vm = this;
-
                 vm.node.content = vm.node.content.replace(/<br[^>]*>/gi, "\n");
-
                 var res = "** תוכן הוסתר על ידי המנהל :( **";
                 res = "<span style='color:red;'>" + res + "</span>";
                 res = $sce.trustAsHtml(res);
-
+                
                 $scope.hiddenMessage = res;
 
                 vm.expand = function(event){
 
+                    //if user select text to replay reflection so not collapse it
+                    if(window.getSelection().toString() != '')
+                        return;
                     //When called by a link press - should NOT expand or collapse
                     if((event.target.tagName == "A")||(event.target.tagName == "BUTTON"))
                         return;
                     //--
-
                     if (!$scope.expanded){
                         $element.removeClass('non-expanded');
                         $element.addClass('expanded');
@@ -84,7 +84,7 @@
                 strict:'A',
                 scope:{node:'=',role:'='},
                 template:
-                    '<span>' +
+                    '<span>' + 
                         '<span ng-mouseover="ofCtrl.emitParentBlinker(ofCtrl.node.parent_id)" ng-mouseleave="ofCtrl.emitParentBlinker(ofCtrl.node.parent_id)" title = " הודעה מאת: {{::ofCtrl.node.fname}} {{::ofCtrl.node.lname}}"' +
                         'ng-style="{color: ofCtrl.node.color}" class="glyphicon glyphicon-user" ng-class="{\'iconFlash\' : ofCtrl.node.isBlinking}"></span> ' +
                         '&nbsp;' +
@@ -112,6 +112,13 @@
                 replace: true,
                 link: function (scope, element, attrs) {
                     scope.$watch(attrs.dynamic, function(html) {
+                        scope.loadArgToReflection = function(argId){
+                            scope.$emit('load-arg-to-refection', {
+                                data:{   
+                                    argId:argId
+                                }
+                            });
+                        }
                         element.html(html);
                         $compile(element.contents())(scope);
                     });
@@ -147,6 +154,10 @@
                         case 'moderator':
                             bgcolor = "rgba(255, 128, 128, 1)";
                             hoverbgcolor = "rgba(255, 128, 128, 0.6)";
+                            break;
+                        case 'reflection':
+                            bgcolor = "rgba(230, 204, 255, 1)";
+                            hoverbgcolor = "rgba(204, 204, 255, 0.6)";
                             break;
                     }
 
@@ -205,6 +216,43 @@
             var nodeController = function($scope){
                 var vm = this;
 
+               
+                $scope.onArgumentTextSelected = function (element){
+                    var content = $.parseHTML(element.node.content);
+                    
+                    var selection = window.getSelection();
+                    var selRange = selection.getRangeAt(0);
+                    var allNodes = selection.anchorNode.parentNode.parentNode.childNodes;
+                    var findTextOffsetUntilFirstSelectedAnchor = function(allNodes, node){
+                        var offset = 0;
+                        for(var i = 0; i < allNodes.length; i++){
+                            if(!selection.containsNode(allNodes[i], true)){
+                                offset += allNodes[i].innerText.length;
+                            }else{
+                                return offset;
+                            }
+                        }           
+                    }
+                    var offset = findTextOffsetUntilFirstSelectedAnchor(allNodes, selRange.anchorNode);
+                    
+                    var start = offset + selRange.startOffset;
+                    var end = offset + selRange.endOffset;
+
+                    var id = element.node._id;
+                    
+                    $rootScope.textMarked = true;
+                    
+                    //var text = selection.baseNode.data;
+                    //console.log(selection)
+                    //console.log(String(text).substring(start, end));
+                    if(start > end){
+                        var c = start;
+                        start = end;
+                        end = c;
+                    }
+                    $rootScope.cloneToReflection(id, start, end, selRange.toString());
+                }
+
                 $scope.tinymceOptions = {
 
                     //just for placeholder
@@ -257,6 +305,23 @@
                         node.expanded = true;
                     }
                 };
+
+                vm.submitNewReflection = function(node){
+                    if (vm.replyText){
+                        $scope.$emit('submitted-new-reflaction', {node: node, replyText: vm.replyText});
+                        node.replyPressed = false;
+                        node.expanded = true;
+                    }
+                }
+                vm.submitReflectionReplay = function(node){
+                    if (vm.replyText){
+                        node.isReflection = true;
+                        $scope.$emit('submitted-new-reply', {node: node, replyText: vm.replyText});
+                        node.replyPressed = false;
+                        node.expanded = true;
+                    }
+                }
+
 
                 vm.newReplyPressed = function(node){
                     vm.replyText = "";
