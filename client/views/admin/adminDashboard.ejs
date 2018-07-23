@@ -72,6 +72,52 @@
                 דיונים
             </div>
 
+            <table class="table table-hover table-condensed">
+                
+                <tbody ng-show="pressAdd">
+                <tr>
+                    <td style="width:23%;" class="warning"></td>
+                    <td style="width:12%;"><input class="form-control" id="newTitle" type="text" ng-model="newTitle" ng-value="" style="text-align: right;" placeholder="כותרת חדשה" required=""></td>
+                    <td style="width:16%;"><input class="form-control" id="newDesc" type="text" ng-model="newDesc" ng-value="" style="text-align: right;" placeholder="תיאור חדש" required=""></td>
+                    <td style="width:11%;">
+                        <select class="form-control" ng-model="newUserGroup" id="newUserGroup" dir="ltr"
+                                ng-options="group as group.name for group in users_groups">
+                            <option value=''>
+                                - Everybody -
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:11%;">
+                        <select class="form-control" ng-model="newUser" id="newUser" dir="ltr"
+                                ng-options="user as user.local.firstname + ' ' + user.local.lastname for user in users">
+                            <option value=''>
+                                - No mod -
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:11%;">
+                        <select class="form-control" ng-model="newPermittedPoster" id="newPermittedPoster" dir="ltr"
+                                ng-options="user as user.local.firstname + ' ' + user.local.lastname for user in users">
+                            <option value=''>
+                                - Everybody -
+                            </option>
+                        </select>
+                    </td>
+                    <td style="width:6%;" class="warning"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="6">
+                        <div style="width:100%;">
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-right: 30px" ng-click="finishAdding(newDesc, newTitle, newUser, newPermittedPoster, newUserGroup)">Finish</button>
+                            <button type="button" class="btn btn-default btn-sm" ng-click="cancelAdding()">Cancel</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <a ng-show="!pressAdd" style="width:100%;text-align:right" href="" ng-click="addDisc()">+ הוסף דיון חדש</a>
             <table class="table table-hover table-condensed" dir="ltr" style="font-size: small;">
 
                 <thead>
@@ -163,9 +209,7 @@
 
                 </tbody>
             </table>
-		
 	
-
             <table class="table table-hover table-condensed">
                 <tbody ng-show="!pressAdd">
                 <tr>
