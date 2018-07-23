@@ -245,19 +245,7 @@
                     $scope.discusstionID = result.discussion._id;
 
                     
-                    //init discussion tree
-                    $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
-                    $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflection);
-                    $scope.treeNestedDiscussion = addToReftoNestedJson($scope.discussionArgs);
-                    var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflection); 
-                    addToReftoNestedJson(reflectionArgs);
-                    sortArgumnets($scope.treeNestedDiscussion);
-
-                    //init reflection tree
-                    setReflectionsOnDiscusstion($scope.discussionArgs);                    
-                    
-                    $scope.treeNestedReflection = {};
-
+                  
                     $scope.onlineUsers = result.onlineUsers;
 
                     // console.log($scope.treeNestedDiscussion);
@@ -285,6 +273,21 @@
 
                     $scope.fullname = result.user.fname + " " + result.user.lname;
 
+
+                    //init discussion tree
+                    $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
+                    $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflection);
+                    $scope.treeNestedDiscussion = addToReftoNestedJson($scope.discussionArgs);
+                    var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflection); 
+                    addToReftoNestedJson(reflectionArgs);
+                    sortArgumnets($scope.treeNestedDiscussion);
+
+                    //init reflection tree
+                    if( $scope.role == 'admin'  || $scope.role == 'moderator'){
+                        setReflectionsOnDiscusstion($scope.discussionArgs);                    
+                    }
+                    
+                    $scope.treeNestedReflection = {};
                     $scope.originalFocus = $scope.treeNestedDiscussion;
 
                     $scope.chatMessages = result.chatMessages;
@@ -294,6 +297,14 @@
 
                     $scope.locked = result.discussion.locked;
                     
+                    window.onload = function(){
+                        if($scope.role == 'admin' || $scope.role == 'moderator'){
+                            Split(['#reflection','#discussion'], {
+                                sizes: [70, 30]
+                            })
+                        }
+                      
+                    }
                 });
             }
 
@@ -498,19 +509,17 @@
 
             socket.on('submitted-new-argument', function(data){
                 var newArgument = data.data;
+                
                 if(!newArgument.isReflection){
                     $scope.originalFocus = $scope.treeNestedDiscussion;
                 } else {
                     $scope.treeNestedReflection = [];
                     $scope.originalFocus = $scope.treeNestedReflection;
                 } 
-              
                 refJsonMap[newArgument._id] = newArgument;
                 $scope.originalFocus.push(newArgument);
                 updateLastPostsArray(newArgument);
                 //newNodeUpdateSubtreeSizesAndNewest(newArgument);
-                
-
                 
             });
 
@@ -519,7 +528,6 @@
             };
 
             socket.on('submitted-new-reply', function(data){
-             
                 var newReply = data.data;
 
                 if(!newReply.isReflection){
@@ -537,26 +545,19 @@
                 var mainThread = refJsonMap[newReply.main_thread_id];
 
                 var mainThreadInd = $scope.originalFocus.indexOf(mainThread);
-
                 // UPDATE #1 - condition added on 18/07 - only student discussions should see live updates from other users on top
-                if($scope.discussionRestriction == "student") {
+                if(newReply.isReflection) {
                     $scope.originalFocus.splice(mainThreadInd, 1);
                     $scope.originalFocus.push(mainThread);
                 }
-                //else
-                //    $scope.newMessages = true;
-                /*
-                else TODO notifications for instructor discussion
-                */
 
+                
                 parentNode.sub_arguments.push(newReply);
                 parentNode.expanded = true;
 
                 updateLastPostsArray(newReply);
                 newNodeUpdateSubtreeSizesAndNewest(newReply);                    
-            
-
-
+        
             });
 
             socket.on('edit-discussion', function(edittedDiscussion){
