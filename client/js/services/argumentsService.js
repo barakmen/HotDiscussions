@@ -1,8 +1,8 @@
 (function () {
     angular.module('tree.service', ['tree.factory'])
         .service("TreeService", function () {
-
-            this.postNewArgument = function(socket, argumentText, parentId, depth, main_thread_id, role){
+          
+            var getPostDataFromArg = function(argumentText, parentId, depth, main_thread_id, role, isReflection = false){
                 // console.log('sending the new arg AJAX..');
                 // console.log("by role--> " + role);
                 var new_main_thread_id;
@@ -35,10 +35,34 @@
                     depth: depth,
                     main_thread_id: new_main_thread_id,
                     role:role,
-                    quotesFromThePAD: quotesFromThePAD
+                    quotesFromThePAD: quotesFromThePAD,
+                    isReflection:isReflection
                 };
-                
+                return postData;
+            };
+
+            this.postNewArgument = function(socket, argumentText, parentId, depth, main_thread_id, role, isReflection = false){
+                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflection);                
                 socket.emit('submitted-new-argument', postData);
+            };
+
+            this.postNewReflactionArgumentAndReplay = function(socket, argumentText, parentId, depth, main_thread_id, role, replayText, sourceId, sourceStart, sourceEnd, isReflection = true){
+                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflection);
+                postData.role = role;
+                postData['replayText'] = replayText;
+                postData['sourceId'] = sourceId;
+                postData['sourceStart'] = sourceStart;
+                postData['sourceEnd'] = sourceEnd;
+                socket.emit('submitted-new-reflaction-argument-and-replay', postData);
+            };
+
+            this.postNewReflactionReplay = function(socket, argumentText, parentId, depth, main_thread_id, role, sourceId, sourceStart, sourceEnd, isReflection = true){
+                var postData = getPostDataFromArg(argumentText, parentId, depth, main_thread_id, role, isReflection);
+                postData.role = role;
+                postData['sourceId'] = sourceId;
+                postData['sourceStart'] = sourceStart;
+                postData['sourceEnd'] = sourceEnd;
+                socket.emit('submitted-new-reflaction-replay', postData);
             };
 
         });

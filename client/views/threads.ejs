@@ -13,20 +13,22 @@
     <link href="/resources/stylesheets/arguments.css" rel="stylesheet">
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
+    <script src="https://unpkg.com/split.js/split.min.js"></script>
+
     <base href="/discussions/">
 </head>
 
 <body ng-app="argumentsApp">
 
 <div class="container-fluid" ng-controller="ArgumentsTreeController" ng-cloak>
-
-    <div class="row" ng-controller="ModalCtrl">
+    
+    <div class="row topnav" ng-controller="ModalCtrl">
         <div id="scroller">
             <!-- new argument prompt -->
             <div class="row">
                 <div class="col-md-4" style="float:right">
 
-                    <div class="form-group" style="width: 100%;margin-bottom: 0px;" ng-show="isPermittedPoster && !locked">
+                    <div class="form-group" style="width: 100%;" ng-show="isPermittedPoster && !locked">
                         <form class="form-inline" >
                             <!--textarea class="form-control form-group text-right" rows="3" placeholder="כתיבת רעיון חדש..." style="resize: none;width:80%;" ng-model="newArgument"></textarea-->
                             <div data-placeholder="כתיבת רעיון חדש..." class="intoTextarea form-control form-group" ui-tinymce="tinymceOptions" style="height: 5.2em;line-height: 1.3;width:80%;" ng-model="newArgument"></div>
@@ -67,10 +69,36 @@
         </div>
     </div>
 
+   
+
     <!-- existing arguments rendering -->
-    <div class="row" id="treeConversation">
-        <tree nodes='treeNested' role='role' locked="locked"></tree>
+    <div class="row"  id="treeConversation">
+        <div  ng-if="role == 'admin' || role == 'moderator'" class="split split-horizontal" id="reflection" style="width: calc(70% - 5px);">
+            <div style="margin-right: 30px">
+                <h2> דיון רפלקציה </h2>
+                <p> אנא סמן טקסט מהדיון על מנת להגיב עליו</p>
+            </div>
+            
+            <div ng-if="role == 'admin' || role == 'moderator'" id="treeConversation">
+                <tree nodes='treeNestedReflection' role='role' locked="locked"></tree>
+            </div>
+        </div>
+        
+        <div  ng-if="role == 'admin' || role == 'moderator'" class="gutter " style="width: 10px;background: black; "></div>
+
+        <div   ng-if="role=='admin' || role == 'moderator'" class="split split-horizontal" id="discussion" style="width: calc(30% - 5px);">
+            <h2 style="margin-right: 30px"> דיון מקור </h2>
+            <div id="treeConversation">
+                <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>
+            </div>
+        </div>
+
+        <div  ng-if="role == 'student'" id="treeConversation">
+                <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>
+            </div>
     </div>
+    
+    
 
     <div class="row" style="text-align: left;margin-left: 30px">
         <button class="btn btn-xs btn-warning floatingBackBtn" ng-if="backButton" ng-click="clickBackButton()">« חזרה</button>
@@ -113,6 +141,8 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script type="text/javascript" src="/libs/angular-socket-io/socket.js"></script>
 <script type="text/javascript" src="/libs/moment/moment.js"></script>
+<script src="https://unpkg.com/split.js@1.3.5/split.js"></script>
+
 <!-- local custom app js -->
 <script type="text/javascript" src="/js/modules/argumentsPlatform.js"></script>
 <script type="text/javascript" src="/js/services/argumentsService.js"></script>
