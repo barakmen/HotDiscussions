@@ -1,3 +1,58 @@
+commit 72c3f09c71374e52d972e81554e7b39059f6d7aa
+Merge: 7c016d5 d6d386c
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 11:36:43 2018 +0300
+
+    Merge branch 'add-database-and-url' into develop
+
+commit d6d386ca6809436cb0167c1a68dc0e8916817c1e
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 11:36:07 2018 +0300
+
+    set the new database - work
+
+commit 7c016d5b860728a923364f2506691552da7f39fc
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 23 17:43:35 2018 +0300
+
+    add button in admin deshbord to add new discusstion
+
+commit 7b38bd72edf1f8dd5c1b226f7ad9fbfbbb81f503
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 23 17:30:55 2018 +0300
+
+    change the order of arguments- the oldest is the first one.
+    and set reflection to view only if admin or moderator is logged in
+
+commit 306955268f82490e0157dcc6fb4d6decdeb2129d
+Merge: e1b6eca 582f3f4
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Mon Jul 16 15:02:59 2018 -0700
+
+    Merge branch 'new-reflection-design' into develop
+
+commit e1b6eca43425b80e3a4d13f451bee44bddcd50d7
+Merge: c14e0b2 ee9d710
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 17 00:28:18 2018 +0300
+
+    Merge tag 'release-1.6.1' into develop
+    
+    set order of arguments
+
+commit ee9d71086f2b5de109637fff28e9645d10ae9f7c
+Merge: ffbf4e5 3a7213e
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 17 00:26:11 2018 +0300
+
+    Merge branch 'release-1.6.1'
+
+commit 3a7213e3b908376240754eea6f33d237f21c0936
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 17 00:25:40 2018 +0300
+
+    bump release to 1.6.1
+
 commit c14e0b2f372a20f9cbdc2f10ea4d600453a538f6
 Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 17 00:23:59 2018 +0300
@@ -19,6 +74,13 @@ Date:   Mon Jul 16 23:49:32 2018 +0300
     change the order of sort when init the discussion
     And add new argument and replay
 
+commit 582f3f41cb9a8f5ccec360389ccd25b3fe36adef
+Merge: ddea423 5566acc
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 16 12:26:17 2018 +0300
+
+    Merge branch 'develop' into new-reflection-design
+
 commit 22f0f3b4eed4dc7e117b1bcf23176dfce4626458
 Author: barakmen <barakmen@outlook.com>
 Date:   Mon Jul 16 12:20:58 2018 +0300
@@ -30,6 +92,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Sat Jul 7 21:28:11 2018 +0300
 
     version 1.6
+
+commit ffbf4e57e86f83482955e1d3616850d9ab3810d6
+Merge: 842abf0 077846f
+Author: barakmen <barakmen@outlook.com>
+Date:   Sat Jul 7 21:03:57 2018 +0300
+
+    Merge branch 'release-1.6'
 
 commit 077846f004e7cff46350687da282e304b72f9264
 Merge: ac4f09b 1c02d95
@@ -49,6 +118,84 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Fri Jul 6 16:51:52 2018 +0300
 
     minor chages
+
+commit ddea4235ad3f38260801feee2cbd497009401094
+Author: barakmen <barakmen@outlook.com>
+Date:   Sun Jul 1 16:46:57 2018 +0300
+
+    clean code
+
+commit 113c7c0c417f5bb42e80b37ecc57658ebfb7902d
+Author: barakmen <barakmen@outlook.com>
+Date:   Sun Jul 1 14:47:09 2018 +0300
+
+    fix way to replay to reflection
+
+commit 9d6e4bdba7a881048b731d197d5550907e575d59
+Author: barakmen <barakmen@outlook.com>
+Date:   Sun Jul 1 14:11:12 2018 +0300
+
+    add color to first reflection arg
+
+commit da41215a1004228bca315b7e87752a95a46993b5
+Author: barakmen <barakmen@outlook.com>
+Date:   Sun Jul 1 04:27:01 2018 +0300
+
+    fix bug in mark selection
+
+commit ee55280edd0adbed60711f93c5c665adee5fd588
+Author: barakmen <barakmen@outlook.com>
+Date:   Fri Jun 29 19:41:55 2018 +0300
+
+    fix selection bug
+
+commit a7fd2b8479147381be5216aaa7c7dbdb956422a9
+Author: barakmen <barakmen@outlook.com>
+Date:   Fri Jun 29 18:13:10 2018 +0300
+
+    get position start text
+
+commit 10def5333395052e66b62d89b2d7b086c6c45cda
+Author: barakmen <barakmen@outlook.com>
+Date:   Fri Jun 29 12:05:34 2018 +0300
+
+    work on load discusstion
+
+commit 9fbd4d481ab1efba74d52e0ea7a4909c5c82aa5b
+Author: barakmen <barakmen@outlook.com>
+Date:   Fri Jun 29 01:28:37 2018 +0300
+
+    work
+
+commit c4444063f7163ec460c7642647862a586c761ba6
+Author: barakmen <barakmen@outlook.com>
+Date:   Thu Jun 28 22:53:58 2018 +0300
+
+    new content set with flag
+
+commit 2373209c0bb15a6313410e2059c33c92507d5786
+Author: barakmen <barakmen@outlook.com>
+Date:   Sun Jun 24 17:33:59 2018 +0300
+
+    post new reflaction
+
+commit bdb320a4c6a739dc10b408c06a7b5f4d90e3076c
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jun 11 16:10:18 2018 +0300
+
+    work until now.
+
+commit 3e39a4770f6d8237ab6a4c76bf3d6e30d999c7de
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jun 11 10:38:01 2018 +0300
+
+    step2 same pading
+
+commit 6e60a7d6f7a6276a4c7cea5981413f1771ee2c4d
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jun 11 09:27:03 2018 +0300
+
+    step1 drag work
 
 commit 5aabb9523313cdc78b706aef04a589f87f1a9996
 Merge: e0f27a1 842abf0

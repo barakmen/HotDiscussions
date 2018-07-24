@@ -31,6 +31,10 @@ module.exports = function(io){
       curDB = configDB.loadtest_url;
       break;
 
+    case 'oldbackup':
+      curDB = configDB.oldbackup_url;
+      break;
+
     default:
       curDB = configDB.tsafrir_url;//configDB.test_url;
       break;
