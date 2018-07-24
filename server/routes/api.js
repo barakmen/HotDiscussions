@@ -613,7 +613,7 @@ module.exports = function(autoIncrement, io){
             /**
              * EVENT2
              */
-            var saveArgument = function(argument, quotesFromThePAD, callback = undefined){
+            var saveArgument = function(argument, quotesFromThePAD, callback){
                 var discRest = "";
                 Discussion.findOne({_id: argument.disc_id}, function(err, disc) {
                     if (err){
@@ -691,7 +691,7 @@ module.exports = function(autoIncrement, io){
 
             }
 
-            var submitNewArgument = function (newArgument, callback = undefined) {
+            var submitNewArgument = function (newArgument, callback) {
                     // console.log('got new argument from client..: ', newArgument);
                     var argument = new Argument();
                     argument.treeStructureUpdatedAt = Date.now();
@@ -716,7 +716,7 @@ module.exports = function(autoIncrement, io){
 
          
 
-            socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument)});
+            socket.on('submitted-new-argument', function(newArgument){submitNewArgument(newArgument, undefined)});
             socket.on('submitted-new-reflaction-argument-and-replay', function(newArgAndReplay){
                 var replay = newArgAndReplay.replayText;
 
@@ -758,7 +758,7 @@ module.exports = function(autoIncrement, io){
                         isReflection: savedArg.isReflection
                     };
 
-                    submitNewArgument(postData);
+                    submitNewArgument(postData, undefined);
 
                 });
             });
