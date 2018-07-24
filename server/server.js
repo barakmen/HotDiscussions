@@ -15,14 +15,6 @@ module.exports = function(io){
   // Run appropriate instance - test / benzi / baruch / tsafrir
   var curDB;
   switch(process.env.INSTANCE){
-    case 'benzi':
-      curDB = configDB.benzi_url;
-      break;
-
-    case 'baruch':
-      curDB = configDB.baruch_url;
-      break;
-
     case 'tsafrir':
       curDB = configDB.tsafrir_url;
       break;
