@@ -33,7 +33,7 @@ module.exports = function(io){
   }
 
   console.log("Running on HDP instance of: " + process.env.INSTANCE + " on DB: " + curDB);
-  mongoose.connect(curDB);
+  mongoose.connect(curDB), { useMongoClient: true };
   var db = mongoose.connection;
   db.on('error', console.error.bind(console, 'db connection error'));
   db.once('open', function(){console.log('succefully connected to mongodb');});
