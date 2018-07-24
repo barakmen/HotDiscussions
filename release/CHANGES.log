@@ -1,3 +1,31 @@
+commit 0d02d6b869e028f6954a568a43649865626ccc71
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 16:41:01 2018 +0300
+
+    fix bug of unexpected token =
+
+commit a78c4562e254f911b0c3fcd3a32b33e0e6534081
+Merge: 3ae5edd 579f89e
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 15:10:06 2018 +0300
+
+    Merge tag 'release-2.1.2' into develop
+    
+    release 2.1.2
+
+commit 579f89e42756a1d26d514c821684fd7b71a8f166
+Merge: 2b59448 75764b6
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 15:08:50 2018 +0300
+
+    Merge branch 'release-2.1.2'
+
+commit 75764b6889f66f233310ec9ad218a62d401fbda3
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 15:08:30 2018 +0300
+
+    bump version to 2.1.2
+
 commit 3ae5edd8ab6fc89b9e0247e364b8891174388b42
 Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 15:07:39 2018 +0300
@@ -10,6 +38,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 14:47:13 2018 +0300
 
     Merge branch 'release-2.1.1' into develop
+
+commit 2b59448e3c72e9558eb4c506aaf9cc0f30dd1926
+Merge: 6335bda f379fe7
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:43:04 2018 +0300
+
+    Merge branch 'release-2.1.1'
 
 commit f379fe7e40e5d2779ecb1d05fb4318c3292a484e
 Author: barakmen <barakmen@outlook.com>
@@ -29,6 +64,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 14:07:27 2018 +0300
 
     Merge branch 'release-2.1' into develop
+
+commit 6335bda73704a89647a85452c209751e4c4cd848
+Merge: 96eaef3 ddc0594
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:05:55 2018 +0300
+
+    Merge branch 'release-2.1'
 
 commit ddc0594eb58be5d7f9eca9af0e4f969f3341e844
 Author: barakmen <barakmen@outlook.com>
@@ -79,6 +121,13 @@ Date:   Tue Jul 24 12:01:46 2018 +0300
 
     Merge branch 'release-2.1' into develop
 
+commit 96eaef3ca3d291a4f8d8f4cce994c12334f176e5
+Merge: 0be2c4f 516534a
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 12:01:06 2018 +0300
+
+    Merge branch 'release-2.1'
+
 commit 516534a0cefdf3af145ab97ee2d91ababb95878b
 Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 12:00:50 2018 +0300
@@ -98,11 +147,31 @@ Date:   Tue Jul 24 11:46:45 2018 +0300
 
     Merge branch 'release-2.0' into develop
 
+commit 0be2c4f4f8fb31e7f78405751195fe6570b874a1
+Merge: 690e594 8760fe8
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 11:43:30 2018 +0300
+
+    Merge branch 'release-2.0'
+
 commit 8760fe86ca2b08201ab5e0e05cc66b38ff005548
 Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 11:43:12 2018 +0300
 
     bump version to 2.0
+
+commit 690e594dbb729cb28500c0749290f1eacd385ece
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 11:41:28 2018 +0300
+
+    bump version to 2.0
+
+commit f7599beb38d2220d73549662676569970b47fa29
+Merge: ee9d710 72c3f09
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 11:38:01 2018 +0300
+
+    Merge branch 'release-2.0'
 
 commit 72c3f09c71374e52d972e81554e7b39059f6d7aa
 Merge: 7c016d5 d6d386c
