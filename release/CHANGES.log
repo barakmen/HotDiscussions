@@ -1,3 +1,52 @@
+commit 04c0f140f7cc3584a511a69ab5f4474620884a8b
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:03:16 2018 +0300
+
+    'auto bump it to version 2.1'
+
+commit 6edd4c17ace88066854e0213fdf87c0a2448a551
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:02:29 2018 +0300
+
+    bump
+
+commit f6f9cc7a63ce616f7724ca31ffd101c78b1466c4
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:01:34 2018 +0300
+
+    auto bump it to version 2.1
+
+commit e8f311f2820e52df5a410f746ba6a88d77df88c9
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 13:59:04 2018 +0300
+
+    add autocreate release
+
+commit 79be2d1787202e4d42f9f78d700d95b44a1a2d83
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 13:53:19 2018 +0300
+
+    add useMongoClient becuse errror in the server
+
+commit 16cbe02e5c04021d6465f189058d3e62ce38ca56
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 13:43:16 2018 +0300
+
+    CHANGE THE README
+
+commit f6752f31c104c3ee3bdaa2c46a8a7b53d97e4591
+Merge: d721663 516534a
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 12:01:46 2018 +0300
+
+    Merge branch 'release-2.1' into develop
+
+commit 516534a0cefdf3af145ab97ee2d91ababb95878b
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 12:00:50 2018 +0300
+
+    bump version to 2.1
+
 commit d72166384c823c25fe5ddcb665b01bd71a22740e
 Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 12:00:04 2018 +0300

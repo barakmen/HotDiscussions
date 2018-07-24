@@ -75,7 +75,12 @@ In the cloned folder:
 1. run `"node_modules/.bin/pm2" kill`
 2. run `git pull`.
 3. run `cd startup_files`
-4. run `HDPstartup.bat`  [if you are used bash terminal run: `./HDPstartup.bat`]
+4. *****IMPORTANT***** before you run the commend in step 5, make sure that startup_files/mongodb.conf has the following values:
+`dbpath = C:\Users\srominm\Documents\Projects\HotDiscussions\DB\data`
+`port = 28017`
+`logpath = C:\Users\srominm\Documents\Projects\HotDiscussions\DB\logs\mongo.log `
+
+5. run `HDPstartup.bat`  [if you are used bash terminal run: `./HDPstartup.bat`]
 
 
 ### Run Load Tests:
