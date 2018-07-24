@@ -1,3 +1,22 @@
+commit 3ae5edd8ab6fc89b9e0247e364b8891174388b42
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 15:07:39 2018 +0300
+
+    fix bug
+
+commit e7c85b9b99d30c0b66662755cea87f7af7d24377
+Merge: b841ad7 f379fe7
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:47:13 2018 +0300
+
+    Merge branch 'release-2.1.1' into develop
+
+commit f379fe7e40e5d2779ecb1d05fb4318c3292a484e
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:42:51 2018 +0300
+
+    bump version to 2.1.1
+
 commit b841ad7c00285632c07b953826ef4f2788918722
 Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 14:41:56 2018 +0300
