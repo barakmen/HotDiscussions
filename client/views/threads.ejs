@@ -93,7 +93,7 @@
             </div>
         </div>
 
-        <div  ng-if="role !='admin' || role != 'moderator'" id="treeConversation">
+        <div  ng-if="role !='admin' && role != 'moderator'" id="treeConversation">
                 <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>
             </div>
     </div>

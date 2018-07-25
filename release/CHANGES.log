@@ -1,3 +1,22 @@
+commit 22cac752dbb175fadb25892fd52fca309cb49c69
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:02:39 2018 +0300
+
+    fix little bug
+
+commit 3572706e7a671ca905b232f10896fd17c2103982
+Merge: 955f6a4 8dbcc27
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:01:30 2018 +0300
+
+    Merge branch 'ralease-2.3' into develop
+
+commit 8dbcc277822f25e8c1661cb3017185c41cf676e1
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:00:16 2018 +0300
+
+    bump version to 2.3.2
+
 commit c4217b7e7b6ff5dd31bc6c7cb1b60959d1736465
 Merge: 94d7e67 955f6a4
 Author: barakmen <barakmen@outlook.com>
