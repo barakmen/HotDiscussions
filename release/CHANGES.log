@@ -1,3 +1,9 @@
+commit bf12d5e421052048bd6ee9a21befe86da6d44964
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:54:38 2018 +0300
+
+    bump verstion to 2.3
+
 commit 77b5c9e04d04e94d1f123c6273845930f5ad2352
 Merge: 0d02d6b d710735
 Author: barakmen <barakmen@outlook.com>
