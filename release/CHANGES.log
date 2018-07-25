@@ -1,3 +1,36 @@
+commit fffeab8d131dcd6b5759c6aaaf3ade234760e094
+Merge: d968d5e 27764f4
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:33:24 2018 +0300
+
+    Merge branch 'fix-split-appear-bug-and-role' into develop
+
+commit 27764f423a31ea7068e68d1a84f86a00341446de
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:32:49 2018 +0300
+
+    fix !
+
+commit c6178d4d0ee6770ba8c4678a2797f6bedbe75288
+Merge: 6a03eda 6196660
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:06:12 2018 +0300
+
+    Merge branch 'release-2.3.3' into fix-split-appear-bug-and-role
+
+commit d968d5e5638aa3f7fc6d65737fb0fedde829454d
+Merge: 22cac75 6196660
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:05:22 2018 +0300
+
+    Merge branch 'release-2.3.3' into develop
+
+commit 619666082eac1689f5db7388027dd982defab97c
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:03:54 2018 +0300
+
+    bump versionj to 2.3.3
+
 commit 22cac752dbb175fadb25892fd52fca309cb49c69
 Author: barakmen <barakmen@outlook.com>
 Date:   Wed Jul 25 13:02:39 2018 +0300
