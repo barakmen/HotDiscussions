@@ -52,6 +52,12 @@ angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $u
         })
     };
 
+    $scope.exportDiscussionToCSV = function (index) {
+        var discussion = $scope.discussions[index];
+        
+    };
+
+
     $scope.presentDiscussionNetworkGraph = function () {
 
         var argsMap = $scope.getArgsMap();
