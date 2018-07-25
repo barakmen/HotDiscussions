@@ -83,12 +83,10 @@
                 <tree nodes='treeNestedReflection' role='role' locked="locked"></tree>
             </div>
         </div>
-         
-        <div  ng-show="role == 'admin' || role == 'moderator'" class="gutter " style="width: 10px;"></div>
-
-        <div   ng-if="role=='admin' || role == 'moderator'" class="split split-horizontal" id="discussion" style="width: calc(30% - 5px);">
+      
+        <div ng-if="role=='admin' || role == 'moderator'" class="split split-horizontal" id="discussion" style="width: calc(30% - 5px);">
             <h2 style="margin-right: 30px"> דיון מקור </h2>
-            <div id="treeConversation">
+            <div  id="treeConversation">
                 <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>
             </div>
         </div>
@@ -97,8 +95,11 @@
                 <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>
             </div>
     </div>
-    
-    
+
+    <div  ng-if="role=='admin' || role == 'moderator'" >
+        <div split-discussion-reflection></div>
+    </div>
+ 
 
     <div class="row" style="text-align: left;margin-left: 30px">
         <button class="btn btn-xs btn-warning floatingBackBtn" ng-if="backButton" ng-click="clickBackButton()">« חזרה</button>
