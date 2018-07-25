@@ -83,8 +83,8 @@
                 <tree nodes='treeNestedReflection' role='role' locked="locked"></tree>
             </div>
         </div>
-        
-        <div  ng-if="role == 'admin' || role == 'moderator'" class="gutter " style="width: 10px;background: black; "></div>
+         
+        <div  ng-show="role == 'admin' || role == 'moderator'" class="gutter " style="width: 10px;"></div>
 
         <div   ng-if="role=='admin' || role == 'moderator'" class="split split-horizontal" id="discussion" style="width: calc(30% - 5px);">
             <h2 style="margin-right: 30px"> דיון מקור </h2>
