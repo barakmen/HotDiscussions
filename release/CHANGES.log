@@ -1,3 +1,42 @@
+commit c4217b7e7b6ff5dd31bc6c7cb1b60959d1736465
+Merge: 94d7e67 955f6a4
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:59:45 2018 +0300
+
+    Merge branch 'develop' into ralease-2.3
+
+commit 94d7e672f3f46c6a7fa64c62b174f40c008184d8
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:58:54 2018 +0300
+
+    bump version to 2.3.1
+
+commit 955f6a4ceba155784e8d31d8daa195b965dfd8b4
+Merge: a50d6dc 6a03eda
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:57:36 2018 +0300
+
+    Merge branch 'fix-split-appear-bug-and-role' into develop
+
+commit a50d6dcf12f5263e74eadd8e82cc9e77d2cd9188
+Merge: 77b5c9e bf12d5e
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:57:06 2018 +0300
+
+    Merge branch 'ralease-2.3' into develop
+
+commit bf12d5e421052048bd6ee9a21befe86da6d44964
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:54:38 2018 +0300
+
+    bump verstion to 2.3
+
+commit 6a03edad72cd657ae5f4b2aec3f6c7dde75754f7
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 12:53:39 2018 +0300
+
+    fix instractor discussstion view
+
 commit 77b5c9e04d04e94d1f123c6273845930f5ad2352
 Merge: 0d02d6b d710735
 Author: barakmen <barakmen@outlook.com>
