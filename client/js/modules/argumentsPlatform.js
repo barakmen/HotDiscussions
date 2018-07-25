@@ -256,7 +256,6 @@
                     $scope.discussionDescription = result.discussion.description;
 
                     $scope.role = result.user.role;
-
                     if(result.user.id == result.discussion.moderator_id)
                         $scope.role = "moderator";  // done also on server side API when new args is sent
 
