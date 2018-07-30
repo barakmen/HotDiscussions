@@ -89,8 +89,41 @@ module.exports = function(autoIncrement, io){
         }
     
      });
+   
+    var argsToDiscussionFormatCSV = function(arguments){
 
-    /***
+
+        const Json2csvParser = require('json2csv').Parser;
+        var csvFormated = new Json2csvParser({withBOM:true}).parse(arguments);
+        return csvFormated;
+    }
+    router.post('/exporttocsv/:discid/:disctitle', function(req, res, next) {
+        var discid = req.params.discid;
+        var disctitle = req.params.disctitle;
+
+        console.log(discid);
+        const Json2csvParser = require('json2csv').Parser;
+        try{
+            Discussion.find({_id: discid}).lean().exec({}, function(err, discRes) {
+                if (err) { res.send(err); return; }
+                Argument.find({disc_id: discid}).lean().exec({}, function(err, arguments) {
+                    if (err) { res.send(err); return; } 
+                    var argsFormated = argsToDiscussionFormatCSV(arguments);
+                    var zip = new require('node-zip')();
+                    zip.file('Discusstion_' + disctitle + '.csv', argsFormated);
+                    var content = zip.generate({base64:false,compression:'DEFLATE'});
+                    res.end(content,"binary");
+                });
+            });
+        
+        }
+        catch (err){
+            res.send(err);
+        }
+    });
+
+
+     /***
      *          _ _                        _
      *         | (_)                      (_)
      *       __| |_ ___  ___ _   _ ___ ___ _  ___  _ __  ___
@@ -101,7 +134,8 @@ module.exports = function(autoIncrement, io){
      *
      */
 
-    //get all the discussions by the role
+   
+     //get all the discussions by the role
     //TODO: show the discussions that the requesting user is registred to only.
     //    this may be unnecassary for the future, and just get the arguments of the relevant discussion for
     //    non-admin user.

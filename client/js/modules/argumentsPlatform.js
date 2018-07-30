@@ -277,6 +277,7 @@
                 $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
                 $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflection);
                 $scope.treeNestedDiscussion = addToReftoNestedJson($scope.discussionArgs);
+                console.log($scope.treeNestedDiscussion);
                 var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflection); 
                 addToReftoNestedJson(reflectionArgs);
                 sortArgumnets($scope.treeNestedDiscussion);
