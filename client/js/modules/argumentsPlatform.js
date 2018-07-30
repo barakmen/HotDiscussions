@@ -756,7 +756,7 @@
         return {
              link: function(scope, element, attrs) {
                 Split(['#reflection','#discussion'], {
-                    sizes: [70, 30]
+                    sizes: [60, 40]
                 });
              }
         }

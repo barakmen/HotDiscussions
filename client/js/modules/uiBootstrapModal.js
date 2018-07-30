@@ -59,11 +59,11 @@ angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $u
             method: 'POST',
             responseType: 'arraybuffer'
         }).then(function success(response){
-            var a = document.createElement('a');
-            var blob = new Blob([response.data], {'type':"application/zip"});
-            a.href = URL.createObjectURL(blob);
-            a.download =  'Discussion_' + discussion.title + '.zip';
-            a.click();
+                var a = document.createElement('a');
+                var blob = new Blob([response.data], {'type':"application/octet-stream"});
+                a.href = URL.createObjectURL(blob);
+                a.download =  'Discussion_' + discussion.title + '.csv';
+                a.click();
             }), function(err){
               console.log(err.statusText);
             };

@@ -73,7 +73,7 @@
 
     <!-- existing arguments rendering -->
     <div class="row"  id="treeConversation">
-        <div  ng-if="role == 'admin' || role == 'moderator'" class="split split-horizontal" id="reflection" style="width: calc(70% - 5px);">
+        <div  ng-if="role == 'admin' || role == 'moderator'" class="split split-horizontal" id="reflection" style="width: calc(60% - 5px);">
             <div style="margin-right: 30px">
                 <h2> דיון רפלקציה </h2>
                 <p> אנא סמן טקסט מהדיון על מנת להגיב עליו</p>
@@ -84,7 +84,7 @@
             </div>
         </div>
       
-        <div ng-if="role=='admin' || role == 'moderator'" class="split split-horizontal" id="discussion" style="width: calc(30% - 5px);">
+        <div ng-if="role=='admin' || role == 'moderator'" class="split split-horizontal" id="discussion" style="width: calc(40% - 5px);">
             <h2 style="margin-right: 30px"> דיון מקור </h2>
             <div  id="treeConversation">
                 <tree nodes='treeNestedDiscussion' role='role' locked="locked"></tree>

@@ -90,29 +90,63 @@ module.exports = function(autoIncrement, io){
     
      });
    
-    var argsToDiscussionFormatCSV = function(arguments){
+
+    var sortArgs = function (args){
+        var sortedArgs = [];
+        var mainArgs = args
+        .filter((arg) => arg.parent_id == 0)
+        .sort((a,b) => {
+            if(argA.createdAt < argB.createdAt){
+                return 1;
+            }
+            if (argA.createdAt > argB.createdAt){
+                return -1;
+            }
+            else{
+                return 0;
+            }
+        });
+
+        
 
 
+    }
+
+    var argsToDiscussionFormatCSV = function(args){
         const Json2csvParser = require('json2csv').Parser;
-        var csvFormated = new Json2csvParser({withBOM:true}).parse(arguments);
-        return csvFormated;
+        const endline = '\r\n';
+        const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
+        
+        var addNoneFieldsCsvFormat = function (row, numOfNone, delimiter){
+            let res = '';
+            while(numOfNone > 0){
+                res += '""' + delimiter;
+                numOfNone--;
+            }
+            return res + row;
+        }
+
+        let firstRow = false;
+        const argToCsv = function(arg){
+            argcsv = new Json2csvParser({header:false}).parse([arg]);
+            return addNoneFieldsCsvFormat(argcsv, arg.depth, ',');
+        }
+
+        const reducer = (accumulator, currentValue) => accumulator + argToCsv(currentValue) + endline;
+        
+        var argscsv = args.reduce(reducer, headers);
+        return argscsv;
     }
     router.post('/exporttocsv/:discid/:disctitle', function(req, res, next) {
         var discid = req.params.discid;
         var disctitle = req.params.disctitle;
-
-        console.log(discid);
-        const Json2csvParser = require('json2csv').Parser;
         try{
             Discussion.find({_id: discid}).lean().exec({}, function(err, discRes) {
                 if (err) { res.send(err); return; }
                 Argument.find({disc_id: discid}).lean().exec({}, function(err, arguments) {
                     if (err) { res.send(err); return; } 
                     var argsFormated = argsToDiscussionFormatCSV(arguments);
-                    var zip = new require('node-zip')();
-                    zip.file('Discusstion_' + disctitle + '.csv', argsFormated);
-                    var content = zip.generate({base64:false,compression:'DEFLATE'});
-                    res.end(content,"binary");
+                    res.send(new Buffer(argsFormated));
                 });
             });
         
