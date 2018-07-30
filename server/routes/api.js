@@ -92,10 +92,8 @@ module.exports = function(autoIncrement, io){
    
 
     var sortArgs = function (args){
-        var sortedArgs = [];
-        var mainArgs = args
-        .filter((arg) => arg.parent_id == 0)
-        .sort((a,b) => {
+        let sortedArgs = [];
+        args.sort((argA,argB) => {
             if(argA.createdAt < argB.createdAt){
                 return 1;
             }
@@ -107,9 +105,20 @@ module.exports = function(autoIncrement, io){
             }
         });
 
-        
-
-
+        for(var i in args){
+            let arg = args[i];
+            if(arg.parent_id == 0){
+                sortedArgs.push(arg);
+            }else{
+                for(var j in sortedArgs){
+                    let parentArg = args[j];
+                    if(arg.parent_id == parentArg._id){
+                        sortedArgs.splice(j,0, arg);
+                    }
+                }
+            }
+        }
+        return sortedArgs;
     }
 
     var argsToDiscussionFormatCSV = function(args){
@@ -145,8 +154,9 @@ module.exports = function(autoIncrement, io){
                 if (err) { res.send(err); return; }
                 Argument.find({disc_id: discid}).lean().exec({}, function(err, arguments) {
                     if (err) { res.send(err); return; } 
-                    var argsFormated = argsToDiscussionFormatCSV(arguments);
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(arguments));
                     res.send(new Buffer(argsFormated));
+                    //TODO: Check why the args in depth!+0 is not in output
                 });
             });
         
