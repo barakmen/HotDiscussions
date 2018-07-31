@@ -89,8 +89,108 @@ module.exports = function(autoIncrement, io){
         }
     
      });
+   
 
-    /***
+    
+    var sortArgs = function (args){
+        var remove = function(arr, item){
+            var index = arr.indexOf(item);
+            if (index > -1) {
+                arr.splice(index, 1);
+            }
+        }
+        var sortByIncTime = (argA,argB) => {
+            if(argA.createdAt < argB.createdAt){
+                return -1;
+            }
+            if (argA.createdAt > argB.createdAt){
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        };
+        args.sort(sortByIncTime);
+        for(let i in args){
+            var currentArg = args[i];
+            if(currentArg.parent_id != 0){
+                for(let j in args){
+                    var parentArg = args[j];
+                    if(currentArg.parent_id == parentArg._id){
+                        if(parentArg.sub_arguments){
+                            parentArg.sub_arguments.push(currentArg);
+                        }else{
+                            parentArg.sub_arguments = [currentArg];
+                        }
+                    }
+                }
+            }
+        }
+        let mainArgs = args.filter((arg) => arg.parent_id == 0);
+
+        let flatNestedArray = function (argsNestedArr){
+            return argsNestedArr.reduce((acc, arg) => {
+                if(Array.isArray(arg.sub_arguments) && arg.sub_arguments.length > 0){
+                    return acc.concat([arg,...flatNestedArray(arg.sub_arguments)]);
+                }else{
+                    return acc.concat(arg);
+                }
+            }, []);
+        }
+        return flatNestedArray(mainArgs);
+    }
+
+    var argsToDiscussionFormatCSV = function(args, fields){
+        const Json2csvParser = require('json2csv').Parser;
+        const endline = '\r\n';
+        const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
+        
+        const addNoneFieldsCsvFormat = function (row, numOfNone, delimiter){
+            let res = '';
+            while(numOfNone > 0){
+                res += '""' + delimiter;
+                numOfNone--;
+            }
+            return res + row;
+        }  
+        const argToCsv = function(arg){            
+            let argcsv = '';
+            if(arg.parent_id == 0){
+                argcsv += endline;
+            }
+            argcsv += new Json2csvParser({header:false, fields}).parse([arg]);
+            return addNoneFieldsCsvFormat(argcsv, arg.depth, ',');
+        }
+        const reducer = (accumulator, currentArg) => accumulator + argToCsv(currentArg) + endline;
+        
+        var argscsv = args.reduce(reducer, headers);
+        return argscsv;
+    }
+
+    router.post('/exporttocsv/:discid/:disctitle', function(req, res, next) {
+        var discid = req.params.discid;
+        var disctitle = req.params.disctitle;
+        try{
+            Discussion.find({_id: discid}).lean().exec({}, function(err, discRes) {
+                if (err) { res.send(err); return; }
+                Argument.find({disc_id: discid}).lean().exec({}, function(err, args) {
+                    if (err) { res.send(err); return; } 
+                    var jsdom = require('jsdom');
+                    $ = require('jquery')(new jsdom.JSDOM().window);
+                    args.map((arg) => arg.content = $('<html><body>' + arg.content + '</body></html>').text());
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args), ['fname', 'lname', 'content', 'createdAt','_id']);
+                    res.send(new Buffer(argsFormated));
+                });
+            });
+        
+        }
+        catch (err){
+            res.send(err);
+        }
+    });
+
+
+     /***
      *          _ _                        _
      *         | (_)                      (_)
      *       __| |_ ___  ___ _   _ ___ ___ _  ___  _ __  ___
@@ -101,7 +201,8 @@ module.exports = function(autoIncrement, io){
      *
      */
 
-    //get all the discussions by the role
+   
+     //get all the discussions by the role
     //TODO: show the discussions that the requesting user is registred to only.
     //    this may be unnecassary for the future, and just get the arguments of the relevant discussion for
     //    non-admin user.

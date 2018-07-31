@@ -1,3 +1,73 @@
+commit 004fe1199d19c56946b69d1449ea485857c70626
+Merge: d0a4736 40a032c
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 16:53:31 2018 +0300
+
+    Merge branch 'export-to-csv-discusstion' into develop
+
+commit 40a032c9cafc7d847e8c2e438ea3ba82668588ce
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 16:48:34 2018 +0300
+
+    remove the html tags fro arguments content
+
+commit 71e7ff68115e97339433d5e53481e037ba9c6420
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 16:13:15 2018 +0300
+
+    work perfect -
+    just need to replace the content in args in csv format from html format
+
+commit 44062276e294de164bf8381cf31d10e3c140bbfc
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 11:03:21 2018 +0300
+
+    everything is work fine
+
+commit 145c5a53c03f4c4f79bfcb72379a3e96201f7d55
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 01:01:14 2018 +0300
+
+    try to sort the args as in the discussion
+
+commit 42607d2525e7c341eee4eec312d75b3a0692b921
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 00:15:12 2018 +0300
+
+    export with depth
+
+commit 4015a924036a811ff0431af54ef3693332acffc1
+Author: barakmen <barakmen@outlook.com>
+Date:   Mon Jul 30 15:00:57 2018 +0300
+
+    zip is work but discusstion formated is missing
+
+commit fa48a4161e51bf53ce66af5ff60cabf8dfbadb1e
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 23:58:33 2018 +0300
+
+    add button
+
+commit 73896ab92690c1e95d4e11297ee3bc4332f89192
+Merge: 4560ed8 225d8cf
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 17:34:48 2018 +0300
+
+    Merge branch 'release-2.4.1' into export-to-csv-discusstion
+
+commit d0a4736a650e1852cee3acd9eb80c522c8fa416d
+Merge: f090f02 225d8cf
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 17:33:22 2018 +0300
+
+    Merge branch 'release-2.4.1' into develop
+
+commit 225d8cf714416222fb2646c1c6f67e71b3260f12
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 17:31:51 2018 +0300
+
+    bump version to 2.4.1
+
 commit f090f02a0e640add1e3df7ccdd2d2193d2d9adad
 Author: barakmen <barakmen@outlook.com>
 Date:   Wed Jul 25 17:29:40 2018 +0300
@@ -5,6 +75,15 @@ Date:   Wed Jul 25 17:29:40 2018 +0300
     fix disappear bug of split between discussion and reflaction.
     Itys done by add directive that load ofter the,
     reflaction and the discussion
+
+commit 4560ed8a84ad0c89034a051717ab9aad35133245
+Merge: 8822e45 ec9bb3a
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:45:29 2018 +0300
+
+    Merge tag 'release-2.4' into export-to-csv-discusstion
+    
+    fix role and line bug
 
 commit 24c9c000c97a0b230ae450b02e07c5e3ff9f8792
 Merge: 29bd3d0 ec9bb3a
@@ -47,6 +126,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Wed Jul 25 13:32:49 2018 +0300
 
     fix !
+
+commit 8822e45b554a0789f5b2b0073b5c974f6762f6c4
+Merge: 72e9365 6196660
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 13:07:04 2018 +0300
+
+    Merge branch 'release-2.3.3' into export-to-csv-discusstion
 
 commit c6178d4d0ee6770ba8c4678a2797f6bedbe75288
 Merge: 6a03eda 6196660
@@ -154,6 +240,13 @@ Date:   Wed Jul 25 12:53:39 2018 +0300
 
     fix instractor discussstion view
 
+commit 72e9365a82b03b70304d6ef198e4d94e482951ae
+Merge: 033faee d710735
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 16:45:14 2018 +0300
+
+    Merge branch 'release-2.2' into export-to-csv-discusstion
+
 commit 77b5c9e04d04e94d1f123c6273845930f5ad2352
 Merge: 0d02d6b d710735
 Author: barakmen <barakmen@outlook.com>
@@ -179,6 +272,15 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 16:41:01 2018 +0300
 
     fix bug of unexpected token =
+
+commit 033faee13bfb6c7bf85c099b4e9689b2f4848332
+Merge: 424fde0 579f89e
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 15:13:17 2018 +0300
+
+    Merge tag 'release-2.1.2' into export-to-csv-discusstion
+    
+    release 2.1.2
 
 commit a78c4562e254f911b0c3fcd3a32b33e0e6534081
 Merge: 3ae5edd 579f89e
@@ -233,6 +335,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 14:41:56 2018 +0300
 
     fix bug
+
+commit 424fde01b62a164e624967fc1baade598da6ecfd
+Merge: b3d2e25 ddc0594
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 14:08:43 2018 +0300
+
+    Merge branch 'release-2.1' into export-to-csv-discusstion
 
 commit eec7d8b07d8e22a2a91015d11207a503a5708ffa
 Merge: 04c0f14 ddc0594
@@ -290,6 +399,13 @@ Date:   Tue Jul 24 13:43:16 2018 +0300
 
     CHANGE THE README
 
+commit b3d2e25bbb3217f96e0f9501049e4b826b6e995e
+Merge: 9ef256f 516534a
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 12:03:18 2018 +0300
+
+    Merge branch 'release-2.1' into export-to-csv-discusstion
+
 commit f6752f31c104c3ee3bdaa2c46a8a7b53d97e4591
 Merge: d721663 516534a
 Author: barakmen <barakmen@outlook.com>
@@ -315,6 +431,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Tue Jul 24 12:00:04 2018 +0300
 
     remove baruch and benzi db and url accsess ports
+
+commit 9ef256fa77de123bae38c21b0c0df3a40fe9ceb2
+Merge: 7c016d5 8760fe8
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 24 11:48:17 2018 +0300
+
+    Merge branch 'release-2.0' into export-to-csv-discusstion
 
 commit f329435068fa95330c5f1a70ff77dd10fa3ff4c2
 Merge: 72c3f09 8760fe8
