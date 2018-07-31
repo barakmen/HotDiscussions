@@ -1,3 +1,22 @@
+commit 642f551b379a12f7f9b22b91f7a43901a64ba48b
+Merge: 824ad4a ca9b638
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 18:32:21 2018 +0300
+
+    Merge branch 'develop' into release-2.5.2
+
+commit ca9b6382452ba1b2991009eee9d4ee4121046e58
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 18:31:39 2018 +0300
+
+    fix bug
+
+commit 824ad4a4dc3cdf09b0829bd58104e3531ae59c7d
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 18:06:55 2018 +0300
+
+    bump version to 2.5.1
+
 commit 31876875ad0a5458e031455d1640320a44fa2a8d
 Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Tue Jul 31 18:06:03 2018 +0300
