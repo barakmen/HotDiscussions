@@ -113,15 +113,31 @@ module.exports = function(autoIncrement, io){
         args.sort(sortByIncTime);
         for(let i in args){
             var currentArg = args[i];
-            for(let j in args){
-                let parentArg = args[j];
-                if(currentArg.parent_id == parentArg._id){
-                    remove(args, currentArg);
-                    args.splice(j, 0, currentArg);
+            if(currentArg.parent_id != 0){
+                for(let j in args){
+                    var parentArg = args[j];
+                    if(currentArg.parent_id == parentArg._id){
+                        if(parentArg.sub_arguments){
+                            parentArg.sub_arguments.push(currentArg);
+                        }else{
+                            parentArg.sub_arguments = [currentArg];
+                        }
+                    }
                 }
             }
         }
-        return args;
+        let mainArgs = args.filter((arg) => arg.parent_id == 0);
+
+        let flatNestedArray = function (argsNestedArr){
+            return argsNestedArr.reduce((acc, arg) => {
+                if(Array.isArray(arg.sub_arguments) && arg.sub_arguments.length > 0){
+                    return acc.concat([arg,...flatNestedArray(arg.sub_arguments)]);
+                }else{
+                    return acc.concat(arg);
+                }
+            }, []);
+        }
+        return flatNestedArray(mainArgs);
     }
 
     var argsToDiscussionFormatCSV = function(args, fields){
@@ -129,16 +145,14 @@ module.exports = function(autoIncrement, io){
         const endline = '\r\n';
         const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
         
-        var addNoneFieldsCsvFormat = function (row, numOfNone, delimiter){
+        const addNoneFieldsCsvFormat = function (row, numOfNone, delimiter){
             let res = '';
             while(numOfNone > 0){
                 res += '""' + delimiter;
                 numOfNone--;
             }
             return res + row;
-        }
-
-        
+        }  
         const argToCsv = function(arg){            
             let argcsv = '';
             if(arg.parent_id == 0){
@@ -147,23 +161,22 @@ module.exports = function(autoIncrement, io){
             argcsv += new Json2csvParser({header:false, fields}).parse([arg]);
             return addNoneFieldsCsvFormat(argcsv, arg.depth, ',');
         }
-
         const reducer = (accumulator, currentArg) => accumulator + argToCsv(currentArg) + endline;
         
         var argscsv = args.reduce(reducer, headers);
         return argscsv;
     }
+
     router.post('/exporttocsv/:discid/:disctitle', function(req, res, next) {
         var discid = req.params.discid;
         var disctitle = req.params.disctitle;
         try{
             Discussion.find({_id: discid}).lean().exec({}, function(err, discRes) {
                 if (err) { res.send(err); return; }
-                Argument.find({disc_id: discid}).lean().exec({}, function(err, arguments) {
+                Argument.find({disc_id: discid}).lean().exec({}, function(err, args) {
                     if (err) { res.send(err); return; } 
-                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(arguments), ['fname', 'lname', 'content', 'createdAt','_id']);
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args), ['fname', 'lname', 'content', 'createdAt','_id']);
                     res.send(new Buffer(argsFormated));
-                    //TODO: Check why the args in depth!+0 is not in output
                 });
             });
         
