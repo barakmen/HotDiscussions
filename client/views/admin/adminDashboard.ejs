@@ -122,12 +122,13 @@
 
                 <thead>
                 <tr id="headRow">
+                    <th style="width:2%">יצוא</th>
                     <th style="width:2%">תוכן</th>
                     <th style="width:4%">הודעות#</th>
                     <th style="width:11%">Permitted Poster</th>
                     <th style="width:11%">מודרטור</th>
                     <th style="width:11%">קבוצת משתמשים</th>
-                    <th style="width:16%">תיאור</th>
+                    <th style="width:14%">תיאור</th>
                     <th style="width:12%">כותרת</th>
                     <th style="width:20%">סטטוס</th>
                     <th style="width:3%">העתק</th>
@@ -139,6 +140,11 @@
                 <tr ng-show="!discussion.edit" ng-style="(discussion.restriction === 'student' && {'background-color' : '#B9F1E4'}) || (discussion.restriction === 'instructor' && {'background-color' : '#F8EBAE'}) || (discussion.restriction === 'none' && {'background-color' : '#F39696'})">
                     <td dir="rtl" style="width:2%">
                         <div>
+                            <span class="glyphicon glyphicon-save btn btn-info btn-xs" aria-hidden="true" ng-click="exportDiscussionToCSV($index)"></span>
+                        </div>
+                    </td>
+                    <td dir="rtl" style="width:2%">
+                        <div>
                             <span class="fa fa-newspaper-o btn btn-primary btn-xs" aria-hidden="true" ng-click="enterContent($index)"></span>
                         </div>
                     </td>
@@ -146,7 +152,7 @@
                     <td dir="rtl" style="width:11%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.permittedPoster_fname + " " + discussion.permittedPoster_lname}} </td>
                     <td dir="rtl" style="width:11%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.moderator_fname + " " + discussion.moderator_lname}} </td>
                     <td dir="rtl" style="width:11%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{lookupUsers_group[discussion.users_group_id].name}}</td>
-                    <td dir="rtl" style="width:16%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.description}}</td>
+                    <td dir="rtl" style="width:14%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.description}}</td>
                     <td dir="rtl" style="width:12%; cursor: pointer; cursor: hand;" ng-click="goToDisc($index)">{{discussion.title}}</td>
                     <td style="width:20%; white-space:nowrap;">
                         <!-- <a href="" ng-click="showEdit(discussion)">ערוך</a> | <a href="" ng-click="delete($index)">מחק</a> -->

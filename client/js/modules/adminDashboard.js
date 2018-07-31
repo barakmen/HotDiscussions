@@ -8,7 +8,7 @@
       $scope.discussions = [];
       $scope.numOfDiscussionsSelection = {
          "values" : [50,100,150,250, "All"],
-         "value" : 150
+         "value" : 10  
         };
 
       //disconnect from socket when exiting the web page

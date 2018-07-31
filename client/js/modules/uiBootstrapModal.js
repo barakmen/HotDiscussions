@@ -1,5 +1,5 @@
 angular.module('bootstrapModalApp', ['ngAnimate', 'ui.bootstrap']);
-angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $uibModal, $log) {
+angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $uibModal, $log, $http) {
 
     $scope.animationsEnabled = true;
 
@@ -51,6 +51,24 @@ angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $u
             }
         })
     };
+
+    $scope.exportDiscussionToCSV = function (index) {
+        var discussion = $scope.discussions[index];
+        $http({
+            url: '/api/exporttocsv/'  + discussion._id + '/' + discussion.title,
+            method: 'POST',
+            responseType: 'arraybuffer'
+        }).then(function success(response){
+                var a = document.createElement('a');
+                var blob = new Blob([response.data], {'type':"application/octet-stream"});
+                a.href = URL.createObjectURL(blob);
+                a.download =  'Discussion_' + discussion.title + '.csv';
+                a.click();
+            }), function(err){
+              console.log(err.statusText);
+            };
+    };
+
 
     $scope.presentDiscussionNetworkGraph = function () {
 
