@@ -175,6 +175,9 @@ module.exports = function(autoIncrement, io){
                 if (err) { res.send(err); return; }
                 Argument.find({disc_id: discid}).lean().exec({}, function(err, args) {
                     if (err) { res.send(err); return; } 
+                    var jsdom = require('jsdom');
+                    $ = require('jquery')(new jsdom.JSDOM().window);
+                    args.map((arg) => arg.content = $('<html><body>' + arg.content + '</body></html>').text());
                     var argsFormated = argsToDiscussionFormatCSV(sortArgs(args), ['fname', 'lname', 'content', 'createdAt','_id']);
                     res.send(new Buffer(argsFormated));
                 });
