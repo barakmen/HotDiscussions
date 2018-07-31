@@ -91,37 +91,40 @@ module.exports = function(autoIncrement, io){
      });
    
 
+    
     var sortArgs = function (args){
-        let sortedArgs = [];
-        args.sort((argA,argB) => {
+        var remove = function(arr, item){
+            var index = arr.indexOf(item);
+            if (index > -1) {
+                arr.splice(index, 1);
+            }
+        }
+        var sortByIncTime = (argA,argB) => {
             if(argA.createdAt < argB.createdAt){
-                return 1;
+                return -1;
             }
             if (argA.createdAt > argB.createdAt){
-                return -1;
+                return 1;
             }
             else{
                 return 0;
             }
-        });
-
-        for(var i in args){
-            let arg = args[i];
-            if(arg.parent_id == 0){
-                sortedArgs.push(arg);
-            }else{
-                for(var j in sortedArgs){
-                    let parentArg = args[j];
-                    if(arg.parent_id == parentArg._id){
-                        sortedArgs.splice(j,0, arg);
-                    }
+        };
+        args.sort(sortByIncTime);
+        for(let i in args){
+            var currentArg = args[i];
+            for(let j in args){
+                let parentArg = args[j];
+                if(currentArg.parent_id == parentArg._id){
+                    remove(args, currentArg);
+                    args.splice(j, 0, currentArg);
                 }
             }
         }
-        return sortedArgs;
+        return args;
     }
 
-    var argsToDiscussionFormatCSV = function(args){
+    var argsToDiscussionFormatCSV = function(args, fields){
         const Json2csvParser = require('json2csv').Parser;
         const endline = '\r\n';
         const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
@@ -135,13 +138,17 @@ module.exports = function(autoIncrement, io){
             return res + row;
         }
 
-        let firstRow = false;
-        const argToCsv = function(arg){
-            argcsv = new Json2csvParser({header:false}).parse([arg]);
+        
+        const argToCsv = function(arg){            
+            let argcsv = '';
+            if(arg.parent_id == 0){
+                argcsv += endline;
+            }
+            argcsv += new Json2csvParser({header:false, fields}).parse([arg]);
             return addNoneFieldsCsvFormat(argcsv, arg.depth, ',');
         }
 
-        const reducer = (accumulator, currentValue) => accumulator + argToCsv(currentValue) + endline;
+        const reducer = (accumulator, currentArg) => accumulator + argToCsv(currentArg) + endline;
         
         var argscsv = args.reduce(reducer, headers);
         return argscsv;
@@ -154,7 +161,7 @@ module.exports = function(autoIncrement, io){
                 if (err) { res.send(err); return; }
                 Argument.find({disc_id: discid}).lean().exec({}, function(err, arguments) {
                     if (err) { res.send(err); return; } 
-                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(arguments));
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(arguments), ['fname', 'lname', 'content', 'createdAt','_id']);
                     res.send(new Buffer(argsFormated));
                     //TODO: Check why the args in depth!+0 is not in output
                 });
