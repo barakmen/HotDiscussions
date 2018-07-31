@@ -1,3 +1,31 @@
+commit 31876875ad0a5458e031455d1640320a44fa2a8d
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 18:06:03 2018 +0300
+
+    fix bug
+
+commit cad7b4ae529e5bce6da5ceb7754c5619180111a9
+Merge: 9838a85 2f6704b
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 17:27:41 2018 +0300
+
+    Merge tag 'release-2.5' into develop
+    
+    export discussions to csv is working
+
+commit 2f6704b0d353466e5d178d0c6ac86891c34b10e9
+Merge: 7bfc878 9ac12d8
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 17:26:22 2018 +0300
+
+    Merge branch 'release-2.5'
+
+commit 9ac12d8e5fde97bff38d3b13a4b958b0bd3afe6f
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 17:26:10 2018 +0300
+
+    bump version to 2.5.1
+
 commit a414ccf7086f080dd30f9ed3cac58cdb4567efd2
 Merge: 87d80bc 9838a85
 Author: barakmen <barakmen@post.bgu.ac.il>
@@ -11,6 +39,13 @@ Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Tue Jul 31 17:21:58 2018 +0300
 
     Merge branch 'release-2.5' into develop
+
+commit 7bfc878a00027d9d4ca2fd640de75e78e88f887c
+Merge: 64acd44 87d80bc
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 17:02:43 2018 +0300
+
+    Merge branch 'release-2.5'
 
 commit 87d80bce45584ea01b96398932992b089c413fea
 Author: barakmen <barakmen@outlook.com>
@@ -81,6 +116,13 @@ Author: barakmen <barakmen@outlook.com>
 Date:   Wed Jul 25 17:33:22 2018 +0300
 
     Merge branch 'release-2.4.1' into develop
+
+commit 64acd441d866eb882c4af23567c734bd01e227fb
+Merge: ec9bb3a 225d8cf
+Author: barakmen <barakmen@outlook.com>
+Date:   Wed Jul 25 17:32:14 2018 +0300
+
+    Merge branch 'release-2.4.1'
 
 commit 225d8cf714416222fb2646c1c6f67e71b3260f12
 Author: barakmen <barakmen@outlook.com>
