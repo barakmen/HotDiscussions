@@ -178,7 +178,7 @@ module.exports = function(autoIncrement, io){
                     var jsdom = require('jsdom');
                     $ = require('jquery')(new jsdom.JSDOM().window);
                     args.map((arg) => arg.content = $('<html><body>' + arg.content + '</body></html>').text());
-                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args), ['fname', 'lname', 'content', 'createdAt','_id']);
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args.filter(arg => !arg.isReflection)), ['fname', 'lname', 'content', 'createdAt','_id']);
                     res.send(new Buffer(argsFormated));
                 });
             });
