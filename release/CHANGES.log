@@ -1,3 +1,23 @@
+commit a414ccf7086f080dd30f9ed3cac58cdb4567efd2
+Merge: 87d80bc 9838a85
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 17:24:47 2018 +0300
+
+    Merge branch 'develop' into release-2.5
+
+commit 9838a85c88eb440c842da5ac1afa892cf2c8b31e
+Merge: 004fe11 87d80bc
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 17:21:58 2018 +0300
+
+    Merge branch 'release-2.5' into develop
+
+commit 87d80bce45584ea01b96398932992b089c413fea
+Author: barakmen <barakmen@outlook.com>
+Date:   Tue Jul 31 17:02:22 2018 +0300
+
+    bump version to 2.5
+
 commit 004fe1199d19c56946b69d1449ea485857c70626
 Merge: d0a4736 40a032c
 Author: barakmen <barakmen@outlook.com>
