@@ -40,6 +40,10 @@ h1, h3 {
     background-position: 50%;
 }
 
+.gutter:hover{
+    cursor: ew-resize;
+}
+
 .gutter.gutter-vertical {
     background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=')
 }
