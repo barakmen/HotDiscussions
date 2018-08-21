@@ -145,21 +145,14 @@ module.exports = function(autoIncrement, io){
         const endline = '\r\n';
         const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
         
-        const addNoneFieldsCsvFormat = function (row, numOfNone, delimiter){
-            let res = '';
-            while(numOfNone > 0){
-                res += '""' + delimiter;
-                numOfNone--;
-            }
-            return res + row;
-        }  
+   
         const argToCsv = function(arg){            
             let argcsv = '';
             if(arg.parent_id == 0){
                 argcsv += endline;
             }
             argcsv += new Json2csvParser({header:false, fields}).parse([arg]);
-            return addNoneFieldsCsvFormat(argcsv, arg.depth, ',');
+            return argcsv;
         }
         const reducer = (accumulator, currentArg) => accumulator + argToCsv(currentArg) + endline;
         
