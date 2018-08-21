@@ -287,7 +287,7 @@
                     setReflectionsOnDiscusstion($scope.discussionArgs);                    
                 }
                 
-                $scope.treeNestedReflection = {};
+                $scope.treeNestedReflection = [];
                 $scope.originalFocus = $scope.treeNestedDiscussion;
 
                 $scope.chatMessages = result.chatMessages;
@@ -392,49 +392,15 @@
                 tmpArg['sourceStart'] = start;
                 tmpArg['sourceEnd'] = end;
                 tmpArg.role = 'reflection';
-                $scope.treeNestedReflection = [tmpArg];
+                tmpArg['isTmp'] = true;
+                $scope.treeNestedReflection = $scope.treeNestedReflection.filter(arg => arg._id != tmpArg._id);                
+                $scope.treeNestedReflection.unshift(tmpArg);
+
             }else{
                 console.log("Cannot Find selected arg");
             }
             
-            /*
-            if(arg){
-                var tmpArg = jQuery.extend(true, {}, arg);
-                var htmlElements = jQuery.parseHTML(tmpArg.content);
-                var c = 0;
-                var newHtmlContent = "";
-
-                htmlElements.forEach(el => {
-                    var elLen = $(el).text().length;
-                    //console.log('c:'+c+'  start:'+start+'   end:'+end+'   ellen:'+elLen);
-                    
-                    if(c >= start && c <= end){
-                        if(c + elLen > end){
-                            newHtmlContent += $(el).text().substring(0, end - c);
-                        }else{
-                            newHtmlContent += el.textContent;   
-                        }
-                    }
-                    else if(c + elLen > start){                                
-                            newHtmlContent += $(el).text().substring(start - c, start - c + (end-start));
-                    }
-                    c += elLen;
-                    
-                });
-                tmpArg.content = newHtmlContent;
-                tmpArg.isReflection = true;
-                tmpArg.parent_id = 0;
-                tmpArg.depth = 0;
-                tmpArg.main_thread_id = 0;
-                tmpArg.sub_arguments = [];
-                tmpArg['sourceId'] = id;
-                tmpArg['sourceStart'] = start;
-                tmpArg['sourceEnd'] = end;
-
-                $scope.treeNestedReflection = [tmpArg];
-            }else{
-                console.log("Cannot Find selected arg");
-            }*/
+        
         }
 
         /*
@@ -507,13 +473,14 @@
             if(!newArgument.isReflection){
                 $scope.originalFocus = $scope.treeNestedDiscussion;
             } else {
-                $scope.treeNestedReflection = [];
-                $scope.originalFocus = $scope.treeNestedReflection;
+                //$scope.treeNestedReflection = [];
+                $scope.originalFocus = $scope.treeNestedReflection.filter(arg => !arg.isTmp);
             } 
+            
             refJsonMap[newArgument._id] = newArgument;
             $scope.originalFocus.push(newArgument);
             updateLastPostsArray(newArgument);
-            //newNodeUpdateSubtreeSizesAndNewest(newArgument);
+        
             
         });
 
@@ -527,7 +494,7 @@
             if(!newReply.isReflection){
                 $scope.originalFocus = $scope.treeNestedDiscussion;
             } else {
-                $scope.originalFocus = $scope.treeNestedReflection;
+                $scope.originalFocus = $scope.treeNestedReflection.filter(arg => !arg.isTmp);
             } 
                 
             refJsonMap[newReply._id] = newReply;
@@ -606,16 +573,20 @@
             var argId = data._id;
             var reflectionPart = data.reflectionPart;
             setReflectionLink(argId, reflectionPart);
-            
+            $scope.treeNestedReflection = $scope.treeNestedReflection.filter(arg => arg._id != argId);
+            loadArgIdToReflection(reflectionPart.refArgId);
         });
 
         /************************
          ************************************************/
-        $scope.$on('load-arg-to-refection', function (e, args) {            
-            $scope.treeNestedReflection = [];
+        var loadArgIdToReflection = function(argId){
             $scope.originalFocus = $scope.treeNestedReflection;
-            var argId = args.data.argId;
-            $scope.treeNestedReflection.unshift(refJsonMap[argId]);
+            $scope.treeNestedReflection = $scope.treeNestedReflection.filter(arg => arg._id != argId);                
+            $scope.treeNestedReflection.unshift(refJsonMap[argId]);  
+        }
+
+        $scope.$on('load-arg-to-refection', function (e, args) {            
+            loadArgIdToReflection(args.data.argId);
         });
 
         $scope.$on('submitted-new-reflaction', function (e, args) {
