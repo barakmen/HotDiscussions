@@ -233,7 +233,7 @@ module.exports = function(autoIncrement, io){
                                     discs = discs.slice(0, req.query.numOfDiscussions);
                                 }
                                 discs.forEach(function(disc){
-                                    Argument.count({disc_id:disc._id}, function(err, count){
+                                    Argument.count({$or: [{disc_id:disc._id, isReflection: false}, {disc_id:disc._id, isReflection: null}]}, function(err, count){
                                         disc.args_count = count;
                                         discProcessed++;
                                         if(discProcessed == discs.length){
@@ -261,7 +261,7 @@ module.exports = function(autoIncrement, io){
                             }
                             else{
                                 discs.forEach(function(disc){
-                                    Argument.count({disc_id:disc._id}, function(err, count){
+                                    Argument.count({$or: [{disc_id:disc._id, isReflection: false}, {disc_id:disc._id, isReflection: null}]}, function(err, count){
                                         disc.args_count = count;
                                         discProcessed++;
                                         if(discProcessed == discs.length){
@@ -284,7 +284,7 @@ module.exports = function(autoIncrement, io){
                             }
                             else{
                                 discs.forEach(function(disc){
-                                    Argument.count({disc_id:disc._id}, function(err, count){
+                                    Argument.count({$or: [{disc_id:disc._id, isReflection: false}, {disc_id:disc._id, isReflection: null}]}, function(err, count){
                                         disc.args_count = count;
                                         discProcessed++;
                                         if(discProcessed == discs.length){
