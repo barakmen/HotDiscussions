@@ -145,7 +145,6 @@ module.exports = function(autoIncrement, io){
         const endline = '\r\n';
         const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
         
-   
         const argToCsv = function(arg){            
             let argcsv = '';
             if(arg.parent_id == 0){
@@ -175,7 +174,7 @@ module.exports = function(autoIncrement, io){
                     global.document = document;
                     var $ = jQuery = require('jquery')(window);
                     args.map((arg) => arg.content = $('<html><body>' + arg.content + '</body></html>').text());
-                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args.filter(arg => !arg.isReflection)), ['fname', 'lname', 'content', 'createdAt','_id']);
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args.filter(arg => !arg.isReflection)), ['fname', 'lname', 'content', 'createdAt','_id', 'parent_id', 'depth']);
                     res.send(new Buffer(argsFormated));
                 });
             });
