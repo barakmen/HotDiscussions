@@ -143,15 +143,23 @@ module.exports = function(autoIncrement, io){
     var argsToDiscussionFormatCSV = function(args, fields){
         const Json2csvParser = require('json2csv').Parser;
         const endline = '\r\n';
-        const headers = new Json2csvParser({withBOM:true, header:false}).parse([{}]);
+        const headers = new Json2csvParser({withBOM:true, fields}).parse([{}]);
         
+        const addNoneFieldsCsvFormat = function (row, numOfNone, delimiter){
+            let res = '';
+            while(numOfNone > 0){
+                res += '""' + delimiter;
+                numOfNone--;
+            }
+            return res + row;
+        }  
+
         const argToCsv = function(arg){            
             let argcsv = '';
-            if(arg.parent_id == 0){
-                argcsv += endline;
-            }
+           
             argcsv += new Json2csvParser({header:false, fields}).parse([arg]);
-            return argcsv;
+            let res = argcsv + ',"",┇┃,"",' + addNoneFieldsCsvFormat(argcsv, arg.depth, ',');
+            return arg.parent_id == 0? endline + res : res;
         }
         const reducer = (accumulator, currentArg) => accumulator + argToCsv(currentArg) + endline;
         
@@ -174,7 +182,8 @@ module.exports = function(autoIncrement, io){
                     global.document = document;
                     var $ = jQuery = require('jquery')(window);
                     args.map((arg) => arg.content = $('<html><body>' + arg.content + '</body></html>').text());
-                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args.filter(arg => !arg.isReflection)), ['fname', 'lname', 'content', 'createdAt','_id', 'parent_id', 'depth']);
+                    let fields = ['fname', 'lname', 'content', 'createdAt','_id', 'parent_id', 'depth'];
+                    var argsFormated = argsToDiscussionFormatCSV(sortArgs(args.filter(arg => !arg.isReflection)), fields);
                     res.send(new Buffer(argsFormated));
                 });
             });
@@ -315,7 +324,7 @@ module.exports = function(autoIncrement, io){
         discussion.permittedPoster_fname = req.body.permittedPoster_fname;
         discussion.permittedPoster_lname = req.body.permittedPoster_lname;
         discussion.users_group_id = req.body.users_group_id;
-
+        discussion.reflective_users_group_id = req.body.reflective_users_group_id;
         //Adding chat to discussion 09/09
         var chat = new Chat();
         discussion.chat_id = chat._id;
@@ -367,13 +376,19 @@ module.exports = function(autoIncrement, io){
                 disc.moderator_fname = undefined;
                 disc.moderator_lname = undefined;
             }
+
             if(!body.permittedPoster_id){
                 disc.permittedPoster_id = undefined;
                 disc.permittedPoster_fname = undefined;
                 disc.permittedPoster_lname = undefined;
             }
+
             if(!body.users_group_id){
                 disc.users_group_id = undefined;
+            }
+
+            if(!body.reflective_users_group_id){
+                disc.reflective_users_group_id = undefined;
             }
 
             disc.save(function(err, data){
@@ -698,8 +713,10 @@ module.exports = function(autoIncrement, io){
                                     });
                                     // console.log('<==================================');
                                     // console.log(onlineUsers);
-
-                                    socket.emit('init-discussion', {discArguments: discArguments, user:user, discussion: discussion, onlineUsers:onlineUsers, chatMessages:chat.messages});
+                                    usersGroup.find({_id: discussion.reflective_users_group_id},function(err, groups){
+                                        let reflactionGroup = groups[0];              
+                                        socket.emit('init-discussion', {discArguments: discArguments, user:user, discussion: discussion, onlineUsers:onlineUsers, chatMessages:chat.messages, reflectiveGroup: reflactionGroup});    
+                                    });
                                 }
                             });
                         })

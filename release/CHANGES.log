@@ -1,3 +1,41 @@
+commit 2dbda9c36cbc6c8ec826752cd1b7d81ed61fc7aa
+Merge: 3a5bfdf 84de4c8
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 18:51:06 2018 +0300
+
+    Merge branch 'students-reflaction-groups' into develop
+
+commit 84de4c8a79d1523d88bba4f28319fbf4df0d60d1
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 18:50:51 2018 +0300
+
+    reflective groups works fine
+
+commit 0c407c56c35be1e148735eac3911e7303ad3a201
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 17:07:12 2018 +0300
+
+    add reflactive users groups
+
+commit 3a5bfdfc5670f9e4c2c419a7402327223b7240e1
+Merge: 0c1d9ac 7134600
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 10:34:46 2018 +0300
+
+    Merge branch 'fix-csv-export' into develop
+
+commit 7134600337cc637e122eba66bc3867298fb0ffe9
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 10:34:27 2018 +0300
+
+    done by adding back the remove fields
+
+commit 0c1d9ac16989d1919504188d02722748a0bbf65b
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 10:03:22 2018 +0300
+
+    fix deshboard table
+
 commit cafc3ec1e3fb1b49f5c5af38aca102799b79fb6b
 Merge: 0ec43a0 4ccb4c1
 Author: barakmen <barakmen@post.bgu.ac.il>
