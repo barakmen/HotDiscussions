@@ -173,6 +173,7 @@
 
                 <tr ng-show="discussion.edit">
                     <td style="width:2%" class="warning"></td>
+                    <td style="width:2%" class="warning"></td>
                     <td style="width:4%" class="warning"></td>
                     <td style="width:11%">
                         <select class="form-control" ng-init="tempForPermitted = lookupUser[discussion.permittedPoster_id]" ng-model="tempForPermitted" id="permittedPosterEdit" dir="ltr"
@@ -198,7 +199,7 @@
                             </option>
                         </select>
                     </td>
-                    <td style="width:16%"><input class="form-control" id="descEdit" type="text" ng-model="descEdit" ng-value="discussion.description" style="text-align: right;"></td>
+                    <td style="width:14%"><input class="form-control" id="descEdit" type="text" ng-model="descEdit" ng-value="discussion.description" style="text-align: right;"></td>
                     <td style="width:12%"><input class="form-control" id="titleEdit" type="text" ng-model="titleEdit" ng-value="discussion.title" style="text-align: right;"></td>
                     <td style="width:20%" class="warning"><span class="text-warning text-center">עריכה</span></td>
                     <td style="width:3%" class="warning"></td>
