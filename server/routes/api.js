@@ -713,8 +713,10 @@ module.exports = function(autoIncrement, io){
                                     });
                                     // console.log('<==================================');
                                     // console.log(onlineUsers);
-
-                                    socket.emit('init-discussion', {discArguments: discArguments, user:user, discussion: discussion, onlineUsers:onlineUsers, chatMessages:chat.messages});
+                                    usersGroup.find({_id: discussion.reflective_users_group_id},function(err, groups){
+                                        let reflactionGroup = groups[0];              
+                                        socket.emit('init-discussion', {discArguments: discArguments, user:user, discussion: discussion, onlineUsers:onlineUsers, chatMessages:chat.messages, reflectiveGroup: reflactionGroup});    
+                                    });
                                 }
                             });
                         })

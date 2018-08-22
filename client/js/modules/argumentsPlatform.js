@@ -277,13 +277,15 @@
                 $scope.trimmedArguments = result.discArguments.filter(arg => (arg.disc_id != $scope.discusstionID && arg.trimmed));// args to paste
                 $scope.discussionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && !arg.isReflection);
                 $scope.treeNestedDiscussion = addToReftoNestedJson($scope.discussionArgs);
-                console.log($scope.treeNestedDiscussion);
                 var reflectionArgs = result.discArguments.filter(arg => arg.disc_id == $scope.discusstionID && arg.isReflection); 
                 addToReftoNestedJson(reflectionArgs);
                 sortArgumnets($scope.treeNestedDiscussion);
 
                 //init reflection tree
-                if( $scope.role == 'admin'  || $scope.role == 'moderator'){
+                let isInReflactionGroup = result.reflectiveGroup ? result.reflectiveGroup.users.filter(userId => userId == result.user.id).length > 0 : false;
+                $scope.isReflactionRole = $scope.role == 'admin'  || $scope.role == 'moderator' ||  isInReflactionGroup;
+                
+                if($scope.isReflactionRole){
                     setReflectionsOnDiscusstion($scope.discussionArgs);                    
                 }
                 
@@ -577,8 +579,7 @@
             loadArgIdToReflection(reflectionPart.refArgId);
         });
 
-        /************************
-         ************************************************/
+        /************************************************************************/
         var loadArgIdToReflection = function(argId){
             $scope.originalFocus = $scope.treeNestedReflection;
             $scope.treeNestedReflection = $scope.treeNestedReflection.filter(arg => arg._id != argId);                
