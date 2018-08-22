@@ -324,7 +324,7 @@ module.exports = function(autoIncrement, io){
         discussion.permittedPoster_fname = req.body.permittedPoster_fname;
         discussion.permittedPoster_lname = req.body.permittedPoster_lname;
         discussion.users_group_id = req.body.users_group_id;
-
+        discussion.reflective_users_group_id = req.body.reflective_users_group_id;
         //Adding chat to discussion 09/09
         var chat = new Chat();
         discussion.chat_id = chat._id;
@@ -376,13 +376,19 @@ module.exports = function(autoIncrement, io){
                 disc.moderator_fname = undefined;
                 disc.moderator_lname = undefined;
             }
+
             if(!body.permittedPoster_id){
                 disc.permittedPoster_id = undefined;
                 disc.permittedPoster_fname = undefined;
                 disc.permittedPoster_lname = undefined;
             }
+
             if(!body.users_group_id){
                 disc.users_group_id = undefined;
+            }
+
+            if(!body.reflective_users_group_id){
+                disc.reflective_users_group_id = undefined;
             }
 
             disc.save(function(err, data){

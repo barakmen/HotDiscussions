@@ -127,7 +127,7 @@
           $scope.pressAdd = false;
       };
 
-      $scope.finishAdding = function(newDesc, newTitle, newUser, newPermittedPoster, newUserGroup){
+      $scope.finishAdding = function(newDesc, newTitle, newUser, newPermittedPoster, newUserGroup, newReflactiveUserGroup){
 
           var newDisc = {};
 
@@ -160,6 +160,13 @@
           else{
               newDisc.users_group_id = undefined;
           }
+          if(newReflactiveUserGroup){
+            newDisc.reflective_users_group_id = newReflactiveUserGroup._id;
+          }
+          else{
+            newDisc.reflective_users_group_id = undefined;
+          }
+        
 
         $http({
           method:'POST',
@@ -189,7 +196,7 @@
           discussion.edit = false;
       };
 
-      $scope.finishEdit = function(idx, edittedDesc, edittedTitle, edittedUser, edittedPermittedPoster,edittedUsersGroup){
+      $scope.finishEdit = function(idx, edittedDesc, edittedTitle, edittedUser, edittedPermittedPoster,edittedUsersGroup, edittedReflactionGroup){
         var oldDisc = $scope.discussions[idx];
 
         var tempDiscArgsCount = oldDisc.args_count;
@@ -223,13 +230,20 @@
             edittedDisc.permittedPoster_lname = undefined;
         }
 
-          if(edittedUsersGroup){
-              edittedDisc.users_group_id = edittedUsersGroup._id;
-          }
-          else{
-              edittedDisc.users_group_id = undefined;
-          }
+        if(edittedUsersGroup){
+            edittedDisc.users_group_id = edittedUsersGroup._id;
+        }
+        else{
+            edittedDisc.users_group_id = undefined;
+        }
 
+        if(edittedReflactionGroup){
+            edittedDisc.reflective_users_group_id = edittedReflactionGroup._id;
+        }
+        else{
+            edittedDisc.reflective_users_group_id = undefined;
+        }
+        
         $http({
           method: 'PUT',
           url: '/api/discussions/' + $scope.discussions[idx]._id,
