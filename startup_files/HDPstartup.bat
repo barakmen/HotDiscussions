@@ -1,6 +1,8 @@
 set currentFolder="startup_files"
 ::if not exist %nodeModules% REM installing npm...
 CMD /C npm install
+CMD /C npm uninstall jquery
+CMD /C npm install jquery@3.2.1
 
 
 REM booting our HDP database...
