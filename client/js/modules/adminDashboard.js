@@ -1,14 +1,14 @@
 (function() {
   'use strict';
   angular
-    .module('adminDashboardApp', ['btford.socket-io', 'socketio.factory','bootstrapModalApp','angularjs-dropdown-multiselect','ngVis','graph.factory'])
+    .module('adminDashboardApp', ['btford.socket-io', 'socketio.factory','bootstrapModalApp','angularjs-dropdown-multiselect','ngVis','graph.factory', 'ui.bootstrap'])
     .controller('adminDashboardCtrl', ['$scope','$http', '$window', 'socketio', function($scope, $http, $window, socketio){
 
       $scope.pressAdd = false;
       $scope.discussions = [];
       $scope.numOfDiscussionsSelection = {
          "values" : [50,100,150,250, "All"],
-         "value" : 150  
+         "value" : 10  
         };
 
       //disconnect from socket when exiting the web page
