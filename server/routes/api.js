@@ -6,6 +6,8 @@ module.exports = function(autoIncrement, io){
     var Chat = require('../models/chat');
     var usersGroup = require('../models/users_group');
     var Argument = require('../models/argument')(autoIncrement);
+    var Support = require('../models/support')(autoIncrement);
+    var nodemailer = require('nodemailer');
     var express = require('express');
     var router = express.Router();
 
@@ -572,6 +574,51 @@ module.exports = function(autoIncrement, io){
                             })
                         });
                     };
+                });
+            });
+
+            socket.on('send-support-email',function(data){
+                let content = data.content;
+                let support = new Support({
+                    sender_user_id: user.id,
+                    sender_username: user.username,
+                    sender_role: user.role,
+                    sender_fname: user.fname,
+                    sender_lname: user.lname,
+                	support_message_content: content,
+                });
+                
+                support.save((err, data) => {
+                    if(err) throw err;
+                    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+                    var transporter = nodemailer.createTransport({
+                        service: 'gmail',
+                        
+                        auth: {
+                          user: 'starterd.barak@gmail.com',
+                          pass: 'mz*+3TY7'
+                        },
+
+                        tls: {
+                            rejectUnauthorized: false
+                        }
+                      });
+                      
+                      var mailOptions = {
+                        from: 'starterd.barak@gmail.com',
+                        to: 'barak8807@gmail.com',
+                        subject: 'הודעה על תקלה במערכת הדיונים',
+                        html: "<body dir=\"rtl\"><h3> המשתמש: " + support.sender_fname + " " + support.sender_lname + ", עם הזהות: "  + support.sender_user_id + ", כתב את ההודעה הבאה: </h3><p>\n\"" + support.support_message_content + "\"</p></body>"
+                      };
+                      
+                      transporter.sendMail(mailOptions, function(error, info){
+                        if (error) {
+                          console.log(error);
+                        } else {
+                          console.log('Email sent: ' + info.response);
+                          socket.emit('support-email-sent');
+                        }
+                      });
                 });
             });
 
