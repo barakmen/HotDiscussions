@@ -26,9 +26,12 @@
     <script type="text/javascript" src="/js/configs/graphJsonFactory.js"></script>
     <script type="text/javascript" src="/js/modules/adminDashboard.js"></script>
     <script type="text/javascript" src="/js/modules/uiBootstrapModal.js"></script>
+
     <!-- \\\\\\\\\\\\\\\\\\  JavaScript  \\\\\\\\\\\\\\\\\\ -->
 
     <!-- //////////////////  CSS  ///////////////////// -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/libs/bootstrap/css/bootstrap.css" crossorigin="anonymous">
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
@@ -132,19 +135,19 @@
             <a ng-show="!pressAdd" style="width:100%;text-align:right" href="" ng-click="addDisc()">+ הוסף דיון חדש</a>
             <table class="table table-hover table-condensed" dir="ltr" style="font-size: small;">
 
-                <thead>
-                <tr id="headRow">
-                    <th style="width:3%">יצוא</th>
-                    <th style="width:3%">תוכן</th>
-                    <th style="width:4%">הודעות#</th>
-                    <th style="width:10%">Permitted Poster</th>
-                    <th style="width:10%">מודרטור</th>
-                    <th style="width:10%">קבוצת משתמשים</th>
-                    <th style="width:10%">קבוצת רפלקציה</th>
-                    <th style="width:14%">תיאור</th>
-                    <th style="width:14%">כותרת</th>
-                    <th style="width:19%">סטטוס</th>
-                    <th style="width:3%">העתק</th>
+                <thead style="position: sticky;">
+                <tr id="headRow" >
+                    <th style="width:3%;position: absolute;" tooltip-placement="top" uib-tooltip="מייצא קובץ אקסל של הדיון הרלוונטי בשורה">יצוא</th>
+                    <th style="width:3%;" tooltip-placement="top" uib-tooltip="הגדרת הטקסט שיופיע לסטודנטים בעת כניסתם לדיון">תוכן</th>
+                    <th style="width:4%;position: absolute;" tooltip-placement="top" uib-tooltip="מספר ההודעות שפורסמו בדיון">הודעות#</th>
+                    <th style="width:10%;" tooltip-placement="top" uib-tooltip="קבוצת האנשים שמורשה לכתוב רעיונות חדשים בדיון. ברירת המחדש היא כל מי שנכנס לדיון יכול לפרסם.">רשאים לפרסם</th>
+                    <th style="width:10%;position: absolute;" tooltip-placement="top" uib-tooltip="מודרטור הוא מיני אדמין, והוא 'אחראי', על התנהלות דיון, על כן הוא מקבל בסימון חצי כוכב, ולא כמו כוכב שלם של האדמין">מודרטור</th>
+                    <th style="width:10%;" tooltip-placement="top" uib-tooltip="רק המשתמשים שבקבוצה זו יוכלו ליראות את הדיון הנוכחי. ברירת המחדל היא שכולם יכולים ליראות את הדיון">קבוצת משתמשים</th>
+                    <th style="width:10%;position: absolute;" tooltip-placement="top" uib-tooltip="חברי הקבוצה יוכלו בעת כניסתם לדיון, לדון על הדיון הקיים בזמן אמת">קבוצת רפלקציה</th>
+                    <th style="width:14%;" tooltip-placement="top" uib-tooltip="זהו תיאור הדיון">תיאור</th>
+                    <th style="width:14%;position: absolute;" tooltip-placement="top" uib-tooltip="זוהי כותרת הדיון">כותרת</th>
+                    <th style="width:19%;" tooltip-placement="top" uib-tooltip="סטטוס פעיל מאפשר לכולם להכנס לדיון ולכתוב בו, סטטוס ביקורת מאפשר למודטור ולאדמין בלבד להכנס לדיון , סטטוס לא פעיל, מאפשר רק לאדמין להכנס לדיון ולא מאפשר לאף אחד לכתוב בו  רעיונות חדשים">סטטוס</th>
+                    <th style="width:3%;position: absolute;" tooltip-placement="top" uib-tooltip="משכפל את הדיון הנוכחי">העתק</th>
                 </tr>
                 </thead>
                 

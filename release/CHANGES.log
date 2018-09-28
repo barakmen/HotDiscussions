@@ -1,3 +1,42 @@
+commit 421938097aec3ca042df4fc0c1c0c61278a062ce
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Thu Sep 20 17:18:33 2018 +0300
+
+    add notes to admin deshboard table - work!
+
+commit 93f6b7cc15a010d2cb57eaad42ab5c19a0835fe1
+Merge: 28ae118 fda5a5e
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Sep 18 16:43:15 2018 +0300
+
+    Merge branch 'hotfix-1.0' into develop
+
+commit fda5a5e27915e664298bbb39730883e6d0567865
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Sep 18 16:41:35 2018 +0300
+
+    fix the installation file because of error in jquery version
+
+commit 28ae118fd99601511c4afa8cb2512ecc5aec692e
+Merge: 2dbda9c 012cec9
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 18:56:35 2018 +0300
+
+    Merge branch 'release-2.5.6' into develop
+
+commit ea489ec3fad2020f6b39c269626d78002c777f72
+Merge: 0e7a8c5 012cec9
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 18:54:25 2018 +0300
+
+    bump version to 2.5.6
+
+commit 012cec9e222ae3709cdc40665978b8254e42d65c
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 22 18:51:53 2018 +0300
+
+    bump version to 2.5.6
+
 commit 2dbda9c36cbc6c8ec826752cd1b7d81ed61fc7aa
 Merge: 3a5bfdf 84de4c8
 Author: barakmen <barakmen@post.bgu.ac.il>
@@ -36,6 +75,19 @@ Date:   Wed Aug 22 10:03:22 2018 +0300
 
     fix deshboard table
 
+commit 0e7a8c53fa3830ef9a969ee2694efabe1455914b
+Merge: bca13f6 1da8a7f
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Aug 21 19:54:28 2018 +0300
+
+    Merge branch 'release-2.5.5'
+
+commit 1da8a7f7b20aeb0cae10e2048d46e0ddc1cdfbb4
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Aug 21 19:54:12 2018 +0300
+
+    bump version to 2.5.5
+
 commit cafc3ec1e3fb1b49f5c5af38aca102799b79fb6b
 Merge: 0ec43a0 4ccb4c1
 Author: barakmen <barakmen@post.bgu.ac.il>
@@ -68,6 +120,13 @@ Date:   Tue Aug 21 17:40:03 2018 +0300
 
     Merge branch 'release-2.5.4' into develop
 
+commit bca13f66a15569e72fc74a4429557eebbc30e917
+Merge: d0cfcb2 491c2a5
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Aug 21 17:39:42 2018 +0300
+
+    Merge branch 'release-2.5.4'
+
 commit 491c2a54ac9afa3bee3beffc2b8f9326e59cb433
 Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Tue Aug 21 17:38:54 2018 +0300
@@ -93,6 +152,13 @@ Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Wed Aug 1 12:32:01 2018 +0300
 
     Merge branch 'release-2.5.3' into develop
+
+commit d0cfcb24572e4ea8d70cd7a6a6d337804bae9670
+Merge: 70b360e 286dd76
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Wed Aug 1 12:31:29 2018 +0300
+
+    Merge branch 'release-2.5.3'
 
 commit 286dd763501ce3ebd71eaa132b498140e237cf8b
 Author: barakmen <barakmen@post.bgu.ac.il>
@@ -120,6 +186,13 @@ Date:   Tue Jul 31 18:37:26 2018 +0300
 
     Merge branch 'release-2.5.2' into develop
 
+commit 70b360ee53d93a187c6366e0c624ea4e588212c9
+Merge: 29b6ebe 33d9270
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 18:33:52 2018 +0300
+
+    Merge branch 'release-2.5.2'
+
 commit 33d927011484a45bd87b0245e98243aa296c7fb3
 Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Tue Jul 31 18:32:55 2018 +0300
@@ -138,6 +211,13 @@ Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Tue Jul 31 18:31:39 2018 +0300
 
     fix bug
+
+commit 29b6ebe83535f23e889c1c2d7964a59e4832430f
+Merge: 2f6704b 824ad4a
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Tue Jul 31 18:07:18 2018 +0300
+
+    Merge branch 'release-2.5.2'
 
 commit 824ad4a4dc3cdf09b0829bd58104e3531ae59c7d
 Author: barakmen <barakmen@post.bgu.ac.il>
