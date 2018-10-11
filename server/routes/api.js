@@ -6,14 +6,17 @@ module.exports = function(autoIncrement, io){
     var Chat = require('../models/chat');
     var usersGroup = require('../models/users_group');
     var Argument = require('../models/argument')(autoIncrement);
+    var Support = require('../models/support')(autoIncrement);
+    var nodemailer = require('nodemailer');
     var express = require('express');
     var router = express.Router();
+    var fs = require('fs');
 
     var discussionDuplicator = require('../tools/discussionDuplicator')(autoIncrement);
 
     var discussionNsp = io.of('/discussions');
     var argumentsNsp = io.of('/arguments');
-
+    
     var allScokets = {};
 
 	/**
@@ -399,6 +402,50 @@ module.exports = function(autoIncrement, io){
         });
     });
 
+    var sendSupportMessageToEmail = function (data, user, currentSocket){
+        let content = data.content;
+        let support = new Support({
+            sender_user_id: user.id,
+            sender_username: user.username,
+            sender_role: user.role,
+            sender_fname: user.fname,
+            sender_lname: user.lname,
+            support_message_content: content,
+        });
+        
+        support.save((err, data) => {
+            if(err) throw err;
+            //process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+            var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                
+                auth: {
+                  user: 'benzi.hdp@gmail.com',
+                  pass: fs.readFileSync('server/tmp.txt', 'utf8')
+                },
+
+                tls: {
+                    rejectUnauthorized: false
+                }
+              });
+              
+              var mailOptions = {
+                from: 'benzi.hdp@gmail.com',
+                to: 'benzi.hdp@gmail.com',
+                subject: 'הודעה על תקלה במערכת הדיונים',
+                html: "<body dir=\"rtl\"><h3> המשתמש: " + support.sender_fname + " " + support.sender_lname + ", עם הזהות: "  + support.sender_user_id + ", כתב את ההודעה הבאה: </h3><p>\n\"" + support.support_message_content + "\"</p></body>"
+              };
+              
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                  currentSocket.emit('support-email-sent');
+                }
+              });
+        });
+    };
     discussionNsp.on('connection', function(socket){
 
         if (socket.request.session.passport) {
@@ -575,6 +622,10 @@ module.exports = function(autoIncrement, io){
                 });
             });
 
+            socket.on('send-support-email',function(data){
+                sendSupportMessageToEmail(data, user, socket);
+            });
+
             socket.on('update-discussion-content',function(data){
                 Discussion.findByIdAndUpdate(data.disc_id, {$set: {"content":data.content}}, {new: true}, function(err, disc){
                     if(err) throw err;
@@ -653,7 +704,6 @@ module.exports = function(autoIncrement, io){
 
     argumentsNsp.on('connection', function(socket){
         //TODO: support here the "online" users utility for the different discussions rooms
-
         if (socket.request.session.passport && socket.request.session.passport.user) {
 
             var discussionId = socket.handshake.query.discussion;
@@ -665,6 +715,7 @@ module.exports = function(autoIncrement, io){
             socket.join(discussionId);
             
             argumentsNsp.to(discussionId).emit('user-joined', user);
+            
             // console.log('user ' + user.username + ' joined the discussion!');
 
             /**
@@ -983,6 +1034,10 @@ module.exports = function(autoIncrement, io){
             
                 argTarget.cloned = true;
             }
+
+            socket.on('send-support-email',function(data){
+                sendSupportMessageToEmail(data, user, socket);
+            });
 
             socket.on('paste-all', function (data){
                 var discusstionID = data.discusstionID;

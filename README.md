@@ -117,3 +117,11 @@ To see a graphical GUI for the branches, follow the next commends in the cmd:
 
 ### Todo Managment:
 Is done by maintaining doc file [here](https://docs.google.com/document/d/1v75dppU9elon6LC8_U9RTSF0LnFOqJoOaRyO9OVPlhk/edit?usp=sharing)
+
+
+##Documentation:  
+1. Main progrematic parts for installation and development routin describes on this readme.  
+2. Running load test describes [in that README file](https://github.com/barakmen/HotDiscussions/tree/load-testing/server/load_tests)   
+3. Todo managment: [here are all the todo poins](https://docs.google.com/document/d/1v75dppU9elon6LC8_U9RTSF0LnFOqJoOaRyO9OVPlhk/edit?usp=sharing)  
+4. Database documet that describe all types of data that saved in the server [document here](https://docs.google.com/document/d/1apbMwGAUWCuJoToCxUBUX-NPAr0gVeP1hmBYHStxDFE/edit?usp=sharing)  
+5. User Menual [described here](https://docs.google.com/document/d/1SExhYLFq84_TT6fYxBLI4Hn6zKyIXBd4xWvf9PZSNd0/edit?usp=sharing)

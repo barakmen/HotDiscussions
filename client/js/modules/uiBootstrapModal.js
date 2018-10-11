@@ -35,6 +35,22 @@ angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $u
         })
     };
 
+    $scope.sendSupportMessage = function(){
+        $uibModal.open({
+            animation: $scope.animationsEnabled,
+            templateUrl: '../partials/sendSupportContent.html',
+            controller: 'sendSupportCtrl',
+            size: 'lg',
+            resolve: {
+                socket: function () {
+                    return socket;
+                }
+                
+
+            }
+        })
+    }
+
     $scope.enterContent = function (index) {
         $uibModal.open({
             animation: $scope.animationsEnabled,
@@ -187,6 +203,24 @@ angular.module('bootstrapModalApp').controller('copyConfirmationModalCtrl', func
     $scope.ok = function () {
         copyDiscussionFunc(discID);
         $uibModalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('bootstrapModalApp').controller('sendSupportCtrl', function ($scope, $uibModalInstance ,socket) {
+    $scope.isSend = false;
+    socket.on('support-email-sent',function(data){
+        alert("ההודעה נשלחה בהצלחה!")
+        $uibModalInstance.close();
+    });
+    
+    $scope.ok = function () {
+        $scope.isSend = true;
+        socket.emit('send-support-email', {content:$scope.content});    
+        
     };
 
     $scope.cancel = function () {
