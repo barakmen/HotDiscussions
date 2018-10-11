@@ -1,3 +1,42 @@
+commit bd52b1a34b7cb921a557746f38aab9cd4f41a343
+Merge: 94dfa8e db83eaa
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Thu Oct 11 19:49:37 2018 +0300
+
+    Merge branch 'support' into develop
+
+commit db83eaaeece235cfffd4b698635b67fb489f109a
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Thu Oct 11 19:46:40 2018 +0300
+
+    support working and readme edited
+
+commit 064d15760a830f966f1f5339080c63925c45e468
+Merge: a1302d3 89785ec
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Fri Sep 28 17:35:32 2018 +0300
+
+    Merge branch 'release-2.5.7' into support
+
+commit 94dfa8e3d87823d344697eaef6218e0cfa0ae7f0
+Merge: 4219380 89785ec
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Fri Sep 28 17:32:40 2018 +0300
+
+    Merge branch 'release-2.5.7' into develop
+
+commit 89785ec08b4e32b859d6ee4cec4614cb66f20c34
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Fri Sep 28 17:31:45 2018 +0300
+
+    bump version to 2.5.7
+
+commit a1302d313e24a25064a5c81906b528f8b20d3277
+Author: barakmen <barakmen@post.bgu.ac.il>
+Date:   Thu Sep 27 18:02:32 2018 +0300
+
+    mail sent succsessfully from admin deshboard!
+
 commit 421938097aec3ca042df4fc0c1c0c61278a062ce
 Author: barakmen <barakmen@post.bgu.ac.il>
 Date:   Thu Sep 20 17:18:33 2018 +0300

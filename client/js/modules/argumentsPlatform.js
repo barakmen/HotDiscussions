@@ -3,7 +3,7 @@
                                     'ui.tinymce','bootstrapModalApp','discussionChat','discussionCollaborationPad','ngVis','graph.factory'], function($locationProvider){
         $locationProvider.html5Mode(true);
     })
-    .controller('ArgumentsTreeController', ['TreeService','$scope', '$window', '$location','socketio','$rootScope', function (TreeService, $scope, $window, $location, socketio, $rootScope) {
+    .controller('ArgumentsTreeController', ['TreeService','$scope', '$window', '$location','socketio','$rootScope', '$uibModal', function (TreeService, $scope, $window, $location, socketio, $rootScope, $uibModal) {
         $scope.onlineUsers = [];
 
         var path = $location.path();
