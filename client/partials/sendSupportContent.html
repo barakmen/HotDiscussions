@@ -1,0 +1,13 @@
+<div dir="rtl">
+    <div class="modal-header">
+        <h3 class="modal-title">הודעה זו תשלח למייל של מנהל המערכת</h3>
+    </div>
+    <div class="modal-body" style="height: 60vh">
+        <textarea class="form-control form-group text-right" rows="3" placeholder="{{content}}" style="resize: none;width:100%;height:100%;" ng-model="content"></textarea>
+    </div>
+
+    <div class="modal-footer" style="text-align: center">
+        <button class="btn btn-primary" id="sendSupportButton" type="button" ng-click="ok()">שלח הודעה</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">ביטול</button>
+    </div>
+</div>
