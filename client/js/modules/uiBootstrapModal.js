@@ -45,6 +45,8 @@ angular.module('bootstrapModalApp').controller('ModalCtrl', function ($scope, $u
                 socket: function () {
                     return socket;
                 }
+                
+
             }
         })
     }
@@ -209,14 +211,16 @@ angular.module('bootstrapModalApp').controller('copyConfirmationModalCtrl', func
 });
 
 angular.module('bootstrapModalApp').controller('sendSupportCtrl', function ($scope, $uibModalInstance ,socket) {
-
+    $scope.isSend = false;
     socket.on('support-email-sent',function(data){
         alert("ההודעה נשלחה בהצלחה!")
         $uibModalInstance.close();
     });
-
+    
     $scope.ok = function () {
-        socket.emit('send-support-email', {content:$scope.content});
+        $scope.isSend = true;
+        socket.emit('send-support-email', {content:$scope.content});    
+        
     };
 
     $scope.cancel = function () {
